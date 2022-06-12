@@ -1,0 +1,41 @@
+.line1{
+  display: flex;
+
+  :global{
+    
+    .menu-lf{
+      height: 400px;
+    }
+    .lf{
+      width: 200px;
+    }
+    .rg{
+      width: 1000px;
+      .ant-menu-horizontal > .ant-menu-item{
+        text-align: center;
+        margin: 0 16px;
+      }
+      .ant-menu{
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        font-size: 20px;
+        font-weight: normal;
+      }
+    }
+  }
+}
+.brand-item{
+  text-align: center;
+  margin: 10px 0 30px 0;
+  :global{
+    .tit{
+      color: #333;
+      font-size: 16px;
+      margin-top: 5px;
+    }
+    img{
+      border: dashed 1px rgb(172, 169, 169);
+    }
+  }
+}

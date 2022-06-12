@@ -1,0 +1,37 @@
+.item-wrap{
+  width: 230px;
+  display: inline-block;
+  margin-bottom: 20px;
+
+  :global{
+    .comp{
+      font-size: 14px;
+      color: #999999;
+    }
+   
+    .line{
+      display: flex;
+      justify-content: space-between;
+      align-items:flex-end;
+      margin: 5px 0;
+      >.lf{
+        font-size: 12px;
+        color: #333;
+      }
+      >.rg{
+        font-size: 14px;
+      }
+    
+    }
+  }
+  .img-wrap{
+    background-color: white;
+    text-align: center;
+    padding: 5px 0;
+    img{
+      transition: all .3s;
+      height: 225px;
+    }
+  }
+
+}

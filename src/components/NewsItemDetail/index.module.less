@@ -1,0 +1,35 @@
+.item-wrap{
+  padding: 27px 33px;
+  display: flex;
+  justify-content: space-between;
+  cursor: pointer;
+  &:hover{
+    background: #F0F0F0;
+    :global{
+      .ant-btn-ghost{
+        background-color: @primary-color;
+        color: white;
+      }
+    }
+  }
+  :global{
+    .rg{
+      width: 866px;
+      .tit{
+        margin: 11px 0;
+        color: #105CCE;
+        font-size: 18px;
+      }
+      .time{
+
+color: #969696;
+font-size: 12px;
+      }
+      .text{
+        margin: 5px 0 15px 0;
+color: #646464;
+font-size: 14px;
+      }
+    }
+  }
+}

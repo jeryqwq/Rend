@@ -1,0 +1,57 @@
+.line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: dashed 1px #ddd;
+  padding: 13px 0;
+  :global{
+    .lf{
+      width: 80px;
+      font-size: 14px;
+      color: #000;
+    }
+    .rg{
+      flex: 1;
+    }
+  }
+}
+.search{
+  
+  border: 1px solid #BEBEBE;
+  margin-top: 20px;
+  padding: 20px;
+}
+
+.course-wrap{
+  font-size: 0;
+  :global{
+    .item{
+      height: 166px;
+      color: #000;
+      font-size: 18px;
+      display: flex;
+      justify-content: space-between;
+      >.rg{
+        flex: 1;
+        padding: 0 16px;
+        .tit{
+          font-size: 18px;
+          color: #000;
+        }
+        .stit {
+          color: #999; 
+          font-size: 14px;
+        }
+        .add {
+          font-size: 14px;
+          color:#333;
+          margin-top: 25px;
+        }
+        .price {
+          color: #FF0505;
+          font-size:25px
+        }
+      }
+    }
+  }
+}
