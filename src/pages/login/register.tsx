@@ -6,27 +6,22 @@ import styles from './index.module.less';
 import { request } from 'umi';
 function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
   const [userInfo, setUserInfo ] = useState({})
-  const ref = useRef<ProFormInstance>()
+  const personRef = useRef<ProFormInstance>()
+  const compRef = useRef<ProFormInstance>()
+
   const [checked, setChecked] = useState(false)
   const [logOrReg, setLogOrReg] = useState<'person' | 'comp'>('person')
-  const validator =  (rule: any,value: any) => {
-    return new Promise((res, rej) => {
-      if( ref.current?.getFieldValue('password') === value) {
-        res(true)
-      }else{
-        rej('两次密码不一致!')
-      }
-    })
-  }
   return (
     <div >
-      <ProForm submitter={false}
-        initialValues={userInfo}
-        formRef={ref}
-      layout='horizontal' colon={false} labelCol={{span: 8}} size='large'>
+      
         <Tabs centered defaultActiveKey='person' activeKey={logOrReg} onChange={(val) =>setLogOrReg(val as 'person') }>
           <Tabs.TabPane tab="个人注册" key="person">
+         
             <div style={{width: 500}}>
+              <ProForm submitter={false}
+                initialValues={userInfo}
+                formRef={personRef}
+              layout='horizontal' colon={false} labelCol={{span: 8}} size='large'>
               <ProFormText
                 label='手机号'
                 rules={[{
@@ -61,7 +56,15 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 label="确认密码"
                 rules={[
                   {
-                    validator
+                    validator(rule: any,value: any)  {
+                      return new Promise((res, rej) => {
+                        if( personRef.current?.getFieldValue('password') === value) {
+                          res(true)
+                        }else{
+                          rej('两次密码不一致!')
+                        }
+                      })
+                    }
                   }
                 ]}
                 placeholder={'请再次输入密码'}
@@ -73,10 +76,15 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 label="推广码"
                 placeholder={'请输入推广码(可不填)'}
               />
+              </ProForm>
             </div>
           </Tabs.TabPane>
           <Tabs.TabPane tab="企业注册" key="comp">
           <div style={{width: 500}}>
+              <ProForm submitter={false}
+                initialValues={userInfo}
+                formRef={compRef}
+              layout='horizontal' colon={false} labelCol={{span: 8}} size='large'>
               <ProFormText 
                 label='手机号'
                 rules={[{
@@ -114,7 +122,15 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 rules={[
                   {
                     required: true,
-                    validator
+                    validator(rule: any,value: any)  {
+                      return new Promise((res, rej) => {
+                        if( compRef.current?.getFieldValue('password') === value) {
+                          res(true)
+                        }else{
+                          rej('两次密码不一致!')
+                        }
+                      })
+                    }
                   }
                 ]}
                 fieldProps={{
@@ -147,26 +163,26 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 label="推广码"
                 placeholder={'请输入推广码(可不填)'}
               />
-              
+              </ProForm>
             </div>
           </Tabs.TabPane>
         </Tabs>
-      </ProForm>
       <div className={styles['center-top15']}><Checkbox checked={checked} onChange={(e)=> setChecked(e.target.checked)}>我已阅读并接受<a>《服务协议》</a></Checkbox></div>
               <div className={styles['center-top15']}><Button style={{height: 46, width: 167}} onClick={() => setType('login')}>返回</Button> 
               <Button  style={{height: 46, width: 167, marginLeft: 15}} type='primary'
               onClick={() => {
                 if(checked) {
-                  ref.current?.validateFields().then(async (res) => {
-                    console.log(res)
-                    if(logOrReg === 'person' ) {
-                      const result = await request('/login/register', {
-                        data: res,
-                        method: 'post'
-                      })
-                      console.log(result, '--')
-                    }
-                  })
+                    (logOrReg === 'person' ? personRef :compRef).current?.validateFields().then(async (res) => {
+                      console.log(res)
+                        const result = await request('/login/register', {
+                          data: res,
+                          method: 'post',
+                          headers: {
+                            'Content-Type': `application/x-www-form-urlencoded`
+                          }
+                        })
+                        console.log(result, '--')
+                    })
                 }else{
                   message.info('请点击同意协议')
                 }
