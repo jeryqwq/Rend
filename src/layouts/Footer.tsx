@@ -2,7 +2,7 @@ import React from 'react';
 import styles from './index.module.less';
 import {Row, Col, Divider} from 'antd';
 import { useLocation } from 'umi';
-function Footer() {
+function Footer({layout}: { layout?: boolean }) {
   const { pathname: path } = useLocation()
   const footerInfo = <> <Divider style={{margin: '12px 0'}}/>
   <div className='info'>电话: 0591-87527815  </div>         
@@ -25,14 +25,14 @@ function Footer() {
                 <Col ><div style={{fontSize: 17}}>工程公司指南</div><div>入驻指南</div><div >需求发布</div><div>特价抢租</div><div>先租后买</div></Col>
                 <Col ><div style={{fontSize: 17}}>品牌代理商指南</div><div>品牌代理商入驻</div><div >设备发布</div><div>应征悬赏</div><div>参与竞价</div></Col>
               </Row>  }
-             { path === '/' && footerInfo }
+             { layout && footerInfo }
             </div>
             <div className="rg">
               <img src="/icons/head.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
               <img src="/images/miniapp.png" alt="" width={123} />
             </div>
           </div>
-             { path !== '/' && footerInfo }
+             { !layout && footerInfo }
         </div>
       </div>
     </div>
