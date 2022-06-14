@@ -4,12 +4,18 @@ export default defineConfig({
   nodeModulesTransform: {
     type: 'none',
   },
-  hash: true,
   routes: routers,
+  history: { type: 'hash' },
   fastRefresh: {},
   mfsu:{},
   locale:{},
   theme: {
     '@primary-color': '#0e5ecc',
   },
+  proxy: {
+    '/login': {
+      'target': 'http://121.204.145.151:44001/',
+      'changeOrigin': true,
+    }
+  }
 });

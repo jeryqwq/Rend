@@ -4,6 +4,7 @@ import { ProForm, ProFormInstance, ProFormSelect, ProFormText, ProFormUploadButt
 import { Checkbox , Button, message } from 'antd';
 import styles from './index.module.less';
 import { request } from 'umi';
+import { getCode, getLoginFwxy, regist } from '@/server/login';
 function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
   const [userInfo, setUserInfo ] = useState({})
   const personRef = useRef<ProFormInstance>()
@@ -37,7 +38,14 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 label="验证码"
                 placeholder={'请输入验证码'}
                 fieldProps={{
-                  addonAfter: <a>发送验证码</a>
+                  addonAfter: <a onClick={async () => {
+                    if(!personRef.current?.getFieldError('phone').length) {
+                      const res = await getCode({ phone: personRef.current?.getFieldValue('phone'), service: 'register' })
+                      if(res.code === '0') {
+                        message.success('验证码发送成功，请在手机短信查看')
+                      }
+                    }
+                  }}>发送验证码</a>
                 }}
               />
                <ProFormText name='password'
@@ -167,21 +175,26 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
             </div>
           </Tabs.TabPane>
         </Tabs>
-      <div className={styles['center-top15']}><Checkbox checked={checked} onChange={(e)=> setChecked(e.target.checked)}>我已阅读并接受<a>《服务协议》</a></Checkbox></div>
+      <div className={styles['center-top15']}><Checkbox checked={checked} onChange={(e)=> setChecked(e.target.checked)}>我已阅读并接受<a onClick={async () => {
+        const res = await getLoginFwxy()
+        console.log(res)
+        message.info({
+          content: <div></div>
+        })
+      }}>《服务协议》</a></Checkbox></div>
               <div className={styles['center-top15']}><Button style={{height: 46, width: 167}} onClick={() => setType('login')}>返回</Button> 
               <Button  style={{height: 46, width: 167, marginLeft: 15}} type='primary'
               onClick={() => {
                 if(checked) {
                     (logOrReg === 'person' ? personRef :compRef).current?.validateFields().then(async (res) => {
                       console.log(res)
-                        const result = await request('/login/register', {
-                          data: res,
-                          method: 'post',
-                          headers: {
-                            'Content-Type': `application/x-www-form-urlencoded`
-                          }
-                        })
-                        console.log(result, '--')
+                        const result = await regist({ data: {...res, type: logOrReg === 'person' ? 1 : 2, repassword: undefined, shareCode: res.shareCode || ''} })
+                        if(res.code === '300') {
+                          message.info(res.msg)
+                        }else if(res.code === '0') {
+                          message.success('注册成功，等待后台审核')
+                        }
+                        console.log(result)
                     })
                 }else{
                   message.info('请点击同意协议')
