@@ -1,7 +1,8 @@
-import request from "./request";
-export function uploadImg (formData: FormData) {
-  return request('/appfile/upload',{
+export async function uploadImg (file: File) {
+  const formData = new FormData()
+  formData.append('file', file)
+  return  await fetch('/lease-center/appfile/upload', {
     method: 'post',
-    headers: {  }
-  })
+    body: formData
+  }).then((res) => res.json())
 }

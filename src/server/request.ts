@@ -1,11 +1,11 @@
 import request, { extend } from 'umi-request';
 import { message } from 'antd'
 request.interceptors.request.use((url, options) => {
+  options.headers['Authorization'] = 'bearer ' + localStorage.getItem('TK');
+  options.headers['Content-Type'] = 'application/jsonTK';
   return {
-    url,
-    options: { ...options, headers: { 
-      'Content-Type': `application/x-www-form-urlencoded`,
-     } },
+    url: `/lease-center${url}`,
+    options: options,
   };
 })
 request.use(async (ctx, next) => {
@@ -13,6 +13,10 @@ request.use(async (ctx, next) => {
   await next();
   const { res } = ctx
   if(res.code === '300') {
+    message.info(res.msg)
+  }else if (res.code === '500') {
+    message.error(res.msg)
+  }else if(res.code === '401') {
     message.info(res.msg)
   }
 });

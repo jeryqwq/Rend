@@ -4,17 +4,21 @@ import { Button, Input, Dropdown, Menu } from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import { MenuRouter } from '@/routers';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
+import useLogin from '@/hooks/useLogin';
 type SearchType = 'shebei' | 'peijian' | 'ershou'
 function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: (_: SearchType) => void, showMenu?: boolean }) {
   const { pathname: path, } = useLocation()
   const history = useHistory()
   const curRouter = MenuRouter.find(i => i.path === path)
+  const { user } = useLogin()
   return (
     <div  className={styles['for-menu']}>
       <div className={`${styles['line-header']}`} >
         <div className='content'>
           <div className="lf">欢迎来到融勝达设备租赁网</div>
-          <div className="rg"><a href='#/login'>登录/注册</a>       个人中心       <a href='#/saler'>商家中心</a>       帮助中心       联系客服</div>
+          <div className="rg">{
+            user ? '欢迎您,' + user.user.username : <a href='#/login' >登录/注册</a>  
+          }     个人中心       <a href='#/saler'>商家中心</a>       帮助中心       联系客服</div>
         </div>
       </div>
       <div className='content'>
@@ -47,7 +51,9 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                 </Dropdown>
                 <span className='btn-round rg' onClick={() => history.push('/forRent')}><span style={{left: 0}}>发布需求</span></span>
               </div>
-              <span className='phone'>400-8932-608</span>
+              <span className='phone'>
+                <img src="/images/phone.png" alt="" />
+                400-8932-608</span>
             </div>
           </div>
         </div>

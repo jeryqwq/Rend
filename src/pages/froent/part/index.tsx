@@ -36,7 +36,7 @@ function Part() {
             <div className={`${styles['img-wrap']}`}>
               <img
                 width={210}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                src="/images/repair-bg.png"
               />
               </div>
               <div className="line">
@@ -59,7 +59,7 @@ function Part() {
            <img
              width={220}
              style={{height: 220}}
-             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+             src="/images/repair-bg.png"
            />
            </div>
            <div className={styles.stit} >久保田15洋马30玉柴徐工立派犀牛小微挖掘机橡胶履带链条皮带</div>

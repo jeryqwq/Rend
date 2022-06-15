@@ -21,7 +21,7 @@ function Course() {
         {
           new Array(8).fill(1).map(i => <div style={{display: 'inline-block', width: '50%', marginTop: 25}}>
             <div className='item' >
-            <img src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" style={{width: 248, height: 166}} />
+            <img src="/images/repair-bg.png" style={{width: 248, height: 166}} />
             <div className="rg">
               <div className="tit">深度机器学习辅导Kaggle1对1指导pytorch培训课程python数据分析 </div>
               <div className="stit">合肥安弘工程设备租赁有限公司</div>

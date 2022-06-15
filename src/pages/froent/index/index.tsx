@@ -18,7 +18,6 @@ const contentStyle: React.CSSProperties = {
 };
 export default function IndexPage() {
   const history = useHistory();
-
   return (
    <>
     <div className='content' style={{ margin: '20px auto' }}>
@@ -73,7 +72,7 @@ export default function IndexPage() {
           {
             new Array(6).fill(1).map(i => <Col span={4}>
               <div className={styles['brand-item']}>
-                <img src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png" width={190} height={117} />
+                <img src="/images/repair-bg.png" width={190} height={117} />
                 <div className='tit'>沃尔沃</div>
               </div>
             </Col>)

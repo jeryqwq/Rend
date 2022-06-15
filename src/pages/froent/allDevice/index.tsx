@@ -43,7 +43,7 @@ function AllDevice() {
             <div className={`${styles['img-wrap']}`}>
               <img
                 width={210}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                src="/images/repair-bg.png"
               />
               </div>
               <div className="line">
@@ -64,7 +64,7 @@ function AllDevice() {
            <img
              width={220}
              style={{height: 220}}
-             src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+             src="/images/repair-bg.png"
            />
            </div>
            <div className="line">

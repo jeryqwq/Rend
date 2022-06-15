@@ -1,10 +1,11 @@
 import React, { useRef, useState } from 'react';
 import { Tabs } from 'antd'
 import { ProForm, ProFormInstance, ProFormSelect, ProFormText, ProFormUploadButton } from '@ant-design/pro-components';
-import { Checkbox , Button, message } from 'antd';
+import { Checkbox , Button, message, Modal } from 'antd';
 import styles from './index.module.less';
 import { request } from 'umi';
 import { getCode, getLoginFwxy, regist } from '@/server/login';
+import { uploadImg } from '@/server/common';
 function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
   const [userInfo, setUserInfo ] = useState({})
   const personRef = useRef<ProFormInstance>()
@@ -110,7 +111,14 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 label="验证码"
                 placeholder={'请输入验证码'}
                 fieldProps={{
-                  addonAfter: <a>发送验证码</a>
+                  addonAfter: <a onClick={async () => {
+                    if(!compRef.current?.getFieldError('phone').length) {
+                      const res = await getCode({ phone: compRef.current?.getFieldValue('phone'), service:  'register'})
+                      if(res.code === '0') {
+                        message.success('验证码发送成功，请在手机短信查看')
+                      }
+                    }
+                  }}>发送验证码</a>
                 }}
               />
                <ProFormText name='password'
@@ -145,13 +153,30 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                   type:'password'
                 }}
               />
-              <ProFormText label="企业名称" name="CompName" rules={[{
+              <ProFormText label="企业名称" name="compName" rules={[{
                   required: true,
                 }]}/>
               <ProFormText label="统一社会信用代码" name="compCode" rules={[{
                   required: true,
                 }]}/>
-              <ProFormUploadButton label="营业执照" accept='.png,.jpg,.jpeg' max={1}/>
+              <ProFormText name="yyzzUrl" hidden/>
+              <ProFormUploadButton required label="营业执照" accept='.png,.jpg,.jpeg'  fieldProps={{
+                maxCount: 1
+              }}  action={async (file) => {
+                const formData = new FormData()
+                formData.append('file', file)
+                const res = await fetch('/lease-center/appfile/upload', {
+                  method: 'post',
+                  body: formData
+                }).then((res) => res.json())
+                if(res.code === '0') {
+                  compRef.current?.setFieldsValue({yyzzUrl: res.data.path})
+                  return res.data.path
+                }else{
+                  message.error(res.msg)
+                }
+                return ''
+              }}/>
               <ProFormText label='姓名' name="name" rules={[{
                   required: true,
                 }]}/>
@@ -175,26 +200,25 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
             </div>
           </Tabs.TabPane>
         </Tabs>
-      <div className={styles['center-top15']}><Checkbox checked={checked} onChange={(e)=> setChecked(e.target.checked)}>我已阅读并接受<a onClick={async () => {
+      <div className={styles['center-top15']}><Checkbox checked={checked} onChange={(e)=> setChecked(e.target.checked)}>我已阅读并接受</Checkbox><a onClick={async () => {
         const res = await getLoginFwxy()
         console.log(res)
-        message.info({
-          content: <div></div>
+        Modal.confirm({
+          icon: null,
+          title: res.data.name,
+          content: <div style={{height: 600, overflow: 'scroll'}}>{res.data.msg}</div>
         })
-      }}>《服务协议》</a></Checkbox></div>
+      }}>《服务协议》</a></div>
               <div className={styles['center-top15']}><Button style={{height: 46, width: 167}} onClick={() => setType('login')}>返回</Button> 
               <Button  style={{height: 46, width: 167, marginLeft: 15}} type='primary'
               onClick={() => {
                 if(checked) {
                     (logOrReg === 'person' ? personRef :compRef).current?.validateFields().then(async (res) => {
-                      console.log(res)
-                        const result = await regist({ data: {...res, type: logOrReg === 'person' ? 1 : 2, repassword: undefined, shareCode: res.shareCode || ''} })
-                        if(res.code === '300') {
-                          message.info(res.msg)
-                        }else if(res.code === '0') {
-                          message.success('注册成功，等待后台审核')
+                        const result = await regist({ data: {...res, type: logOrReg === 'person' ? 1 : 2, repassword: undefined, psw: res.password} })
+                        if(result.code === '0') {
+                          message.success('注册成功')
+                          setType('login')
                         }
-                        console.log(result)
                     })
                 }else{
                   message.info('请点击同意协议')

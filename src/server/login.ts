@@ -1,14 +1,10 @@
 
 import  request, { obj2Str } from './request';
 export function regist ({ data }: { data: any }) {
-  const str = obj2Str(data)
-  return fetch("/login/register", {
-  "headers": {
-    "content-type": "application/x-www-form-urlencoded",
-    },
-    body: str,
-    method: "POST",
-  }).then(res => res.json());
+  return request("/login/register", {
+    data,
+    method: 'post'
+  })
 }
 
 export function kapcha({ data }: { data: { code: string } }) {
@@ -25,4 +21,16 @@ export function getCode(params: { phone: string, service: 'register' | 'forget' 
 
 export function getLoginFwxy() {
   return request('/appdict/param/loginFwxy')
+}
+
+export function pcLogin(data: any) {
+  return request("/login/pclogin", {
+    params: data,
+  })
+}
+
+export function getUserInfo () {
+  return request('/sysuser/getUserInfo', {
+    method: 'get'
+  })
 }

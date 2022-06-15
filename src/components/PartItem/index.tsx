@@ -8,7 +8,7 @@ function DeviceItem() {
         <img
           width={210}
           height={185}
-          src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+          src="/images/repair-bg.png"
         />
         </div>
         <div className="line">
