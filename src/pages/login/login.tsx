@@ -43,16 +43,18 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
         />
         <ProFormItem>
           <Input.Group compact>
-            {/* <Input  placeholder='验证码' prefix={<img src="/icons/s6.png"/>}
+            <Input  placeholder='验证码'  style={{ width: 355, height: 47,}} prefix={<img src="/icons/s6.png"/>}
               onChange={(e) => {
                 ref.current?.setFieldsValue({vcode: e.target.value})
               }}
-            /> */}
-        <ProFormText  fieldProps={{size:'large', style:{ width: 355, height: 47, prefix: <img src="/icons/s6.png"/> }}} name='vcode' placeholder={'验证码'} />
-            <img src={`lease-center/login/kaptcha?code=${uuid}`} style={{width: 90, height: 47, cursor: 'pointer'}} onClick={()=>{
+            />
+            <img src={`/lease-center/login/kaptcha?code=${uuid}`} style={{width: 90, height: 47, cursor: 'pointer'}} onClick={()=>{
               setUuid(Math.random() * 9999 + "" + +new Date())
             }}/>
           </Input.Group>
+          <ProFormText hidden name='vcode'  fieldProps={{
+            style: {display: 'none'}
+          }}/>
         </ProFormItem>
       </ProForm>
       <Button type="primary" block size='large' style={{height: 46}} onClick={async () => {
@@ -60,7 +62,6 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
         if(!errors.length) {
           const values = ref.current?.getFieldsValue()
           const res = await pcLogin({...values, codeNum: uuid, userType: loginType === 'person' ? 1 : 2})
-          console.log(res, '----1')
           if(res.code === '0') {
             message.success('登陆成功')
             const tk = res.data

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Tabs } from 'antd'
-import { ProForm, ProFormInstance, ProFormSelect, ProFormText, ProFormUploadButton } from '@ant-design/pro-components';
-import { Checkbox , Button, message, Modal } from 'antd';
+import { ProForm, ProFormInstance, ProFormItem, ProFormSelect, ProFormText, ProFormUploadButton } from '@ant-design/pro-components';
+import { Checkbox , Button, message, Modal, Upload } from 'antd';
 import styles from './index.module.less';
 import { request } from 'umi';
 import { getCode, getLoginFwxy, regist } from '@/server/login';
@@ -160,23 +160,30 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                   required: true,
                 }]}/>
               <ProFormText name="yyzzUrl" hidden/>
-              <ProFormUploadButton required label="营业执照" accept='.png,.jpg,.jpeg'  fieldProps={{
-                maxCount: 1
-              }}  action={async (file) => {
-                const formData = new FormData()
-                formData.append('file', file)
-                const res = await fetch('/lease-center/appfile/upload', {
-                  method: 'post',
-                  body: formData
-                }).then((res) => res.json())
-                if(res.code === '0') {
-                  compRef.current?.setFieldsValue({yyzzUrl: res.data.path})
-                  return res.data.path
-                }else{
-                  message.error(res.msg)
-                }
-                return ''
-              }}/>
+              <ProFormItem label="营业执照" required>
+              <Upload
+                listType="picture-card"
+                accept='.png,.jpg,.jpeg' 
+                maxCount={1}
+                onChange={async (e) => {
+                  const file = e.file.originFileObj
+                  const formData = new FormData()
+                  formData.append('file', file as unknown as File)
+                  const res = await fetch('/lease-center/appfile/upload', {
+                    method: 'post',
+                    body: formData
+                  }).then((res) => res.json())
+                  if(res.code === '0') {
+                    compRef.current?.setFieldsValue({yyzzUrl: res.data.path})
+                    message.success('图片上传成功')
+                  }else{
+                    message.error(res.msg)
+                  }
+                }}
+              >
+                点击上传(小于5M文件的图片)
+              </Upload>
+              </ProFormItem>
               <ProFormText label='姓名' name="name" rules={[{
                   required: true,
                 }]}/>

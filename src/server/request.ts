@@ -1,8 +1,8 @@
 import request, { extend } from 'umi-request';
 import { message } from 'antd'
 request.interceptors.request.use((url, options) => {
-  options.headers['Authorization'] = 'bearer ' + localStorage.getItem('TK');
-  options.headers['Content-Type'] = 'application/jsonTK';
+  localStorage.getItem('TK') && (options.headers['Authorization'] = 'bearer ' + localStorage.getItem('TK'))
+  options.headers['Content-Type'] = 'application/json';
   return {
     url: `/lease-center${url}`,
     options: options,

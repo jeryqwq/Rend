@@ -52,6 +52,13 @@ import React from 'react';
     hide: true
   },
   {
+    label: '设备出租',
+    key: 'productRent',
+    path:'/productRent',
+    component: '@/pages/froent/productRent/index',
+    hide: true
+  },
+  {
     label: '求租设备',
     key: 'forRent',
     path:'/forRent',
