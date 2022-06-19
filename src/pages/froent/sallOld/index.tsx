@@ -5,7 +5,7 @@ import { Upload, Button, Radio, message } from 'antd'
 import city from '@/constants/city';
 import { getBrands, getDict, uploadImg } from '@/server/common';
 import { PlusOutlined } from '@ant-design/icons'
-import { equipmentLease, equipmentRent } from '@/server/rent';
+import { equipmentRent, equipmentSale } from '@/server/rent';
 import { getUuid } from '@/utils';
  const uploadButton = (
     <div>
@@ -38,7 +38,7 @@ function ForRent() {
       <div className="repaire-inner">
       <ProForm submitter={false}  size='large' grid layout='vertical' formRef={formRef}>
         <ProForm.Item style={{width: '100%'}}>
-        <div className="tit">设备出租</div>
+        <div className="tit">出售二手设备</div>
         <div className='stit'>选择发布城市</div>
           <ProFormCascader label="当前发布城市" 
                colProps={{
@@ -173,14 +173,11 @@ function ForRent() {
                 colProps={{
                   span: 12
                 }}
-              fieldProps={{
-                addonAfter: "元/月"
-              }}
               rules={[{
                 required: true,
               }]}
-              name="monthlyRent"
-              label="月租金"
+              name="salePrice"
+              label="出售价格"
               />
             <ProFormTextArea 
               colProps={{
@@ -201,7 +198,8 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentLease({...values, id: uuid, releaseCityName: values.releaseCityName.join(',')})
+                  // const values = formRef.current?.getFieldsValue()
+                  const res = await equipmentSale({...values, id: uuid, releaseCityName: values.releaseCityName.join(',')})
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

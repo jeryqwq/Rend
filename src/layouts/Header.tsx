@@ -46,10 +46,17 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                   <div className="search-his"><span>挖掘</span><span>土方</span><span>起重机</span><span>挖掘</span></div>
                 </div>
               <div>
-                <Dropdown overlay={<Menu items={[{ label: '设备出租', key: 'chuzu' }, { label: '出售二手设备', key: 'sold' }]}/>} placement="bottom">
+                <Dropdown overlay={<Menu onClick={(e) => {
+                  history.push(e.key)
+                }} items={[{ label: '设备出租', key: 'productRent' }, { label: '出售二手设备', key: 'sallOld' }]}/>} placement="bottom">
                 <span className='btn-round' style={{marginRight: 27, left: 0}}><span>发布设备</span></span>
                 </Dropdown>
-                <span className='btn-round rg' onClick={() => history.push('/forRent')}><span style={{left: 0}}>发布需求</span></span>
+                <Dropdown overlay={<Menu onClick={(e) => {
+                  history.push(e.key)
+                }} items={[{ label: '求租设备', key: 'forRent' }, { label: '求购二手', key: 'forBuy' }]}/>} placement="bottom">
+                <span className='btn-round rg' ><span style={{left: 0}}>发布需求</span></span>
+
+                </Dropdown>
               </div>
               <span className='phone'>
                 <img src="/images/phone.png" alt="" />

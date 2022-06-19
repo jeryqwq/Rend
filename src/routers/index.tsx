@@ -16,9 +16,9 @@ import React from 'react';
   },
   {
     label: '二手设备',
-    key: 'allDevice?type=old',
-    path:'/allDevice',
-    component: '@/pages/froent/allDevice/index',
+    key: 'sallList',
+    path:'/sallList',
+    component: '@/pages/froent/sallList/index',
   },
   {
     label: '设备维修',
@@ -63,6 +63,31 @@ import React from 'react';
     key: 'forRent',
     path:'/forRent',
     component: '@/pages/froent/forRent/index',
+    hide: true
+
+  },
+  {
+    label: '发布二手',
+    key: 'sallOld',
+    path:'/sallOld',
+    hide: true,
+    component: '@/pages/froent/sallOld/index',
+  },
+  {
+    label: '求购设备',
+    key: 'forBuy',
+    path:'/forBuy',
+    component: '@/pages/froent/forBuy/index',
+    hide: true
+
+  },
+  {
+    label: '设备详情',
+    key: 'productDetail',
+    path:'/productDetail',
+    component: '@/pages/froent/productDetail/index',
+    hide: true
+
   },
 ] }
 const saleRouter = {

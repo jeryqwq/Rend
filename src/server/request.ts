@@ -9,7 +9,6 @@ request.interceptors.request.use((url, options) => {
   };
 })
 request.use(async (ctx, next) => {
-  console.log('before');
   await next();
   const { res } = ctx
   if(res.code === '300') {
@@ -17,6 +16,9 @@ request.use(async (ctx, next) => {
   }else if (res.code === '500') {
     message.error(res.msg)
   }else if(res.code === '401') {
+    localStorage.removeItem('TK')
+    localStorage.removeItem('USER')
+    window.location.hash = 'login'
     message.info(res.msg)
   }
 });
