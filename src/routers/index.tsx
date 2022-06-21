@@ -87,8 +87,7 @@ import React from 'react';
     path:'/productDetail',
     component: '@/pages/froent/productDetail/index',
     hide: true
-
-  },
+  }
 ] }
 const saleRouter = {
   path: '/saler',
@@ -105,7 +104,7 @@ const saleRouter = {
       key: 'product'
     },{
       label: '培训管理',
-      key: 'course'
+      key: 'courseManage'
     }
     ,{
       label: '维修管理',

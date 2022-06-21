@@ -4,8 +4,9 @@ import { Row, Col, Button, Pagination } from 'antd'
 import { equipmentSalePage } from '@/server/rent';
 import { getBrands, getDict } from '@/server/common';
 import city from '@/constants/city';
+import { useHistory } from 'umi';
 function AllDevice() {
-  const [curDevice, setCurDevice] = useState('all')
+  const history = useHistory()
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
     "pages": 10,
@@ -121,7 +122,9 @@ function AllDevice() {
       <div className={styles['devices']}>
         <div className={styles.lf}><Row gutter={10}>
         { list.map((i: any) => <Col style={{marginBottom: 5}}>
-          <div className={`${styles['item-wrap']} ${ styles.hover }`}>
+          <div className={`${styles['item-wrap']} ${ styles.hover }`} style={{cursor: 'pointer'}} onClick={() => {
+            history.push('/productDetail?id=' + i.id)
+          }}>
             <div className={`${styles['img-wrap']}`}>
               <img
                 width={210}

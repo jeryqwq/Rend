@@ -31,3 +31,11 @@ export function equipmentSalePage (data: any) { // 二手出售
     method: 'post'
   })
 }
+
+export function equipmentRepairInfo(data: any) {
+  return request('/equipmentRepairInfo', {
+    data,
+    method: 'post'
+  })
+}
+

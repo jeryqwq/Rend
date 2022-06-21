@@ -5,7 +5,7 @@ function Bread({ breads }: {breads: Array<React.ReactNode>}) {
   return (
       <Breadcrumb style={{marginBottom: 20}}>
         <Breadcrumb.Item>当前位置</Breadcrumb.Item>
-        { breads.map(i => <Breadcrumb.Item>{i}</Breadcrumb.Item>) }
+        { breads.map(i => <Breadcrumb.Item key={i}>{i}</Breadcrumb.Item>) }
       </Breadcrumb>
   );
 }
