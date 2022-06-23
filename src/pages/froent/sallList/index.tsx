@@ -69,20 +69,20 @@ function AllDevice() {
       <div className={styles.line}>
         <div className="lf">品牌</div>
         <Row className="rg" gutter={15}>
-          <Col><Button  size='small' type={!params['brandName'] ? 'primary' : 'text'}
+          <Col><Button  size='small' type={!params['equipBrand'] ? 'primary' : 'text'}
           onClick={() => {
             setParams({
               ...params,
-              brandName: undefined
+              equipBrand: undefined
             })
           }}
           >全部</Button></Col>
           { brands.map((i: any) => <Col><Button  size='small'
-           type={ params['brandName'] === i.brandName ? 'primary' : 'text' }
+           type={ params['equipBrand'] === i.brandName ? 'primary' : 'text' }
           onClick={() => {
             setParams({
               ...params,
-              brandName: i.brandName
+              equipBrand: i.brandName
             })
           }}>{i.brandName}</Button></Col>) }
         </Row>
@@ -91,28 +91,24 @@ function AllDevice() {
       <div className={styles.line}>
         <div className="lf">地区</div>
         <Row className="rg" gutter={15}>
-          <Col><Button  size='small' type={!params['conditions'] ? 'primary' : 'text'}
+          <Col><Button  size='small' type={!params['releaseCityName'] ? 'primary' : 'text'}
             onClick={() => {
               setCurCity(city)
               setParams({
                 ...params,
-                conditions: undefined
+                releaseCityName: undefined
               })
             }}
           >全部</Button></Col>
           { curCity.map(i => <Col style={{marginBottom: 10}}><Button  size='small'
-          type={params?.conditions?.[0].value === i.label ? 'primary' : 'text'}
+          type={params?.releaseCityName === i.label ? 'primary' : 'text'}
           onClick={() => {
             if(i.children) {
               setCurCity(i.children)
             }
             setParams({
               ...params,
-              conditions: [{
-                column: "releaseCityName",
-                operator: "like",
-                value: i.label
-              }]
+              releaseCityName: i.label
             })
           }}>{i.label}</Button></Col>) }
         </Row>

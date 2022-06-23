@@ -26,6 +26,17 @@ export function equipmentPurchase (data: any) {
   })
 }
 export function equipmentSalePage (data: any) { // 二手出售
+  let conditions = [];
+  [{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
+    if(data[i.name]) {
+      conditions.push({
+        column: i.col,
+        operator: i.op,
+        value: data[i.name]
+      })
+    }
+  })
+  data.conditions = conditions
   return request("/equipmentSale/page", {
     data,
     method: 'post'
