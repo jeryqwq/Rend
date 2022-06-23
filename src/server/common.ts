@@ -23,3 +23,6 @@ export async function getBrands () {
     data: {}
   })
 }
+export async function getFiles(serverId: string) {
+    return request(`/appfile/${serverId}`)
+}

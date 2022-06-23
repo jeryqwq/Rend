@@ -169,6 +169,8 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                   const file = e.file.originFileObj
                   const formData = new FormData()
                   formData.append('file', file as unknown as File)
+                  formData.append('serviceType', 'YYZZ')
+                  formData.append('sort', '0')
                   const res = await fetch('/lease-center/appfile/upload', {
                     method: 'post',
                     body: formData

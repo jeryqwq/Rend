@@ -39,3 +39,7 @@ export function equipmentRepairInfo(data: any) {
   })
 }
 
+
+export function equipmentSaleDetail(id: string) {
+  return request(`/equipmentSale/${id}`)
+}
