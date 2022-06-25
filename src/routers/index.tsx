@@ -87,6 +87,13 @@ import React from 'react';
     path:'/productDetail',
     component: '@/pages/froent/productDetail/index',
     hide: true
+  },
+  {
+    label: '购物车',
+    key: 'shoppingCart',
+    path:'/shoppingCart',
+    component: '@/pages/froent/shopCart/index',
+    hide: true
   }
 ] }
 const saleRouter = {

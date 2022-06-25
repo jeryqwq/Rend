@@ -12,8 +12,8 @@ function ProductDetail() {
   const id = location.query.id
   const [productInfo, setProduct] = useState<any>({})
   const [activeType, setActive] = useState<'detail' | 'attration'>('detail')
-  const [mainImg, setMain] = useState()
-  const [subsImg, setSubs] = useState<any[]>([])
+  const [mainImg, setMain] = useState<string[]>([])
+  const [subsImg, setSubs] = useState<string[]>([])
   useEffect(() => {
     (async () => {
       const res = await equipmentSaleDetail(id)
@@ -22,16 +22,18 @@ function ProductDetail() {
       }
       const res2 = await getFiles(id)
       let subs: any[]  = []
+      let mains: any[]  = []
       if(res2.code === '0') {
         const images = res2.data as Array<any>
         images.forEach(i => {
           if(i.serviceType === 'MAIN_IMG')  {
-            setMain(i.path)
+            mains.push(i.path)
           }else{
             subs.push(i.path)
           }
         })
         setSubs(subs)
+        setMain(mains)
       }
     })()
   },[])
@@ -42,7 +44,7 @@ function ProductDetail() {
         <div className="lf">
           <img src={'/lease-center/' + mainImg} alt="" style={{width: '100%', height: 300}}/>
           <div className="subs">
-            {subsImg.map(i => <img src={'/lease-center/' + i}  alt="" />)}
+            {mainImg.map(i => <img src={'/lease-center/' + i}  alt="" />)}
           </div>
         </div>
         <div className="rg">
@@ -106,7 +108,8 @@ function ProductDetail() {
             </Descriptions>
             <div className="stit">产品详情</div>
             <div className="detail">{productInfo.description}</div>
-            <img src=''/>
+            {subsImg.map(i => <img src={'/lease-center/' + i}  alt="" width='100%'/>)}
+
           </div>
       </div>
     </div>

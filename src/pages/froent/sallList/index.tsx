@@ -124,7 +124,7 @@ function AllDevice() {
             <div className={`${styles['img-wrap']}`}>
               <img
                 width={210}
-                src="/images/repair-bg.png"
+                src={'/lease-center/' + i.mainImgPath}
               />
               </div>
               <div className="line">
