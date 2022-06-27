@@ -16,6 +16,9 @@ export async function uploadImg (file: File, {serviceId, serviceType, sort}: { s
 export async function getDict (key: string) {
     return request(`/appdict/${key}`)
 }
+export async function getEquipmentType () {
+  return request('/equipmentType/tree')
+}
 
 export async function getBrands () {
   return request(`/mallBrandInfo/all`, {

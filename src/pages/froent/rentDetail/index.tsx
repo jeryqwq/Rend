@@ -1,12 +1,11 @@
 import Bread from '@/components/Bread';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'umi';
-import { Descriptions, Button, Tabs, message } from 'antd';
+import { Descriptions, Button, Tabs } from 'antd';
 import styles from './index.module.less';
 import { equipmentSaleDetail } from '@/server/rent';
 import { getFiles } from '@/server/common';
 import dayjs from 'dayjs'
-import { mallCart } from '@/server/order';
 const { TabPane } = Tabs
 function ProductDetail() {
   const location = useLocation() as any
@@ -17,7 +16,7 @@ function ProductDetail() {
   const [subsImg, setSubs] = useState<string[]>([])
   useEffect(() => {
     (async () => {
-      const res = await equipmentSaleDetail(id)
+      const res = await equipmentSaleDetail(id, 'equipmentLease')
       if(res.code === '0') {
         setProduct(res.data)
       }
@@ -51,7 +50,7 @@ function ProductDetail() {
         <div className="rg">
           <div className="tit">福建省福州市鼓楼区挖掘机设备出租</div>
           <div className="part1">
-            租金:<span className='price'>¥{productInfo.salePrice} /元</span>/月
+            租金:<span className='price'>¥{productInfo.monthlyRent} /元</span>/月
           </div>
           <Descriptions column={1} contentStyle={{color: '#333', fontSize: 15}}  labelStyle={{width: 105, color: '#666666', fontSize: 15}}>
             <Descriptions.Item label="地区">{productInfo.releaseCityName?.replace(',', '-')}</Descriptions.Item>
@@ -61,20 +60,8 @@ function ProductDetail() {
             <Descriptions.Item label="设备浏览数">empty</Descriptions.Item>
           </Descriptions>
           <div className="actions">
-            <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
-            
-            >立即订购</Button>
-            <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}
-              onClick={async () => {
-                const res = await mallCart({
-                  equipId: id,
-                  productAmount: 1
-                })
-                if(res.code === '0') {
-                  message.success('加入购物车成功！')
-                }
-              }}
-            >加入购物车</Button>
+            <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}>立即订购</Button>
+            <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}>加入购物车</Button>
           </div>
         </div>
       </div>

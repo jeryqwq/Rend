@@ -104,7 +104,7 @@ function AllDevice() {
           type={params?.releaseCityName === i.label ? 'primary' : 'text'}
           onClick={() => {
             if(i.children) {
-              setCurCity(i.children)
+              setCurCity(i.children as any )
             }
             setParams({
               ...params,
@@ -166,7 +166,7 @@ function AllDevice() {
            current: num,
            size
          })
-       }} current={pageInfo.current} defaultCurrent={2} total={total}  />
+       }} current={pageInfo.current} defaultCurrent={1} total={total}  />
        </div>
     </div>
   );

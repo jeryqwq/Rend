@@ -9,6 +9,9 @@ import PartItem from '@/components/PartItem';
 import CourseItem from '@/components/CourseItem';
 import NewsItem from '@/components/NewsItem';
 import { useHistory } from 'umi';
+import { useEffect, useState } from 'react';
+import { getDict, getEquipmentType } from '@/server/common';
+import { mallBrandInfo } from '@/server/rent';
 const contentStyle: React.CSSProperties = {
   height: '400px',
   color: '#fff',
@@ -18,16 +21,36 @@ const contentStyle: React.CSSProperties = {
 };
 export default function IndexPage() {
   const history = useHistory();
+  const [prods, setProds] = useState([])
+  const [brands, setBrand] = useState<any[]>([])
+  useEffect(() => {
+    (async () => {
+      const res = await getEquipmentType()
+      if(res.code === '0') {
+        function trans (items: any[]): any {
+          return items.map((i: any) => ({label: i.name, key: i.id, children: i.children ?  trans(i.children) : undefined}))
+        }
+        setProds(trans(res.data))
+      }
+      const res2 = await mallBrandInfo({
+        page: 0,
+        size: 6
+      })
+      if(res2.code === '0') {
+        setBrand(res2.data.records)
+      }
+    })()
+  },[])
   return (
    <>
     <div className='content' style={{ margin: '20px auto' }}>
       <div className={styles['line1']}>
         <div className="lf">
-        <Button type="primary" icon={<MenuFoldOutlined />} size='large'style={{height: 40, width: 200}}>
-          全部产品
-        </Button>
+          <Button type="primary" icon={<MenuFoldOutlined />} size='large'style={{height: 40, width: 200}}>
+            全部产品
+          </Button>
         <div className="menu-lf">
-          <Menu style={{height: '100%', overflow: 'scroll'}} mode="vertical" theme='dark' items={[{ key: '1', label:'挖掘机', children: [{ key:'1-1', label: '挖掘机1' }] },{ key: '2', label:'装载机' }]} />
+          <Menu style={{height: '100%', overflow: 'scroll'}} mode="vertical" theme='dark' items={prods} />
         </div>
         </div>
         <div className="rg">
@@ -70,10 +93,10 @@ export default function IndexPage() {
         <h2 className='title'>品牌设备</h2>
         <Row gutter={12}>
           {
-            new Array(6).fill(1).map(i => <Col span={4}>
-              <div className={styles['brand-item']}>
-                <img src="/images/repair-bg.png" width={190} height={117} />
-                <div className='tit'>沃尔沃</div>
+           brands.map(i => <Col span={4}>
+              <div className={styles['brand-item']} onClick={() => {}}>
+                <img src={'/lease-center' + i.brandLogo} width={190} height={117} />
+                <div className='tit'>{i.brandName}</div>
               </div>
             </Col>)
           }

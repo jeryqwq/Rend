@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import styles from './index.module.less';
 import { Button, Input, Dropdown, Menu } from 'antd';
 import {EditOutlined} from '@ant-design/icons';
-import { MenuRouter, ShowSaleRouter } from '@/routers';
+import {  ShowSaleRouter } from '@/routers';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
-type SearchType = 'shebei' | 'peijian' | 'ershou'
+import Line from './Line';
 function Header() {
   const { pathname: path, } = useLocation()
   const history = useHistory()
-  const curRouter = MenuRouter.find(i => i.path === path)
   return (
     <div  className={styles['for-menu']}>
       <div className={`${styles['line-header']}`} >
         <div className='content'>
           <div className="lf">欢迎来到融勝达设备租赁网</div>
-          <div className="rg"><a href='#/login'>登录/注册</a>       个人中心       <a href='#/saler'>商家中心</a>       帮助中心       联系客服</div>
+          <div className="rg">
+            <Line />
+          </div>
         </div>
       </div>
       <div className='content'>

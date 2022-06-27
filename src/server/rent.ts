@@ -26,7 +26,7 @@ export function equipmentPurchase (data: any) {
   })
 }
 export function equipmentSalePage (data: any) { // 二手出售
-  let conditions = [];
+  let conditions:any[] = [];
   [{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
     if(data[i.name]) {
       conditions.push({
@@ -51,6 +51,31 @@ export function equipmentRepairInfo(data: any) {
 }
 
 
-export function equipmentSaleDetail(id: string) {
-  return request(`/equipmentSale/${id}`)
+export function equipmentSaleDetail(id: string, type = 'equipmentSale') {
+  return request(`/${type}/${id}`)
 }
+
+export function equipmentLeasePage(data:any){
+  let conditions:any[] = [];
+  [{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
+    if(data[i.name]) {
+      conditions.push({
+        column: i.col,
+        operator: i.op,
+        value: data[i.name]
+      })
+    }
+  })
+  data.conditions = conditions
+  return request("/equipmentLease/page", {
+    data,
+    method: 'post'
+  })
+}
+export function mallBrandInfo  (data: any){
+  return request('/mallBrandInfo/page', {
+    method: 'post',
+    data
+  })
+}
+

@@ -1,5 +1,44 @@
 import React from 'react';
-
+const saleRouter = {
+  path: '/saler',
+  component: '@/layouts/back',
+  routes: [
+    {
+        path: '/saler',
+        label: '商家中心',
+        key:'/saler',
+        exact: true,
+        component: '@/pages/back/index',
+    },
+    {
+      path: '/saler/product',
+      label: '商品管理',
+      key: '/saler/product',
+      exact: true,
+      component: '@/pages/back/product/index',
+    },{
+      path: '/saler/course',
+      label: '培训管理',
+      key: '/saler/course',
+      exact: true,
+      component: '@/pages/back/course/index',
+    }
+    ,{
+      path: '/saler/repair',
+      label: '维修管理',
+      key: '/saler/repair',
+      exact: true,
+      component: '@/pages/back/repair/index',
+    },{
+      label: '数据分析',
+      key: 'dataAnys'
+    },{
+      label: '账号资料',
+      key: 'file',
+      hide: false
+    }
+  ]
+}
   const routes  = { path: '/', component: '@/layouts/index', routes:[
   {
     path: '/',
@@ -89,43 +128,22 @@ import React from 'react';
     hide: true
   },
   {
+    label: '出租详情',
+    key: 'rentDetail',
+    path:'/rentDetail',
+    component: '@/pages/froent/rentDetail/index',
+    hide: true
+  },
+  {
     label: '购物车',
     key: 'shoppingCart',
     path:'/shoppingCart',
     component: '@/pages/froent/shopCart/index',
     hide: true
-  }
+  },
 ] }
-const saleRouter = {
-  path: '/saler',
-  component: '@/layouts/back',
-  exact: true,
-  routes: [
-    {
-      path: '/saler',
-      label: '商家中心',
-      key:'/saler',
-      component: '@/pages/back/index',
-    },{
-      label: '商品管理',
-      key: 'product'
-    },{
-      label: '培训管理',
-      key: 'courseManage'
-    }
-    ,{
-      label: '维修管理',
-      key: 'repair'
-    },{
-      label: '数据分析',
-      key: 'dataAnys'
-    },{
-      label: '账号资料',
-      key: 'file',
-      hide: false
-    }
-  ]
-}
+
+console.log('totalPage:', routes.routes.length + saleRouter.routes.length)
 export const MenuRouter = routes.routes.filter(i => !i.hide)
 export const ShowSaleRouter = saleRouter.routes.filter(i => !i.hide)
 export default [
