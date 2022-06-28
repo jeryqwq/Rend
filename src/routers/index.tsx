@@ -141,6 +141,21 @@ const saleRouter = {
     component: '@/pages/froent/shopCart/index',
     hide: true
   },
+  {
+    label: '用户中心',
+    key: 'userCenter',
+    path:'/userCenter',
+    component: '@/layouts/user',
+    hide: true,
+    routes: [
+      {
+        label: '我的订单',
+        key: 'userCenter',
+        path:'/userCenter/order',
+        component: '@/pages/froent/order',
+      }
+    ]
+  },
 ] }
 
 console.log('totalPage:', routes.routes.length + saleRouter.routes.length)

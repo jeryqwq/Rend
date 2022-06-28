@@ -26,6 +26,10 @@ export async function getBrands () {
     data: {}
   })
 }
+export function commonRequest(url: string, params:any):any {
+  return request(url, params)
+  
+}
 export async function getFiles(serverId: string) {
     return request(`/appfile/${serverId}`)
 }

@@ -6,6 +6,7 @@ import { ConfigProvider } from 'antd';
 
 
 function Layouts({ children }: { children: React.ReactNode }) {
+
   const [searchType, setSearchType] = useState<'shebei' | 'ershou'| 'peijian'>('shebei')
   return (
     <>

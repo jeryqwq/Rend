@@ -13,7 +13,7 @@ export function getUuid () {
   }
   let timestamp = new Date().getTime();
   let perforNow = (typeof performance !== 'undefined' && performance.now && performance.now() * 1000) || 0;
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+  return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
     let random = Math.random() * 16;
     if (timestamp > 0) {
       random = (timestamp + random) % 16 | 0;

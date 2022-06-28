@@ -1,11 +1,12 @@
 import Bread from '@/components/Bread';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'umi';
-import { Descriptions, Button, Tabs } from 'antd';
+import { Descriptions, Button, Tabs, message } from 'antd';
 import styles from './index.module.less';
 import { equipmentSaleDetail } from '@/server/rent';
 import { getFiles } from '@/server/common';
 import dayjs from 'dayjs'
+import { mallCart } from '@/server/order';
 const { TabPane } = Tabs
 function ProductDetail() {
   const location = useLocation() as any
@@ -39,7 +40,7 @@ function ProductDetail() {
   },[])
   return (
     <div className='content' style={{marginTop: 20}}>
-      <Bread breads={['全部设备', '挖掘机', '商品详情']}/>
+      <Bread breads={['全部设备', '设备出租', '设备详情']}/>
       <div className={styles.line1}>
         <div className="lf">
           <img src={'/lease-center/' + mainImg} alt="" style={{width: '100%', height: 300}}/>
@@ -48,7 +49,7 @@ function ProductDetail() {
           </div>
         </div>
         <div className="rg">
-          <div className="tit">福建省福州市鼓楼区挖掘机设备出租</div>
+          <div className="tit">{productInfo.equipName}</div>
           <div className="part1">
             租金:<span className='price'>¥{productInfo.monthlyRent} /元</span>/月
           </div>
@@ -60,8 +61,23 @@ function ProductDetail() {
             <Descriptions.Item label="设备浏览数">empty</Descriptions.Item>
           </Descriptions>
           <div className="actions">
-            <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}>立即订购</Button>
-            <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}>加入购物车</Button>
+            <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
+            onClick={async () => {
+             
+            }}
+            >立即订购</Button>
+            <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}
+               onClick={async () => {
+                const res = await mallCart({
+                  productId: id,
+                  productAmount: 1,
+                  type: 'EquipmentLease'
+                })
+                if(res.code === '0') {
+                  message.success('加入购物车成功！')
+                }
+              }}
+            >加入购物车</Button>
           </div>
         </div>
       </div>

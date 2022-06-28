@@ -40,7 +40,7 @@ function ProductDetail() {
   },[])
   return (
     <div className='content' style={{marginTop: 20}}>
-      <Bread breads={['全部设备', '挖掘机', '商品详情']}/>
+      <Bread breads={['全部设备', '二手设备', '设备详情']}/>
       <div className={styles.line1}>
         <div className="lf">
           <img src={'/lease-center/' + mainImg} alt="" style={{width: '100%', height: 300}}/>
@@ -49,7 +49,7 @@ function ProductDetail() {
           </div>
         </div>
         <div className="rg">
-          <div className="tit">福建省福州市鼓楼区挖掘机设备出租</div>
+          <div className="tit">{productInfo.equipName}</div>
           <div className="part1">
             租金:<span className='price'>¥{productInfo.salePrice} /元</span>/月
           </div>
@@ -67,8 +67,9 @@ function ProductDetail() {
             <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}
               onClick={async () => {
                 const res = await mallCart({
-                  equipId: id,
-                  productAmount: 1
+                  productId: id,
+                  productAmount: 1,
+                  type: 'EquipmentSale'
                 })
                 if(res.code === '0') {
                   message.success('加入购物车成功！')

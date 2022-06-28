@@ -1,3 +1,33 @@
+.user-wrap{
+  display: flex;
+  justify-content: space-between;
+  :global{
+    .lf{
+      width: 192px;
+       border: 1px solid #DCDCDC;
+       color: #333333;
+       padding-bottom: 30px;
+       .tit{
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 30px;
+      padding-left: 25px;
+
+       }
+       .item{
+        font-size: 16px;
+        margin-top: 10px;
+        padding-left: 25px;
+        &.cur{
+          color: @primary-color;
+        }
+       }
+    }
+    .rg{
+      width: 993px;
+    }
+  }
+}
 .line-header{
   background-color: #F6F6F6;
   

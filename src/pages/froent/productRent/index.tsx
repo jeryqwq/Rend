@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 import { Upload, Button, Radio, message } from 'antd'
 import city from '@/constants/city';
-import { getBrands, getDict, uploadImg } from '@/server/common';
+import { getBrands, getDict, getEquipmentType, uploadImg } from '@/server/common';
 import { PlusOutlined } from '@ant-design/icons'
 import { equipmentLease, equipmentRent } from '@/server/rent';
 import { getUuid } from '@/utils';
@@ -23,9 +23,12 @@ function ForRent() {
 
   useEffect(() => {
     (async () => {
-      const res = await getDict('/mechineType')
+      const res = await getEquipmentType()
       if(res.code === '0') {
-        setProds(res.data)
+        function trans (items: any[]): any {
+          return items.map((i: any) => ({label: i.name, value: i.id, children: i.children ? trans(i.children) : undefined}))
+        }
+        setProds(trans(res.data))
       }
       const res2 = await getBrands()
       if(res2.code === '0') {
@@ -55,6 +58,13 @@ function ForRent() {
               name="releaseCityName"
             />
         </ProForm.Item>
+        <ProFormText label="设备名称" name="equipName"  rules={[{
+                required: true,
+              }]}
+              colProps={{
+                span: 12
+              }}
+              />
         <ProForm.Item style={{width: '100%'}} >
         <div className='stit'>联系人信息</div>
             <ProFormText 
@@ -73,7 +83,7 @@ function ForRent() {
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
-                maxCount={1}
+                maxCount={5}
                 fileList={fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
@@ -90,7 +100,7 @@ function ForRent() {
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
-                maxCount={1}
+                maxCount={10}
                 fileList={fileList_total.map(i => ({ url:  '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
@@ -104,17 +114,19 @@ function ForRent() {
               </Upload>
         </ProForm.Item>
         <div className='stit' style={{width: '100%'}}>基本信息</div>
-              <ProFormSelect 
+              <ProFormCascader
                 colProps={{
                   span: 12
                 }}
                 rules={[{
                   required: true,
                 }]}
-                options={prodTypes.map((i: any)=> ({ label: i.name, value: i.code }))}
+                fieldProps={{
+                  options: prodTypes,
+                  showSearch: true
+                }}
                 name="equipType"
                 label="设备类型"
-               
               />
               <ProFormSelect
               colProps={{
@@ -201,7 +213,7 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentLease({...values, id: uuid, releaseCityName: values.releaseCityName.join(',')})
+                  const res = await equipmentLease({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1], releaseCityName: values.releaseCityName.join(',')})
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

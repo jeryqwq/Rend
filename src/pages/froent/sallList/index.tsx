@@ -131,7 +131,7 @@ function AllDevice() {
                 <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.salePrice}</span> /月</div>
                 <div className="rg">{i.releaseCityName.split(',')[1]}</div>
               </div>
-            <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.description}</div>
+            <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.equipName}</div>
             <div className='comp'>合肥安弘工程设备租赁有限公司</div> 
             <Button type={'primary'} size='middle' style={{width: '100%'}} className={styles.detail}>查看详情</Button>
         </div>

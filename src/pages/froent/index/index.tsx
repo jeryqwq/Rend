@@ -10,7 +10,7 @@ import CourseItem from '@/components/CourseItem';
 import NewsItem from '@/components/NewsItem';
 import { useHistory } from 'umi';
 import { useEffect, useState } from 'react';
-import { getDict, getEquipmentType } from '@/server/common';
+import { commonRequest, getDict, getEquipmentType } from '@/server/common';
 import { mallBrandInfo } from '@/server/rent';
 const contentStyle: React.CSSProperties = {
   height: '400px',
@@ -23,6 +23,8 @@ export default function IndexPage() {
   const history = useHistory();
   const [prods, setProds] = useState([])
   const [brands, setBrand] = useState<any[]>([])
+  const [rents, setRent] = useState<any[]>([])
+  const [sales, setSale] = useState<any[]>([])
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType()
@@ -38,6 +40,18 @@ export default function IndexPage() {
       })
       if(res2.code === '0') {
         setBrand(res2.data.records)
+      }
+      const res3 = await commonRequest('/equipmentLease/getRecommList', {
+        method: 'get'
+      })
+      if(res3.code === '0') {
+        setRent(res3.data)
+      }
+      const res4 = await commonRequest('/equipmentSale/getRecommList', {
+        method: 'get'
+      })
+      if(res4.code === '0') {
+        setSale(res4.data)
       }
     })()
   },[])
