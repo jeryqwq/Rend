@@ -151,6 +151,12 @@ const saleRouter = {
       {
         label: '我的订单',
         key: 'userCenter',
+        path:'/userCenter/',
+        component: '@/pages/froent/user',
+      },
+      {
+        label: '我的订单',
+        key: 'userCenter',
         path:'/userCenter/order',
         component: '@/pages/froent/order',
       }

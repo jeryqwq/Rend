@@ -12,7 +12,7 @@ function User({ children }: { children: React.ReactNode }) {
       <div className={styles['user-wrap']}>
         <div className="lf">
           <div className="tit">我的账户</div>
-          <div className="item">个人中心</div>
+          <div className={`item ${pathname === '/userCenter' && 'cur'}`} onClick={() => history.push('/userCenter')}>个人中心</div>
           <div className="item">消息通知</div>
           <div className="item">个人信息</div>
           <div className="item">安全设置</div>
