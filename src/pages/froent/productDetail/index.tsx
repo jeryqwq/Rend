@@ -1,14 +1,15 @@
 import Bread from '@/components/Bread';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'umi';
+import { useHistory, useLocation } from 'umi';
 import { Descriptions, Button, Tabs, message } from 'antd';
 import styles from './index.module.less';
 import { equipmentSaleDetail } from '@/server/rent';
-import { getFiles } from '@/server/common';
+import { commonRequest, getFiles } from '@/server/common';
 import dayjs from 'dayjs'
 import { mallCart } from '@/server/order';
 function ProductDetail() {
   const location = useLocation() as any
+  const history = useHistory()
   const id = location.query.id
   const [productInfo, setProduct] = useState<any>({})
   const [activeType, setActive] = useState<'detail' | 'attration'>('detail')
@@ -62,7 +63,26 @@ function ProductDetail() {
           </Descriptions>
           <div className="actions">
             <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
-            
+            onClick={async () => {
+              const res = await commonRequest('/mallOrderMaster/addOrder', {
+                method: 'post',
+                data:{
+                  "address": "福建省福州市鼓楼区东街口",
+                  "contactNumber": "138438714974",
+                  "productVos": [{
+                    "isCart": 1,
+                    "num": 1,
+                    "productId": id,
+                    "type": 'EquipmentSale'
+                  }],
+                  "receiveUser": "陈某人"
+                }
+              })
+              if(res.code === '0') {
+                message.success('订单生成成功，请前往个人中心查看!')
+                history.push('/orderSuccess')
+              }
+            }}
             >立即订购</Button>
             <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}
               onClick={async () => {
@@ -123,7 +143,6 @@ function ProductDetail() {
             <div className="stit">产品详情</div>
             <div className="detail">{productInfo.description}</div>
             {subsImg.map(i => <img src={'/lease-center/' + i}  alt="" width='100%'/>)}
-
           </div>
       </div>
     </div>

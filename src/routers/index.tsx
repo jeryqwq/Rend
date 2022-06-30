@@ -98,6 +98,20 @@ const saleRouter = {
     hide: true
   },
   {
+    label: '下单成功',
+    key: 'orderSuccess',
+    path:'/orderSuccess',
+    component: '@/pages/froent/orderSuccess/index',
+    hide: true
+  },
+  {
+    label: '地址选择',
+    key: 'orderAddress',
+    path:'/orderAddress',
+    component: '@/pages/froent/orderAddress/index',
+    hide: true
+  },
+  {
     label: '求租设备',
     key: 'forRent',
     path:'/forRent',
@@ -149,7 +163,7 @@ const saleRouter = {
     hide: true,
     routes: [
       {
-        label: '我的订单',
+        label: '用户中心',
         key: 'userCenter',
         path:'/userCenter/',
         component: '@/pages/froent/user',
@@ -159,12 +173,43 @@ const saleRouter = {
         key: 'userCenter',
         path:'/userCenter/order',
         component: '@/pages/froent/order',
+      },
+      {
+        label: '消息',
+        key: 'message',
+        path:'/userCenter/message',
+        component: '@/pages/froent/message',
+      },
+      {
+        label: '个人信息',
+        key: 'userInfo',
+        path:'/userCenter/userInfo',
+        component: '@/pages/froent/userInfo',
+      }
+      ,
+      {
+        label: '安全管理',
+        key: 'safe',
+        path:'/userCenter/safeSetting',
+        component: '@/pages/froent/safeSetting',
+      },
+      {
+        label: '地址管理',
+        key: 'address',
+        path:'/userCenter/address',
+        component: '@/pages/froent/address',
+      },
+      {
+        label: '售后服务',
+        key: 'soldServer',
+        path:'/userCenter/soldServer',
+        component: '@/pages/froent/soldServer',
       }
     ]
   },
 ] }
 
-console.log('totalPage:', routes.routes.length + saleRouter.routes.length)
+console.log('totalPage:', routes.routes.length + saleRouter.routes.length + 7)
 export const MenuRouter = routes.routes.filter(i => !i.hide)
 export const ShowSaleRouter = saleRouter.routes.filter(i => !i.hide)
 export default [

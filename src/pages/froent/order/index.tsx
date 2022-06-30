@@ -28,14 +28,15 @@ function Order() {
           <Step title="完成"  />
         </Steps>
         <div className="status">
-          订单状态：待收货
+          订单状态：{orderStatus[orderDetail.orderStatus as 10]}
           <Button  style={{borderColor: '#FE2525', color: '#FE2525', marginLeft: 150}}>联系商家</Button>
         </div>
        </div>
        <div className="desc">
         <div className="tit">商品详情</div>
+        <div style={{border: 'solid 1px #DCDCDC', paddingBottom: 30}}>
        <table style={{width: '100%', fontSize: 16, color: '#333'}} className={styles.tableWrap}>
-        <thead style={{background: '#F2F2F2',border: '1px solid #DCDCDC', height: 60, textAlign: 'center'}}>
+        <thead style={{background: '#F2F2F2',borderBottom: '1px solid #DCDCDC', height: 60, textAlign: 'center'}}>
           <tr>
             <td style={{width: 100}}></td>
             <td style={{width: 420}}>商品信息</td>
@@ -61,6 +62,48 @@ function Order() {
           }
         </tbody>
         </table>
+        </div>
+        <div className="order-desc">
+          <div >
+            <div className="tit">订单信息</div>
+            <div className="item">
+              <span>收货人：</span>{orderDetail.receiveUser}
+            </div>
+            <div className="item">
+              <span>联系方式：</span>{orderDetail.contactNumber}
+            </div>
+            <div className="item">
+              <span>收获地址：</span>{orderDetail.address}
+            </div>
+            <div className="item">
+              <span>订单编号：</span>{orderDetail.id}
+            </div>
+            <div className="item">
+              <span>下单时间：</span>{orderDetail.createDate}
+            </div>
+            <div className="item">
+              <span>商家：</span>{orderDetail.createName}
+            </div>
+          </div>
+          <div className="rg">
+            <div className="tit">付款详情</div>
+            <div className="item">
+              <span>商品件数：</span><span className="num">1</span>
+            </div>
+            <div className="item">
+              <span>商品总价：</span><span className="num">{orderDetail.orderMoney}</span>
+            </div>
+            <div className="item">
+              <span>活动优惠：</span><span className="num">0</span>
+            </div>
+            <div className="item">
+              <span>运费：</span><span className="num">0</span>
+            </div>
+            <div className="item">
+              <span>应付总额：</span><span style={{fontSize: 22}} className="num">{orderDetail.paymentMoney}</span>
+            </div>
+          </div>
+        </div>
        </div>
     </div>
   );

@@ -51,7 +51,7 @@ function User() {
           </div>
         </div>
       </div>
-      <div className="line2"></div>
+      {/* <div className="line2"></div> */}
       <div className="line3">
         <div className="tit">我的订单</div>
         <div className="order">

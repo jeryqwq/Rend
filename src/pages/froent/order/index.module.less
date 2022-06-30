@@ -1,5 +1,32 @@
 .order-wrap{
   :global{
+    .order-desc{
+      display: flex;
+      padding: 34px;
+      border: 1px solid #DCDCDC;
+      margin-bottom: 30px;
+      margin-top: 20px;
+      .tit{
+        font-size: 18px;
+        color: #333333;
+      }
+      .item{
+        margin-bottom: 10px;
+      }
+      >div{
+        flex: 1;
+        font-size: 15px;
+        color: #333333;
+        span{
+          display: inline-block;
+          width: 80px;
+          color: #999999;
+          &.num{
+            color: #FE2525;
+          }
+        }
+      }
+    }
     .order-status{
 
 border: 1px solid #DCDCDC;

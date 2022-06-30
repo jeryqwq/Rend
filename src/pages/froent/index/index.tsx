@@ -12,6 +12,7 @@ import { useHistory } from 'umi';
 import { useEffect, useState } from 'react';
 import { commonRequest, getDict, getEquipmentType } from '@/server/common';
 import { mallBrandInfo } from '@/server/rent';
+import { appNewsPage } from '@/server/news';
 const contentStyle: React.CSSProperties = {
   height: '400px',
   color: '#fff',
@@ -25,6 +26,8 @@ export default function IndexPage() {
   const [brands, setBrand] = useState<any[]>([])
   const [rents, setRent] = useState<any[]>([])
   const [sales, setSale] = useState<any[]>([])
+  const [news, setNews] = useState<any[]>([])
+
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType()
@@ -41,17 +44,24 @@ export default function IndexPage() {
       if(res2.code === '0') {
         setBrand(res2.data.records)
       }
-      const res3 = await commonRequest('/equipmentLease/getRecommList', {
-        method: 'get'
+      // const res3 = await commonRequest('/equipmentLease/getRecommList', {
+      //   method: 'get'
+      // })
+      // if(res3.code === '0') {
+      //   setRent(res3.data)
+      // }
+      // const res4 = await commonRequest('/equipmentSale/getRecommList', {
+      //   method: 'get'
+      // })
+      // if(res4.code === '0') {
+      //   setSale(res4.data)
+      // }
+      const res5 = await appNewsPage({
+        size: 3,
+        current: 0
       })
-      if(res3.code === '0') {
-        setRent(res3.data)
-      }
-      const res4 = await commonRequest('/equipmentSale/getRecommList', {
-        method: 'get'
-      })
-      if(res4.code === '0') {
-        setSale(res4.data)
+      if(res5.code === '0') {
+        setNews(res5.data.records)
       }
     })()
   },[])
@@ -64,7 +74,7 @@ export default function IndexPage() {
             全部产品
           </Button>
         <div className="menu-lf">
-          <Menu style={{height: '100%', overflow: 'scroll'}} mode="vertical" theme='dark' items={prods} />
+          <Menu style={{height: '100%', overflow: 'auto'}} mode="vertical" theme='dark' items={prods} />
         </div>
         </div>
         <div className="rg">
@@ -169,8 +179,8 @@ export default function IndexPage() {
         <h2 className='title'>行业资讯</h2>
         <Row gutter={0}>
           {
-            new Array(3).fill(1).map((i,idx) => <Col span={8}>
-              <NewsItem index={idx}/>
+           news.map((i,idx) => <Col span={8}>
+              <NewsItem index={idx} item={i}/>
             </Col>)
           }
         </Row>

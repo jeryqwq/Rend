@@ -4,7 +4,7 @@ import { useLocation } from 'umi';
 import { Descriptions, Button, Tabs, message } from 'antd';
 import styles from './index.module.less';
 import { equipmentSaleDetail } from '@/server/rent';
-import { getFiles } from '@/server/common';
+import { commonRequest, getFiles } from '@/server/common';
 import dayjs from 'dayjs'
 import { mallCart } from '@/server/order';
 const { TabPane } = Tabs
@@ -65,7 +65,25 @@ function ProductDetail() {
           <div className="actions">
             <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
             onClick={async () => {
-             
+              const res = await commonRequest('/mallOrderMaster/addOrder', {
+                method: 'post',
+                data:{
+                  "address": "福建省福州市鼓楼区东街口",
+                  "contactNumber": "138438714974",
+                  "productVos": [{
+                    "isCart": 1,
+                    "num": 1,
+                    "productId": id,
+                    "type": 'EquipmentLease'
+                  }],
+                  "receiveUser": "陈某人"
+                }
+              })
+              if(res.code === '0') {
+                message.success('订单生成成功，请前往个人中心查看!')
+                // history.push('/orderSuccess')
+
+              }
             }}
             >立即订购</Button>
             <Button size='large' color="#FF4302" style={{marginLeft: 38,width: 190, height: 44}}

@@ -16,12 +16,12 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
         <div className={`rg ${ loginType === 'person' && 'cur' }`} onClick={() => setLoginType('person')}><img src={loginType === 'person' ?"/icons/s9.png" : "/icons/s9_1.png"} alt="" />个人登陆</div>
       </div>
       <ProForm  submitter={false} style={{marginTop: 40}} formRef={ref}>
-        <ProFormText placeholder="用户名" width={445} 
+        <ProFormText placeholder="手机号" width={445} 
         name="username"
         required
         rules={[{
           required: true,
-          message: '请输入用户名'
+          message: '请输入手机号'
         }]}
         fieldProps={{
           size: 'large',
