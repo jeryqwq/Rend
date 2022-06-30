@@ -15,6 +15,8 @@ function ProductDetail() {
   const [activeType, setActive] = useState<'detail' | 'attration'>('detail')
   const [mainImg, setMain] = useState<string[]>([])
   const [subsImg, setSubs] = useState<string[]>([])
+  const [mainIndex, setMainIdx] = useState(0)
+
   useEffect(() => {
     (async () => {
       const res = await equipmentSaleDetail(id, 'equipmentLease')
@@ -43,9 +45,9 @@ function ProductDetail() {
       <Bread breads={['全部设备', '设备出租', '设备详情']}/>
       <div className={styles.line1}>
         <div className="lf">
-          <img src={'/lease-center/' + mainImg} alt="" style={{width: '100%', height: 300}}/>
+        <img src={'/lease-center' + mainImg[mainIndex]} alt="" style={{width: '100%', height: 300}}/>
           <div className="subs">
-            {mainImg.map(i => <img src={'/lease-center/' + i}  alt="" />)}
+            {mainImg.map((i, idx) => <img src={'/lease-center/' + i}  alt=""  onClick={() => setMainIdx(idx)} style={{cursor: 'pointer'}}/>)}
           </div>
         </div>
         <div className="rg">
@@ -56,7 +58,7 @@ function ProductDetail() {
           <Descriptions column={1} contentStyle={{color: '#333', fontSize: 15}}  labelStyle={{width: 105, color: '#666666', fontSize: 15}}>
             <Descriptions.Item label="地区">{productInfo.releaseCityName?.replace(',', '-')}</Descriptions.Item>
             <Descriptions.Item label="品牌">{productInfo.equipBrand}</Descriptions.Item>
-            <Descriptions.Item label="发布者">{productInfo.releaseCityName}</Descriptions.Item>
+            <Descriptions.Item label="发布者">{productInfo.createName}</Descriptions.Item>
             <Descriptions.Item label="最新更新时间">empty</Descriptions.Item>
             <Descriptions.Item label="设备浏览数">empty</Descriptions.Item>
           </Descriptions>
