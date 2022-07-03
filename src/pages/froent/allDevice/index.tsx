@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
-import { Row, Col, Button, Pagination } from 'antd'
+import { Row, Col, Button, Tag,Pagination } from 'antd'
 import { equipmentLeasePage } from '@/server/rent';
-import { getBrands, getDict } from '@/server/common';
+import { getBrands, getDict, getEquipmentType } from '@/server/common';
 import city from '@/constants/city';
-import { useHistory } from 'umi';
+import { useHistory, useLocation } from 'umi';
+let allProdTypes: any
+
 function AllDevice() {
+  const location = useLocation() as any
   const history = useHistory()
+  const [keyword, setKeyword] = useState(location.query.keyword)
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
     "pages": 10,
@@ -24,22 +28,26 @@ function AllDevice() {
       if(res.code === '0') {
         setBrands(res.data)
       }
-      const res2 = await getDict('/mechineType')
+      const res2 = await getEquipmentType()
       if(res2.code === '0') {
-        setProds(res2.data)
+        function trans (items: any[]): any {
+          return items.map((i: any) => ({name: i.name, code: i.id, children: i.children ?  trans(i.children) : undefined}))
+        }
+        allProdTypes = trans(res2.data)
+        setProds(allProdTypes)
       }
     })()
   },[])
 
   useEffect(() => {
     (async () => {
-      const res = await equipmentLeasePage({...pageInfo, ...params})
+      const res = await equipmentLeasePage({...pageInfo, ...params, equipName: keyword})
       if(res.code === '0') {
         setList(res.data.records || [])
         setTotal(res.data.total || 0)
       }
     })()
-  }, [pageInfo, params])
+  }, [pageInfo, params, keyword])
   return (
     <div className='content'>
      <div className={styles['search']}>
@@ -52,6 +60,7 @@ function AllDevice() {
                 ...params,
                 equipType: undefined
               })
+              allProdTypes && setProds(allProdTypes)
             }}
           >全部</Button></Col>
          { prodTypes.map((i: any) => <Col><Button  size='small' 
@@ -61,6 +70,7 @@ function AllDevice() {
             ...params,
             equipType: i.code
           })
+          i.children && setProds(i.children)
          }}
          >{i.name}</Button></Col>) } 
         </Row>
@@ -113,6 +123,17 @@ function AllDevice() {
           }}>{i.label}</Button></Col>) }
         </Row>
       </div>
+
+      {
+      keyword &&  <div className={styles.line}>
+      <div className="lf">搜索关键词</div>
+     <div style={{flex: 1}}>
+       <Tag closable visible={keyword} onClose={() => setKeyword('')}>
+        {keyword}
+      </Tag>
+     </div>
+    </div>
+     }
      </div>
 
       <div className={styles['devices']}>
@@ -131,7 +152,7 @@ function AllDevice() {
                 <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.monthlyRent}</span> /月</div>
                 <div className="rg">{i.releaseCityName.split(',')[1]}</div>
               </div>
-            <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.description}</div>
+            <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.equipName}</div>
             <div className='comp'>合肥安弘工程设备租赁有限公司</div> 
             <Button type={'primary'} size='middle' style={{width: '100%'}} className={styles.detail}>查看详情</Button>
         </div>

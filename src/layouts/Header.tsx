@@ -41,7 +41,20 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                     allowClear
                     enterButton="搜索"
                     size="large"
-                    onSearch={() => {}}
+                    onSearch={(val) => {
+                      switch (searchType) {
+                        case 'ershou':
+                          history.push('/sallList?keyword=' + val)
+                          break;
+                          case 'peijian':
+                            history.push('/part?keyword=' + val)
+                            break; case 'shebei':
+                            history.push('/allDevice?keyword=' + val)
+                            break;
+                        default:
+                          break;
+                      }
+                    }}
                     prefix={<SearchOutlined className='theme-color'/>}
                     style={{ width: 490, height:45, marginRight: 20 }}
                   />

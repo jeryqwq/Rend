@@ -51,7 +51,7 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
               />
                <ProFormText name='password'
                 required
-                label="登陆密码"
+                label="登录密码"
                 rules={[{
                   min: 8
                 }]}
@@ -122,7 +122,7 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 }}
               />
                <ProFormText name='password'
-                label="登陆密码"
+                label="登录密码"
                 rules={[{
                   required: true,
                   min: 8

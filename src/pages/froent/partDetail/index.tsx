@@ -14,52 +14,34 @@ function ProductDetail() {
   const [productInfo, setProduct] = useState<any>({})
   const [activeType, setActive] = useState<'detail' | 'attration'>('detail')
   const [mainImg, setMain] = useState<string[]>([])
-  const [subsImg, setSubs] = useState<string[]>([])
-  const [mainIndex, setMainIdx] = useState(0)
   useEffect(() => {
     (async () => {
-      const res = await equipmentSaleDetail(id)
+      const res = await commonRequest(`/equipmentParts/${id}`,{ method: 'get' })
       if(res.code === '0') {
         setProduct(res.data)
-      }
-      const res2 = await getFiles(id)
-      let subs: any[]  = []
-      let mains: any[]  = []
-      if(res2.code === '0') {
-        const images = res2.data as Array<any>
-        images.forEach(i => {
-          if(i.serviceType === 'MAIN_IMG')  {
-            mains.push(i.path)
-          }else{
-            subs.push(i.path)
-          }
-        })
-        setSubs(subs)
-        setMain(mains)
       }
     })()
   },[])
   return (
     <div className='content' style={{marginTop: 20}}>
-      <Bread breads={['全部设备', '二手设备', '设备详情']}/>
+      <Bread breads={[  '设备详情']}/>
       <div className={styles.line1}>
         <div className="lf">
-          <img src={'/lease-center' + mainImg[mainIndex]} alt="" style={{width: '100%', height: 300}}/>
+          <img src={'/lease-center' + productInfo.path} alt="" style={{width: '100%', height: 300}}/>
           <div className="subs">
-            {mainImg.map((i, idx) => <img src={'/lease-center/' + i}  alt=""  onClick={() => setMainIdx(idx)} style={{cursor: 'pointer'}}/>)}
           </div>
         </div>
         <div className="rg">
-          <div className="tit">{productInfo.equipName}</div>
+          <div className="tit">{productInfo.partsName}</div>
           <div className="part1">
-            租金:<span className='price'>¥{productInfo.salePrice} /元</span>/月
+            租金:<span className='price'>¥{productInfo.price} /元</span>/月
           </div>
           <Descriptions column={1} contentStyle={{color: '#333', fontSize: 15}}  labelStyle={{width: 105, color: '#666666', fontSize: 15}}>
-            <Descriptions.Item label="地区">{productInfo.releaseCityName?.replace(',', '-')}</Descriptions.Item>
-            <Descriptions.Item label="品牌">{productInfo.equipBrand}</Descriptions.Item>
+            <Descriptions.Item label="地区">{productInfo.releaseCityName}</Descriptions.Item>
+            <Descriptions.Item label="品牌">{productInfo.partsBrand}</Descriptions.Item>
             <Descriptions.Item label="发布者">{productInfo.createName}</Descriptions.Item>
             <Descriptions.Item label="最新更新时间">empty</Descriptions.Item>
-            <Descriptions.Item label="设备浏览数">empty</Descriptions.Item>
+            <Descriptions.Item label="设备浏览数">{productInfo.updateDate}</Descriptions.Item>
           </Descriptions>
           <div className="actions">
             <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
@@ -68,13 +50,14 @@ function ProductDetail() {
               state: {
                 prods: [{
                 details:[{
-                  ...productInfo,mainImgPath: mainImg[0],
-                  price: productInfo.salePrice,
+                  ...productInfo,
+                  // mainImgPath,
+                  price: productInfo.price,
                   productAmount: 1,
                   productName: productInfo.partsName,
-                  productBrand: productInfo.equipBrand,
-                  productModel: productInfo.equipModel,
-                 type:'EquipmentSale',
+                  productBrand: productInfo.partsBrand,
+                  productModel: productInfo.partsModel,
+                 type:'EquipmentParts',
                 }]
               }]}})
             }}
@@ -84,7 +67,7 @@ function ProductDetail() {
                 const res = await mallCart({
                   productId: id,
                   productAmount: 1,
-                  type: 'EquipmentSale'
+                  type: 'EquipmentParts'
                 })
                 if(res.code === '0') {
                   message.success('加入购物车成功！')
@@ -128,15 +111,15 @@ function ProductDetail() {
           <div className="prod-cont">
             <div className="stit">产品属性</div>
             <Descriptions column={3} contentStyle={{color: '#333', fontSize: 14}}  labelStyle={{width: 100, color: '#666666', fontSize: 14}}>
-              <Descriptions.Item label="设备品牌">{productInfo.equipBrand}</Descriptions.Item>
+              <Descriptions.Item label="设备品牌">{productInfo.partsBrand}</Descriptions.Item>
               <Descriptions.Item label="出厂日期">{productInfo.productionDate && dayjs(productInfo.productionDate).format('YYYY-MM-DD')}</Descriptions.Item>
               <Descriptions.Item label="整机序列号">{productInfo.serialNumber}</Descriptions.Item>
-              <Descriptions.Item label="设备型号">{productInfo.equipModel}</Descriptions.Item>
+              <Descriptions.Item label="设备型号">{productInfo.partsModel}</Descriptions.Item>
               <Descriptions.Item label="工作小时数">{productInfo.workTime}小时</Descriptions.Item>
             </Descriptions>
             <div className="stit">产品详情</div>
             <div className="detail">{productInfo.description}</div>
-            {subsImg.map(i => <img src={'/lease-center/' + i}  alt="" width='100%'/>)}
+            {/* {subsImg.map(i => <img src={'/lease-center/' + i}  alt="" width='100%'/>)} */}
           </div>
       </div>
     </div>

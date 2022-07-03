@@ -3,11 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { Checkbox, InputNumber, Button, message } from 'antd';
 import styles from './index.module.less';
 import { commonRequest } from '@/server/common';
+import { useHistory } from 'umi';
 function ShopCar() {
   const [stores,setCarts] = useState<any>({})
   const [choose, setChoose] = useState<any>([])
   const [total, setTotal] = useState(0)
   const [flag,reload] = useState({})
+  const history = useHistory()
   useEffect(() => {
     (async () => {
       const res = await commonRequest('/mallCart/myCart', {})
@@ -15,7 +17,7 @@ function ShopCar() {
         let stores:any = {}
         setTotal(res.data?.length)
         res.data?.forEach((i: any) => {
-          stores[i.storeName] ? stores[i.storeName].push(i) : (stores[i.storeName] = [i])
+          stores[i.storeId] ? stores[i.storeId].push(i) : (stores[i.storeId] = [i])
         })
         setCarts(stores)
       }
@@ -38,12 +40,12 @@ function ShopCar() {
         </thead>
         <tbody style={{lineHeight: '60px'}}>
          {
-          Object.keys(stores).map(storeName => <>
+          Object.keys(stores).map(storeId => <>
            <tr  style={{width: 100, textAlign: 'center'}}>
-            <td row-gap={6}><Checkbox onChange={(e) => {
+            <td row-gap={6} style={{textAlign: 'left'}}><Checkbox onChange={(e) => {
               const val = e.target.checked
               let temp:any = [...choose]
-              stores[storeName].forEach((i:any) => {
+              stores[storeId].forEach((i:any) => {
                   if(val) {
                     if(!choose.some((j:any) => j.id === i.id)) {
                       temp.push(i)
@@ -54,10 +56,10 @@ function ShopCar() {
                   }
               })
              setChoose(temp)
-            }} style={{lineHeight: '20px'}}>{storeName}</Checkbox></td>
+            }} style={{lineHeight: '20px'}}>{stores[storeId][0]?.storeName}</Checkbox></td>
           </tr>
             {
-              stores[storeName].map((prod: any) =>  <tr className='prods_cont'>
+              stores[storeId].map((prod: any) =>  <tr className='prods_cont'>
               <td  className='checkbox1'>
                 <Checkbox style={{marginLeft: 25}}  
                   checked={choose.some((i:any) => i.id === prod.id)}
@@ -75,7 +77,7 @@ function ShopCar() {
                     <img src={'/lease-center/' + prod.mainImgPath} alt="" style={{width: 100, height: 100}}/>
                    <div>
                    <div>{prod.productName}</div>
-                    <div>挖掘机  沃尔沃  LL222</div>
+                    {/* <div>{ prod.productName }</div> */}
                    </div>
                 </div>
               </td>
@@ -156,24 +158,21 @@ function ShopCar() {
         <span style={{marginLeft: 50}}>应付总额: <span className='price-bg'>¥{totalPrice}</span></span>
        </div>
         <span className="action" onClick={async () => {
-          const res = await commonRequest('/mallOrderMaster/addOrder', {
-            method: 'post',
-            data:{
-              "address": "福建省福州市鼓楼区东街口",
-              "contactNumber": "138438714974",
-              "productVos": choose.map((i: any) => ({
-                "isCart": 1,
-                "num": 1,
-                "productId": i.productId,
-                "type": i.type
-              })),
-              "receiveUser": "陈某人"
+          let prods: any[] = []
+          for (const key in stores) {
+            const element = stores[key];
+            const items = element.filter((i: any) => choose.map((j: any) => j.id).includes(i.id))
+            if(items && items.length) {
+              prods.push({
+                storeName: element[0].storeName,
+                details: items
+              })
             }
-          })
-          if(res.code === '0') {
-            message.success('订单生成成功，请前往个人中心查看!')
-            reload({})
           }
+          history.push({pathname: '/orderAddress',
+          state: {
+            prods
+          }})
         }}>下单</span>
       </div>
       

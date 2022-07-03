@@ -29,13 +29,6 @@ const saleRouter = {
       key: '/saler/repair',
       exact: true,
       component: '@/pages/back/repair/index',
-    },{
-      label: '数据分析',
-      key: 'dataAnys'
-    },{
-      label: '账号资料',
-      key: 'file',
-      hide: false
     }
   ]
 }
@@ -117,7 +110,13 @@ const saleRouter = {
     path:'/forRent',
     component: '@/pages/froent/forRent/index',
     hide: true
-
+  },
+  {
+    label: '配件详情',
+    key: 'partDetail',
+    path:'/partDetail',
+    component: '@/pages/froent/partDetail/index',
+    hide: true
   },
   {
     label: '发布二手',
@@ -185,8 +184,7 @@ const saleRouter = {
         key: 'userInfo',
         path:'/userCenter/userInfo',
         component: '@/pages/froent/userInfo',
-      }
-      ,
+      },
       {
         label: '安全管理',
         key: 'safe',
@@ -198,12 +196,6 @@ const saleRouter = {
         key: 'address',
         path:'/userCenter/address',
         component: '@/pages/froent/address',
-      },
-      {
-        label: '售后服务',
-        key: 'soldServer',
-        path:'/userCenter/soldServer',
-        component: '@/pages/froent/soldServer',
       }
     ]
   },

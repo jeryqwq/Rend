@@ -12,8 +12,8 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
   return (
     <div>
       <div className="login-part">
-        <div className={`lf ${ loginType === 'comp' && 'cur' }`} onClick={() => setLoginType('comp')}><img src={loginType === 'comp' ?"/icons/s7_1.png" : "/icons/s7.png"} style={{marginRight: 5}} /> 企业登陆</div>
-        <div className={`rg ${ loginType === 'person' && 'cur' }`} onClick={() => setLoginType('person')}><img src={loginType === 'person' ?"/icons/s9.png" : "/icons/s9_1.png"} alt="" />个人登陆</div>
+        <div className={`lf ${ loginType === 'comp' && 'cur' }`} onClick={() => setLoginType('comp')}><img src={loginType === 'comp' ?"/icons/s7_1.png" : "/icons/s7.png"} style={{marginRight: 5}} /> 企业登录</div>
+        <div className={`rg ${ loginType === 'person' && 'cur' }`} onClick={() => setLoginType('person')}><img src={loginType === 'person' ?"/icons/s9.png" : "/icons/s9_1.png"} alt="" />个人登录</div>
       </div>
       <ProForm  submitter={false} style={{marginTop: 40}} formRef={ref}>
         <ProFormText placeholder="手机号" width={445} 
@@ -63,7 +63,7 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
           const values = ref.current?.getFieldsValue()
           const res = await pcLogin({...values, codeNum: uuid, userType: loginType === 'person' ? 1 : 2})
           if(res.code === '0') {
-            message.success('登陆成功')
+            message.success('登录成功')
             const tk = res.data
             tk && localStorage.setItem('TK', tk)
             const userInfo = await getUserInfo()
@@ -75,7 +75,7 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
           console.log(res)
         }
       }}>
-        登陆
+        登录
       </Button>
       <div className="tips">
         <div className="reg" onClick={() => setType('regist')}><img src="/icons/s10.png"/>用户注册</div>

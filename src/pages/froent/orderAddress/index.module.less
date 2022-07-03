@@ -1,0 +1,76 @@
+.addressWrap{
+  :global{
+    .orderaction{
+      width: 210px;
+      height: 89px;
+      display: inline-block;
+background: #FE2525;
+cursor: pointer;
+font-size: 20px;
+color: white;
+text-align: center;
+line-height: 90px;
+margin: 30px 0;
+    }
+    .tit{
+      margin: 30px 0 20px 0;
+      font-size: 18px;
+      color: #333333;
+    }
+    .pay-method{
+      width: 300px;
+      height: 60px;
+      border: 1px solid #FE1515;
+      color: #FE1515;
+      font-size: 18px;
+      line-height: 60px;
+      text-align: center;
+      cursor: pointer;
+    }
+    .addr-list{
+      display: flex;
+      flex-wrap: nowrap;
+      overflow: auto;
+      >.item{
+        width: 380px;
+        height: 120px;
+        border: 1px solid #C9C9C9;
+        background: #FAFAFA;
+        margin-right: 30px;
+        cursor: pointer;
+        padding: 20px;
+        >span{
+          display: inline-block;
+          width: 80px;
+          color: #999999;
+        }
+        &.cur{
+          border: 1px solid #FE1515;
+        }
+      }
+    }
+    .money-detail{
+      border-top: 1px solid #DDDDDD;
+      border-bottom: 1px solid #DDDDDD;
+      display: flex;
+      justify-content: flex-end;
+      >.items {
+        font-size: 15px;
+        padding: 20px 0;
+        >.item{
+          margin-left: 100px;
+        }
+        .label{
+          display: inline-block;
+          width: 80px;
+          font-size: 15px;
+          color: #999;
+        }
+        .num{
+          color: #FE2525;
+        }
+      }
+
+    }
+  }
+}

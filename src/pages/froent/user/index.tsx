@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
-import { Button } from 'antd'
+import { Button, Modal, message } from 'antd'
 import { commonRequest } from '@/server/common';
 import useUserInfo from '@/hooks/useLogin';
 import { useHistory } from 'umi';
@@ -12,22 +12,22 @@ function User() {
   const [orders, setOrder] = useState([])
   const [total, setTotal] = useState(0)
   const history = useHistory()
-  console.log(userInfo)
   useEffect(() => {
-    (async() => {
-      const res= await commonRequest('/mallOrderMaster/pageMy', {
-        method: 'post',
-        data:{
-          "current": 0,
-          size: 10
-        }
-      })
-      if(res.code === '0') {
-        setOrder(res.data.records)
-        setTotal(res.data.total)
-      }
-    })()
+    reload()
   }, [])
+  const reload = async () => {
+    const res = await commonRequest('/mallOrderMaster/pageMy', {
+      method: 'post',
+      data:{
+        "current": 0,
+        size: 10
+      }
+    })
+    if(res.code === '0') {
+      setOrder(res.data.records)
+      setTotal(res.data.total)
+    }
+  }
   return (
     <div className={styles['user-wrap']}>
       <div className="line1">
@@ -68,7 +68,24 @@ function User() {
               {/* <Button style={{background: '#FE2525', border: 'none'}} type="primary">xxxx</Button> */}
               <Button type={'text'} onClick={() => history.push(`/userCenter/order?id=${i.id}`)}>查看订单</Button>
               <br/>
-              <Button type={'text'}>取消订单</Button>
+              <Button type={'text'} onClick={() => {
+                Modal.confirm({
+                  title: '是否删除该订单?',
+                  onOk: async () =>{
+                    const res = await commonRequest('/mallOrderMaster', {
+                      method: 'delete',
+                      data: {
+                        ids: [i.id]
+                      }
+                    })
+                    if(res.code === '0') {
+                      message.success('取消成功！')
+                      reload()
+                    }
+                  }
+                }) 
+
+              }}>取消订单</Button>
             </div>
           </div>)
           }
