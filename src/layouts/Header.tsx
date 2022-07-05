@@ -66,6 +66,9 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                 </div>
               <div>
                 <Dropdown overlay={<Menu onClick={(e) => {
+                  if(userInfo?.roles?.some((i:any) => i.type === 1)) {
+                  history.push(e.key)
+                }else{
                     Modal.confirm({
                       title: '认证提示',
                       content: <>
@@ -77,23 +80,26 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                         history.push('/salerAuth')
                       }
                     })
-                  // history.push(e.key)
+                  }
                 }} items={[{ label: '设备出租', key: 'productRent' }, { label: '出售二手设备', key: 'sallOld' }]}/>} placement="bottom">
                 <span className='btn-round' style={{marginRight: 27, left: 0}}><span>发布设备</span></span>
                 </Dropdown>
                 <Dropdown overlay={<Menu onClick={(e) => {
-                  Modal.confirm({
-                    title: '认证提示',
-                    content: <>
-                    <img src='/images/auth.png'/>
-                    <h3>认证成为施工单位才可以租赁设备</h3>
-                    </>,
-                    okText: '我要认证',
-                    onOk(){
-                      history.push('/buyAuth')
-                    }
-                  })
-                  // history.push(e.key)
+                  if(userInfo?.roles?.some((i:any) => i.type === 2)) { //施工单位
+                    history.push(e.key)
+                  }else{
+                    Modal.confirm({
+                      title: '认证提示',
+                      content: <>
+                      <img src='/images/auth.png'/>
+                      <h3>认证成为施工单位才可以租赁设备</h3>
+                      </>,
+                      okText: '我要认证',
+                      onOk(){
+                        history.push('/buyAuth')
+                      }
+                    })
+                  }
                 }} items={[{ label: '求租设备', key: 'forRent' }, { label: '求购二手', key: 'forBuy' }]}/>} placement="bottom">
                 <span className='btn-round rg' ><span style={{left: 0}}>发布需求</span></span>
                 </Dropdown>

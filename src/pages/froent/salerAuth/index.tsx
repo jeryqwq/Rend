@@ -3,10 +3,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 import { Upload, Button, message } from 'antd'
 import city from '@/constants/city';
-import { getBrands, uploadImg } from '@/server/common';
+import { commonRequest, getBrands, uploadImg } from '@/server/common';
 import { getUuid } from '@/utils';
 import { PlusOutlined } from '@ant-design/icons'
 import { equipmentRepairInfo } from '@/server/rent';
+import { useHistory } from 'umi';
+import useUserInfo from '@/hooks/useLogin';
 
 const uploadButton = (
   <div>
@@ -15,17 +17,22 @@ const uploadButton = (
   </div>
 );
 function Repair() {
-  const [brands, setBrands] = useState([])
-  const [fileList, setFileList] = useState([])
+  const [yyzzUrlfileList, setFileList] = useState<any[]>([])
+  const [cardUrl1fileList, setFileList1] = useState<any[]>([])
+  const [cardUrl2fileList, setFileList2] = useState<any[]>([])
+  const [otherfileList, setOthers] = useState<any[]>([])
   const [uuid, setUuid] = useState( getUuid())
+  const { user } = useUserInfo()
+  const userId = user.user.id
   const formRef = useRef<ProFormInstance>()
-
+  const history = useHistory()
   useEffect(() => {
     (async () => {
-      const res = await getBrands()
-      if(res.code === '0') {
-        setBrands(res.data)
-      }
+     const res = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 1 } })
+     if(res.code === '0') {
+      // message.info('您已提交过认证信息，请稍后！')
+      // history.push('/')
+     }
     })()
   },[])
   return (
@@ -34,47 +41,55 @@ function Repair() {
         <div className="tit2">品牌商认证</div>
       <div className="repaire-inner">
       <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
-        <ProForm formRef={formRef} submitter={false}  grid size='large'>
-          <ProFormSelect
-            options={brands.map((i: any) => ({label: i.brandName, value: i.brandName}))}
+      <h1>企业信息</h1>
+
+        <ProForm formRef={formRef} submitter={false}  grid size='large' >
+          <ProFormText
             colProps={{
               span: 12
             }}
-            name="equipBrand"
-            label="品牌"
+            name="callUser"
+            label="联系人"
             rules={[{required: true}]}
           />
           <ProFormText 
             colProps={{
               span: 12
             }}
-            label="型号"
-            name="equipModel"
+            label="联系电话"
+            name="callPhone"
             rules={[{required: true}]}
           />
-          <ProFormTextArea 
-            label="问题描述"
-            fieldProps={{
-              rows: 8
+          <ProFormText 
+            label="企业名称"
+            colProps={{
+              span: 12
             }}
-            name="problemDesc"
+            name="name"
             rules={[{required: true}]}
           />
-        <ProForm.Item label="照片" style={{width: '100%'}}>
+          <ProFormText 
+            label="统一社会信用代码"
+            colProps={{
+              span: 12
+            }}
+            name="compCode"
+            rules={[{required: true}]}
+          />
+        <ProForm.Item label="企业营业执照" style={{width: '100%'}} required>
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
-                maxCount={1}
-                fileList={fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
+                fileList={yyzzUrlfileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
-                  const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'MAIN_IMG',sort: fileList.length })
+                  const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'AUTH_IMG',sort: yyzzUrlfileList.length })
                   if(res.code === '0') {
-                    setFileList(fileList.concat(res.data.path))
+                    setFileList([res.data.path])
                   }
                 }}
               >
-                {fileList.length >= 8 ? null : uploadButton}
+                {yyzzUrlfileList.length >= 8 ? null : uploadButton}
               </Upload>
         </ProForm.Item>
         <div className='stit' style={{width: '100%'}}>联系方式</div>
@@ -84,54 +99,100 @@ function Repair() {
             }}
             rules={[{required: true}]}
 
-            label="姓名"
-            name="contactName"
+            label="法人姓名"
+            name="legalUser"
           />
            <ProFormText 
             colProps={{
               span: 12
             }}
-            label="手机号"
-            rules={[{required: true,     pattern: /^1[3-9]\d{9}$/,
-            message: '手机号码不匹配，请检查后重新输入'}]}
-            name="contactNumber"
+            label="法人身份证"
+            rules={[{required: true,}]}
+            name="legalIdCard"
           />
-            <ProFormCascader label="当前发布城市" 
-               colProps={{
-                span: 12
-              }}
-              rules={[{
-                required: true,
-              }]}
-              placeholder='请选择省市区'
-              fieldProps={{
-                options: city,
-                showSearch: true,
-              }}
-              name="releaseCityName"
-            />
-       
-           <ProFormText 
-            colProps={{
-              span: 12
-            }}
-            label="详细地址"
-            name="detailAddress"
-            rules={[{required: true}]}
-          />
+            <ProForm.Item label="法人身份证正面" style={{width: '50%'}} required>
+          <Upload
+                listType="picture-card"
+                accept='.png,.jpg,.jpeg' 
+                maxCount={1}
+                fileList={cardUrl1fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
+                onChange={async (e) => {
+                  const file = e.file.originFileObj
+                  const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'AUTH_MAIN',sort: cardUrl1fileList.length })
+                  if(res.code === '0') {
+                    setFileList1([res.data.path])
+                  }
+                }}
+              >
+                {cardUrl1fileList.length >= 8 ? null : uploadButton}
+              </Upload>
+        </ProForm.Item>
+        <ProForm.Item label="法人身份证反面" style={{width: '50%'}} required>
+          <Upload
+                listType="picture-card"
+                accept='.png,.jpg,.jpeg' 
+                maxCount={1}
+                fileList={cardUrl2fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
+                onChange={async (e) => {
+                  const file = e.file.originFileObj
+                  const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'AUTH_BACK',sort: cardUrl2fileList.length })
+                  if(res.code === '0') {
+                    setFileList2([res.data.path])
+                  }
+                }}
+              >
+                {cardUrl2fileList.length >= 8 ? null : uploadButton}
+              </Upload>
+        </ProForm.Item>
+        <h1 style={{width: '100%'}}>其他资质材料</h1>
+
+        <ProForm.Item label="其他材料扫描件" style={{width: '50%'}} required>
+          <Upload
+                listType="picture-card"
+                accept='.png,.jpg,.jpeg' 
+                maxCount={1}
+                fileList={otherfileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
+                onChange={async (e) => {
+                  const file = e.file.originFileObj
+                  const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'OTHER',sort: otherfileList.length })
+                  if(res.code === '0') {
+                    setOthers(otherfileList.concat(res.data.path))
+                  }
+                }}
+              >
+                {otherfileList.length >= 8 ? null : uploadButton}
+              </Upload>
+        </ProForm.Item>
           </ProForm>
           <div style={{textAlign: 'center'}}>
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
              onClick={ async () => {
               const values = await formRef.current?.validateFields()
-              console.log(values)
+              if(yyzzUrlfileList.length && cardUrl1fileList.length && cardUrl2fileList.length ){
               if(values) {
-                const res = await equipmentRepairInfo({...values, id: uuid, releaseCityName: values.releaseCityName.join(',')})
+                const res = await commonRequest('/sysOrgan', {
+                  method: 'post',
+                  data: {
+                    ...values,
+                    yyzzUrl: yyzzUrlfileList[0],
+                    cardUrl1: cardUrl1fileList[0],
+                    cardUrl2: cardUrl2fileList[0],
+                    otherfileList: otherfileList.join(','),
+                    id: uuid,
+                    type: 1,
+                    serverId: userId,
+                    serverType: 'user',
+                    compName: values.name
+                  }
+                })
                 if(res.code === '0') {
-                  message.success('发布成功!')
+                  message.success('保存成功!')
                   formRef.current?.resetFields()
                   setFileList([])
                 }
+              }
+              }else{
+                message.warn('请上传相关照片后提交')
               }
             }}
             >提交</Button>

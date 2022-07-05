@@ -6,8 +6,8 @@ import city from '@/constants/city';
 import { Upload, Button, Radio, message } from 'antd'
 import { getUuid } from '@/utils';
 import {  equipmentPurchase, equipmentRent } from '@/server/rent';
-import { getBrands, getDict } from '@/server/common';
-
+import { getBrands, getDict, getEquipmentType } from '@/server/common';
+let allProdTypes
 function ForRent() {
   const formRef = useRef<ProFormInstance>()
   const [uuid, setUuid] = useState( getUuid())
@@ -20,9 +20,17 @@ function ForRent() {
       if(res.code === '0') {
         setProds(res.data)
       }
-      const res2 = await getBrands()
+      const res2 = await getEquipmentType()
       if(res2.code === '0') {
-        setBrands(res2.data)
+        function trans (items: any[]): any {
+          return items.map((i: any) => ({label: i.name, value: i.id, children: i.children ?  trans(i.children) : undefined}))
+        }
+        allProdTypes = trans(res2.data)
+        setProds(allProdTypes)
+      }
+      const res3 = await getBrands()
+      if(res3.code === '0') {
+        setBrands(res3.data)
       }
     })()
   }, [])
@@ -55,17 +63,19 @@ function ForRent() {
               name="contactNumber"
             />
         <div className='stit' style={{width: '100%'}}>基本信息</div>
-              <ProFormSelect 
+              <ProFormCascader
                 colProps={{
                   span: 12
                 }}
                 rules={[{
                   required: true,
                 }]}
-                options={prodTypes.map((i: any)=> ({ label: i.name, value: i.code }))}
+                fieldProps={{
+                  options: prodTypes,
+                  showSearch: true
+                }}
                 name="equipType"
                 label="设备类型"
-               
               />
               <ProFormSelect
               colProps={{
@@ -108,7 +118,7 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentPurchase({...values, id: uuid, releaseCityName: values.releaseCityName.join(',')})
+                  const res = await equipmentPurchase({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), equipType: values.equipType[values.equipType.length - 1]})
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

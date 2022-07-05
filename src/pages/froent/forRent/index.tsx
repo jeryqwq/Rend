@@ -11,13 +11,13 @@ import { getDict } from '@/server/common';
 function ForRent() {
   const formRef = useRef<ProFormInstance>()
   const [uuid, setUuid] = useState( getUuid())
-  const [prodTypes, setProds] = useState([])
+  // const [prodTypes, setProds] = useState([])
   useEffect(() => {
     (async () => {
-      const res = await getDict('/mechineType')
-      if(res.code === '0') {
-        setProds(res.data)
-      }
+      // const res = await getDict('/mechineType')
+      // if(res.code === '0') {
+      //   setProds(res.data)
+      // }
     })()
   }, [])
   return (
