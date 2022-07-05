@@ -40,7 +40,7 @@ function ProductDetail() {
             <Descriptions.Item label="地区">{productInfo.releaseCityName}</Descriptions.Item>
             <Descriptions.Item label="品牌">{productInfo.partsBrand}</Descriptions.Item>
             <Descriptions.Item label="发布者">{productInfo.createName}</Descriptions.Item>
-            <Descriptions.Item label="最新更新时间">empty</Descriptions.Item>
+            <Descriptions.Item label="最新更新时间">{ productInfo.views}</Descriptions.Item>
             <Descriptions.Item label="设备浏览数">{productInfo.updateDate}</Descriptions.Item>
           </Descriptions>
           <div className="actions">

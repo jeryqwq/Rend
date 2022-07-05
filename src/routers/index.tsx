@@ -42,92 +42,92 @@ const saleRouter = {
   },
   {
     label: '全部设备',
-    key: 'allDevice',
+    key: '/allDevice',
     path:'/allDevice',
     component: '@/pages/froent/allDevice/index',
   },
   {
     label: '二手设备',
-    key: 'sallList',
+    key: '/sallList',
     path:'/sallList',
     component: '@/pages/froent/sallList/index',
   },
   {
     label: '设备维修',
-    key: 'repair',
+    key: '/repair',
     path:'/repair',
     component: '@/pages/froent/repair/index',
   },
   {
     label: '培训课程',
-    key: 'course',
+    key: '/course',
     path:'/course',
     component: '@/pages/froent/course/index',
   },
   {
     label: '配件商城',
-    key: 'part',
+    key: '/part',
     path:'/part',
     component: '@/pages/froent/part/index',
   },
   {
     label: '行业动态',
-    key: 'news',
+    key: '/news',
     path:'/news',
     component: '@/pages/froent/news/index',
   },
   {
     label: '动态详情',
-    key: 'news/detail',
+    key: '/news/detail',
     path:'/news/detail',
     component: '@/pages/froent/news/detail',
     hide: true
   },
   {
     label: '设备出租',
-    key: 'productRent',
+    key: '/productRent',
     path:'/productRent',
     component: '@/pages/froent/productRent/index',
     hide: true
   },
   {
     label: '下单成功',
-    key: 'orderSuccess',
+    key: '/orderSuccess',
     path:'/orderSuccess',
     component: '@/pages/froent/orderSuccess/index',
     hide: true
   },
   {
     label: '地址选择',
-    key: 'orderAddress',
+    key: '/orderAddress',
     path:'/orderAddress',
     component: '@/pages/froent/orderAddress/index',
     hide: true
   },
   {
     label: '求租设备',
-    key: 'forRent',
+    key: '/forRent',
     path:'/forRent',
     component: '@/pages/froent/forRent/index',
     hide: true
   },
   {
     label: '配件详情',
-    key: 'partDetail',
+    key: '/partDetail',
     path:'/partDetail',
     component: '@/pages/froent/partDetail/index',
     hide: true
   },
   {
     label: '发布二手',
-    key: 'sallOld',
+    key: '/sallOld',
     path:'/sallOld',
     hide: true,
     component: '@/pages/froent/sallOld/index',
   },
   {
     label: '求购设备',
-    key: 'forBuy',
+    key: '/forBuy',
     path:'/forBuy',
     component: '@/pages/froent/forBuy/index',
     hide: true
@@ -135,65 +135,79 @@ const saleRouter = {
   },
   {
     label: '设备详情',
-    key: 'productDetail',
+    key: '/productDetail',
     path:'/productDetail',
     component: '@/pages/froent/productDetail/index',
     hide: true
   },
   {
     label: '出租详情',
-    key: 'rentDetail',
+    key: '/rentDetail',
     path:'/rentDetail',
     component: '@/pages/froent/rentDetail/index',
     hide: true
   },
   {
     label: '购物车',
-    key: 'shoppingCart',
+    key: '/shoppingCart',
     path:'/shoppingCart',
     component: '@/pages/froent/shopCart/index',
     hide: true
   },
   {
+    label: '品牌商认证',
+    key: '/salerAuth',
+    path:'/salerAuth',
+    component: '@/pages/froent/salerAuth/index',
+    hide: true
+  },
+  {
+    label: '施工单位认证',
+    key: '/buyAuth',
+    path:'/buyAuth',
+    component: '@/pages/froent/buyAuth/index',
+    hide: true
+  },
+  {
     label: '用户中心',
-    key: 'userCenter',
+    key: '/userCenter',
     path:'/userCenter',
     component: '@/layouts/user',
     hide: true,
     routes: [
       {
         label: '用户中心',
-        key: 'userCenter',
+        key: '/userCenter/',
         path:'/userCenter/',
         component: '@/pages/froent/user',
       },
       {
         label: '我的订单',
-        key: 'userCenter',
+        key: '/userCenter/order',
         path:'/userCenter/order',
         component: '@/pages/froent/order',
       },
       {
         label: '消息',
-        key: 'message',
+        key: '/userCenter/message',
         path:'/userCenter/message',
         component: '@/pages/froent/message',
       },
       {
         label: '个人信息',
-        key: 'userInfo',
+        key: '/userCenter/userInfo',
         path:'/userCenter/userInfo',
         component: '@/pages/froent/userInfo',
       },
       {
         label: '安全管理',
-        key: 'safe',
+        key: '/userCenter/safeSetting',
         path:'/userCenter/safeSetting',
         component: '@/pages/froent/safeSetting',
       },
       {
         label: '地址管理',
-        key: 'address',
+        key: '/userCenter/address',
         path:'/userCenter/address',
         component: '@/pages/froent/address',
       }

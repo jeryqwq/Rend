@@ -174,7 +174,7 @@ function AllDevice() {
              src={'/lease-center/' + i.mainImgPath}
            />
            </div>
-           <div className={styles.stit} >{}</div>
+           <div className={styles.stit} >{i.description}</div>
            <div className="line">
              <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.price}</span> </div>
              <div className="rg">销量：900</div>

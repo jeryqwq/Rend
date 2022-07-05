@@ -44,18 +44,7 @@ export default function IndexPage() {
       if(res2.code === '0') {
         setBrand(res2.data.records)
       }
-      // const res3 = await commonRequest('/equipmentLease/getRecommList', {
-      //   method: 'get'
-      // })
-      // if(res3.code === '0') {
-      //   setRent(res3.data)
-      // }
-      // const res4 = await commonRequest('/equipmentSale/getRecommList', {
-      //   method: 'get'
-      // })
-      // if(res4.code === '0') {
-      //   setSale(res4.data)
-      // }
+  
       const res5 = await appNewsPage({
         size: 3,
         current: 0

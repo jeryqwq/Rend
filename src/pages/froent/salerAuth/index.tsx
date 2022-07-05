@@ -30,10 +30,10 @@ function Repair() {
   },[])
   return (
     <div className={styles['repaire-wrap']}>
-      <img src="/images/repair-hd.png" alt="" style={{margin: '35px 0 30px 0'}} />
+  <div className='bg'>RONG SHENG DA</div>
+        <div className="tit2">品牌商认证</div>
       <div className="repaire-inner">
-        <div className="tit">请在下面填写维修需求，我们会立即与您联系。</div>
-        <div className='stit'>维护需求</div>
+      <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
         <ProForm formRef={formRef} submitter={false}  grid size='large'>
           <ProFormSelect
             options={brands.map((i: any) => ({label: i.brandName, value: i.brandName}))}

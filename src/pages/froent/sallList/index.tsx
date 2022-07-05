@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
 import { Row, Col, Button,Tag, Pagination } from 'antd'
 import { equipmentSalePage } from '@/server/rent';
-import { getBrands, getDict, getEquipmentType } from '@/server/common';
+import { commonRequest, getBrands, getDict, getEquipmentType } from '@/server/common';
 import city from '@/constants/city';
 import { useHistory, useLocation } from 'umi';
 let allProdTypes: any
@@ -22,6 +22,7 @@ function AllDevice() {
   const [params, setParams] = useState<Record<string, any>>({})
   const [prodTypes, setProds] = useState([])
   const [curCity, setCurCity] = useState(city)
+  const [recommons, setRecommon] = useState([])
   useEffect(() => {
     (async () => {
       const res = await getBrands()
@@ -35,6 +36,13 @@ function AllDevice() {
         }
         allProdTypes = trans(res3.data)
         setProds(allProdTypes)
+      }
+
+      const res4 = await commonRequest('/equipmentSale/getRecommList', {
+        method: 'get'
+      })
+      if(res4.code === '0') {
+        setRecommon(res4.data)
       }
     })()
   },[])
@@ -164,7 +172,7 @@ function AllDevice() {
       <div className={styles.rg}>
         <div className={styles.hotPrice}>特价推荐</div>
        {
-         new Array(3).fill(1).map(() =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+         recommons.map(() =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}

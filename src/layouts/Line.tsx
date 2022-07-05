@@ -15,7 +15,7 @@ function Line() {
      onClick={({key}) => {
        history.push(key)
       }}
-     items={[{ label: '消息通知', key: 'msgAlert' }, { label: '个人信息', key: 'personInfo' }, { label: '安全设置', key: 'address' }, { label: '我的订单', key: '/userCenter/order' }]}/>}>
+     items={[{ label: '消息通知', key: 'msgAlert' }, { label: '个人信息', key: 'personInfo' }, { label: '安全设置', key: 'address' }, { label: '我的订单', key: '/userCenter' }, { label: '地址管理', key: '/userCenter/address' }]}/>}>
      <Button type='text'  onClick={e => history.push('/userCenter')}>
        个人中心
      </Button>

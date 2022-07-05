@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.less';
-import { Button, Input, Dropdown, Menu } from 'antd';
+import { Button, Input, Dropdown, Menu,Modal } from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import { MenuRouter } from '@/routers';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
@@ -8,11 +8,15 @@ import { ShowSaleRouter } from '@/routers';
 
 import useLogin from '@/hooks/useLogin';
 import Line from './Line';
+import useUserInfo from '@/hooks/useLogin';
 type SearchType = 'shebei' | 'peijian' | 'ershou'
 function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: (_: SearchType) => void, showMenu?: boolean }) {
   const { pathname: path, } = useLocation()
   const history = useHistory()
   const curRouter = MenuRouter.find(i => i.path === path)
+  const { user } = useUserInfo()
+  const userInfo = user.user
+  console.log(userInfo)
   return (
     <div  className={styles['for-menu']}>
       <div className={`${styles['line-header']}`} >
@@ -62,15 +66,36 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                 </div>
               <div>
                 <Dropdown overlay={<Menu onClick={(e) => {
-                  history.push(e.key)
+                    Modal.confirm({
+                      title: '认证提示',
+                      content: <>
+                      <img src='/images/auth.png'/>
+                      <h3>认证成为品牌商才可以发布设备哦</h3>
+                      </>,
+                      okText: '我要认证',
+                      onOk(){
+                        history.push('/salerAuth')
+                      }
+                    })
+                  // history.push(e.key)
                 }} items={[{ label: '设备出租', key: 'productRent' }, { label: '出售二手设备', key: 'sallOld' }]}/>} placement="bottom">
                 <span className='btn-round' style={{marginRight: 27, left: 0}}><span>发布设备</span></span>
                 </Dropdown>
                 <Dropdown overlay={<Menu onClick={(e) => {
-                  history.push(e.key)
+                  Modal.confirm({
+                    title: '认证提示',
+                    content: <>
+                    <img src='/images/auth.png'/>
+                    <h3>认证成为施工单位才可以租赁设备</h3>
+                    </>,
+                    okText: '我要认证',
+                    onOk(){
+                      history.push('/buyAuth')
+                    }
+                  })
+                  // history.push(e.key)
                 }} items={[{ label: '求租设备', key: 'forRent' }, { label: '求购二手', key: 'forBuy' }]}/>} placement="bottom">
                 <span className='btn-round rg' ><span style={{left: 0}}>发布需求</span></span>
-
                 </Dropdown>
               </div>
               <span className='phone'>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
 import { Row, Col, Button, Tag,Pagination } from 'antd'
 import { equipmentLeasePage } from '@/server/rent';
-import { getBrands, getDict, getEquipmentType } from '@/server/common';
+import { commonRequest, getBrands, getDict, getEquipmentType } from '@/server/common';
 import city from '@/constants/city';
 import { useHistory, useLocation } from 'umi';
 let allProdTypes: any
@@ -14,7 +14,7 @@ function AllDevice() {
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
     "pages": 10,
-    "size": 8
+    "size": 12
   })
   const [brands, setBrands] = useState([])
   const [list, setList] = useState([])
@@ -22,6 +22,7 @@ function AllDevice() {
   const [params, setParams] = useState<Record<string, any>>({})
   const [prodTypes, setProds] = useState([])
   const [curCity, setCurCity] = useState(city)
+  const [reCommonList, setReCom] = useState([])
   useEffect(() => {
     (async () => {
       const res = await getBrands()
@@ -35,6 +36,12 @@ function AllDevice() {
         }
         allProdTypes = trans(res2.data)
         setProds(allProdTypes)
+      }
+      const res3 = await commonRequest('/equipmentLease/getRecommList', {
+        method: 'get'
+      })
+      if(res3.code === '0') {
+        setReCom(res3.data)
       }
     })()
   },[])
@@ -161,7 +168,7 @@ function AllDevice() {
       <div className={styles.rg}>
         <div className={styles.hotPrice}>特价推荐</div>
        {
-         new Array(3).fill(1).map(() =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+        reCommonList.map(() =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}

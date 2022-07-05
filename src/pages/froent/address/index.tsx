@@ -21,6 +21,7 @@ function Address() {
   return (
     <div className={styles.addWrap}>
       <div className="tit">地址管理</div>
+      <div style={{padding: '0 20px 20px 20px'}}>
       <Button type='link' style={{marginTop: 20}}>新增地址</Button>
       <ProForm formRef={formRef} submitter={false} autoFocusFirstInput={false} grid style={{width: 610}}>
         <ProFormText label="姓名" name="receiveUser" rules={[{required: true}]}/>
@@ -156,6 +157,7 @@ function Address() {
           }
         </tbody>
         </table>
+     </div>
      </div>
     </div>
   );
