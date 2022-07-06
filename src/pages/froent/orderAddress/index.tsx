@@ -114,6 +114,11 @@ function OrderAddress() {
         </div>
         <div style={{textAlign: 'right'}}>
           <div className="orderaction" onClick={async() => {
+            if(!address.length) {
+              message.warn('还未选择地址,请先添加地址')
+              history.push('/userCenter/address')
+              return
+            }
              const res = await commonRequest('/mallOrderMaster/addOrder', {
               method: 'post',
               data:{

@@ -14,7 +14,7 @@ function SafeSetting() {
       style={{width: 720, marginLeft: 30}}
       submitter={{resetButtonProps: false, submitButtonProps:{onClick: async function(e){
         const values = formRef.current?.getFieldsValue()
-        const res = await commonRequest('/sysuser/updatePassword', {
+        const res = await commonRequest('/apiuser/updatePassword', {
           method: 'post',
           data:{
             ...values,

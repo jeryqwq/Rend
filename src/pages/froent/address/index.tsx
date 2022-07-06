@@ -52,6 +52,7 @@ function Address() {
             ...values,
             provinceName: values.city[0],
             cityName: values.city[1],
+            isDefault: 0
           }
         })
         if(res.code === '0') {

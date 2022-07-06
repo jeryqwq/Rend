@@ -1,12 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'umi';
 import { Dropdown, Button, Menu,message } from 'antd'
 import useLogin from '@/hooks/useLogin';
 import { ShowSaleRouter } from '@/routers';
 import { ShoppingCartOutlined } from '@ant-design/icons';
+import { getUserInfo } from '@/server/login';
 function Line() {
   const history = useHistory()
-  const { user } = useLogin()
+  const { user, login } = useLogin()
+ 
   return (
     <div>
    {
@@ -15,7 +17,7 @@ function Line() {
      onClick={({key}) => {
        history.push(key)
       }}
-     items={[{ label: '消息通知', key: 'msgAlert' }, { label: '个人信息', key: 'personInfo' }, { label: '安全设置', key: 'address' }, { label: '我的订单', key: '/userCenter' }, { label: '地址管理', key: '/userCenter/address' }]}/>}>
+     items={[{ label: '消息通知', key: '/userCenter/message' }, { label: '个人信息', key: '/userCenter' }, { label: '安全设置', key: '/userCenter/safeSetting' }, { label: '我的订单', key: '/userCenter' }, { label: '地址管理', key: '/userCenter/address' }]}/>}>
      <Button type='text'  onClick={e => history.push('/userCenter')}>
        个人中心
      </Button>
@@ -24,6 +26,7 @@ function Line() {
       localStorage.removeItem('TK')
       localStorage.removeItem('USER')
       message.success('退出成功!')
+      window.location.href = '/#/'
      }}>
        退出
      </Button>

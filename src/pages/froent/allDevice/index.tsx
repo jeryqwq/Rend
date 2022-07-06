@@ -41,7 +41,7 @@ function AllDevice() {
         method: 'get'
       })
       if(res3.code === '0') {
-        setReCom(res3.data)
+        setReCom(res3.data.slice(0, 3))
       }
     })()
   },[])
@@ -166,21 +166,25 @@ function AllDevice() {
         </Col>) }
       </Row></div>
       <div className={styles.rg}>
-        <div className={styles.hotPrice}>特价推荐</div>
+        <div className={styles.hotPrice}>热门新机</div>
        {
-        reCommonList.map(() =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+        reCommonList.map((i:any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220, cursor: 'pointer'}}
+        onClick={() => {
+          history.push('/rentDetail?id=' + i.id + '&type=' + 'equipmentSale')
+        }}
+        >
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}
              style={{height: 220}}
-             src="/images/repair-bg.png"
+             src={'/lease-center/' + i.mainImgPath}
            />
            </div>
            <div className="line">
-             <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥9000</span> /月</div>
-             <div className="rg">福州市</div>
+             <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.monthlyRent}</span> /月</div>
+             <div className="rg">{i.releaseCityName}</div>
            </div>
-         <div style={{textAlign: 'left',margin: '0 10px'}}>出租挖掘机</div>
+         <div style={{textAlign: 'left',margin: '0 10px'}}>{i.equipName}</div>
      </div>)
        }
        

@@ -30,8 +30,12 @@ function Repair() {
     (async () => {
      const res = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 1 } })
      if(res.code === '0') {
-      // message.info('您已提交过认证信息，请稍后！')
-      // history.push('/')
+      formRef.current?.setFieldsValue(res.data)
+      if(res.data) {
+        setFileList([res?.data?.yyzzUrl])
+        setFileList1([res?.data?.cardUrl1])
+        setFileList2([res?.data?.cardUrl2])
+       }
      }
     })()
   },[])
@@ -177,7 +181,7 @@ function Repair() {
                     yyzzUrl: yyzzUrlfileList[0],
                     cardUrl1: cardUrl1fileList[0],
                     cardUrl2: cardUrl2fileList[0],
-                    otherfileList: otherfileList.join(','),
+                    otherUrl: otherfileList.join(','),
                     id: uuid,
                     type: 1,
                     serverId: userId,

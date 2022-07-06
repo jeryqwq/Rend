@@ -27,7 +27,7 @@ export default function IndexPage() {
   const [rents, setRent] = useState<any[]>([])
   const [sales, setSale] = useState<any[]>([])
   const [news, setNews] = useState<any[]>([])
-
+  const [parts, setParts] =  useState<any[]>([])
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType()
@@ -44,13 +44,30 @@ export default function IndexPage() {
       if(res2.code === '0') {
         setBrand(res2.data.records)
       }
-  
+      const res3 = await commonRequest('/equipmentLease/getRecommList', {
+        method: 'get'
+      })
+      if(res3.code === '0') {
+        setRent(res3.data)
+      }
+      const res4 = await commonRequest('/equipmentSale/getRecommList', {
+        method: 'get'
+      })
+      if(res4.code === '0') {
+        setSale(res4.data)
+      }
       const res5 = await appNewsPage({
         size: 3,
         current: 0
       })
       if(res5.code === '0') {
         setNews(res5.data.records)
+      }
+      const res6 = await commonRequest('/equipmentParts/getRecommList', {
+        method: 'get',
+      })
+      if(res6.code === '0') {
+        setParts(res6.data.slice(0,3))
       }
     })()
   },[])
@@ -70,9 +87,9 @@ export default function IndexPage() {
           <Menu  onClick={({ key: curKey }) => {
             history.push(curKey)
           }}  mode="horizontal"  items={ MenuRouter } />
-          <Carousel autoplay>
+          <Carousel >
           <div>
-            <h3 style={contentStyle}>1</h3>
+              <img src='/images/bg1.jpeg' style={{width: '100%', height: '100%'}}/>
           </div>
           <div>
             <h3 style={contentStyle}>2</h3>
@@ -94,7 +111,7 @@ export default function IndexPage() {
         <h2 className='title'>为您推荐</h2>
         <Row gutter={12}>
           {
-            new Array(10).fill(1).map(i => <Col><DeviceItem /></Col>)
+           rents.map((i:any) => <Col><DeviceItem item={i}/></Col>)
           }
         </Row>
       </div>
@@ -123,7 +140,7 @@ export default function IndexPage() {
           <h2 className='title'>二手推荐</h2>
           <Row gutter={12}>
             {
-              new Array(10).fill(1).map(i => <Col><OldItem /></Col>)
+             sales.map((i: any) => <Col><OldItem item={i}/></Col>)
             }
           </Row>
         </div>
@@ -137,8 +154,8 @@ export default function IndexPage() {
             <h2 className='title'>配件零件</h2>
             <Row gutter={15}>
               {
-                new Array(3).fill(1).map(i => <Col >
-                <PartItem />
+               parts.map(i => <Col >
+                <PartItem item={i}/>
                 </Col>)
               }
             </Row>
