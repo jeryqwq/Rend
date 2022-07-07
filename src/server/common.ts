@@ -1,13 +1,16 @@
 import request from "./request"
-
+import { message } from 'antd'
 export async function uploadImg (file: File, {serviceId, serviceType, sort}: { sort?: number, serviceId?: string, serviceType?: string }) {
-  
+  if(file.size >= 5 * 1000 * 1000) {
+    message.info('图片过大，请重新选择')
+    return
+  }
   const formData = new FormData()
   formData.append('file', file)
   serviceId && formData.append('serviceId', serviceId)
   serviceType && formData.append('serviceType', serviceType)
   sort!==undefined && formData.append('sort', sort + '')
-  return  await fetch('/lease-center/appfile/upload', {
+  return await fetch('/lease-center/appfile/upload', {
     method: 'post',
     body: formData
   }).then((res) => res.json())

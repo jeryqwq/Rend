@@ -82,7 +82,7 @@ function ForRent() {
         <ProForm.Item label="整体外观" style={{width: '100%'}}>
           <Upload
                 listType="picture-card"
-                accept='.png,.jpg,.jpeg' 
+                accept='.png,.jpg,.jpeg'
                 maxCount={5}
                 fileList={fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {

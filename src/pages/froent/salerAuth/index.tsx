@@ -32,9 +32,15 @@ function Repair() {
      if(res.code === '0') {
       formRef.current?.setFieldsValue(res.data)
       if(res.data) {
+        if(res.data.status === 1) {
+          message.info('您已认证过，不需要认证了')
+          history.push('/')
+          return
+        }
         setFileList([res?.data?.yyzzUrl])
         setFileList1([res?.data?.cardUrl1])
         setFileList2([res?.data?.cardUrl2])
+        setOthers(res?.data?.otherUrl.split(','))
        }
      }
     })()

@@ -32,9 +32,14 @@ function Repair() {
       if(res.code === '0') {
        formRef.current?.setFieldsValue(res?.data)
        if(res.data) {
+        if(res.data.status === 1) {
+          message.info('您已认证过，不需要认证了')
+          history.push('/')
+        }
         setFileList([res?.data?.yyzzUrl])
         setFileList1([res?.data?.cardUrl1])
         setFileList2([res?.data?.cardUrl2])
+        setOthers(res?.data?.otherUrl.split(','))
        }
       }
      })()
@@ -42,7 +47,7 @@ function Repair() {
   return (
     <div className={styles['repaire-wrap']}>
   <div className='bg'>RONG SHENG DA</div>
-        <div className="tit2">品牌商认证</div>
+        <div className="tit2">施工单位认证</div>
       <div className="repaire-inner">
       <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
       <h1>企业信息</h1>
@@ -84,9 +89,11 @@ function Repair() {
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
+                maxCount={1}
                 fileList={yyzzUrlfileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
+                  console.log(file)
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'AUTH_IMG',sort: yyzzUrlfileList.length })
                   if(res.code === '0') {
                     setFileList([res.data.path])
