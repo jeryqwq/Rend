@@ -51,21 +51,23 @@
 }
 .for-menu{
   :global{
-    .ant-menu-dark.ant-menu-horizontal > .ant-menu-item{
-      flex: 1;
-    }
-    .ant-menu-dark .ant-menu-item-selected{
-      background-color: #1052B4;
-    }
-    .ant-menu-dark .ant-menu-item{
-      color: white;
-    }
-    .ant-menu.ant-menu-dark{
-      height: 50px;
-      line-height: 50px;
-      text-align: center;
-      font-size: 20px;
-      background-color: @primary-color;
+    .menu-wrap{
+      display: flex;
+      background-color: #105CCE;
+
+height: 50px;
+line-height: 50px;
+
+font-size: 20px;
+color: white;
+text-align: center;
+      .item{
+        flex: 1;
+        cursor: pointer;
+        &.cur{
+         background-color: #103876;
+        }
+      }
     }
   }
 }

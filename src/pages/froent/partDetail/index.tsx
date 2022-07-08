@@ -7,6 +7,7 @@ import { equipmentSaleDetail } from '@/server/rent';
 import { commonRequest, getFiles } from '@/server/common';
 import dayjs from 'dayjs'
 import { mallCart } from '@/server/order';
+import { IdcardOutlined } from '@ant-design/icons'
 function ProductDetail() {
   const location = useLocation() as any
   const history = useHistory()
@@ -40,8 +41,8 @@ function ProductDetail() {
             <Descriptions.Item label="地区">{productInfo.releaseCityName}</Descriptions.Item>
             <Descriptions.Item label="品牌">{productInfo.partsBrand}</Descriptions.Item>
             <Descriptions.Item label="发布者">{productInfo.createName}</Descriptions.Item>
-            <Descriptions.Item label="最新更新时间">{ productInfo.views}</Descriptions.Item>
-            <Descriptions.Item label="设备浏览数">{productInfo.updateDate}</Descriptions.Item>
+            <Descriptions.Item label="最新更新时间">{ productInfo.updateDate}</Descriptions.Item>
+            <Descriptions.Item label="设备浏览数">{productInfo.views}</Descriptions.Item>
           </Descriptions>
           <div className="actions">
             <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
@@ -82,10 +83,10 @@ function ProductDetail() {
       <div className="lf">
         <div className="item">
         <div className="head-tit" style={{paddingLeft: 10}}>商家</div>
-        <div className="tit-img"> <img src="" alt="" style={{width: 60, height: 60}} />xxx</div>
+        <div className="tit-img"> <img src="" alt="" style={{width: 60, height: 60}} /><span style={{lineHeight: '20px'}}>{productInfo?.organDto?.name}</span></div>
         <div className="person">
-          <div className="label">顺丰认证:</div>
-          <div className="label">经营摩好:xxx</div>
+          <div className="label">身份认证: <IdcardOutlined  style={{color: '#48BC29'}}/></div>
+          {/* <div className="label">经营:xxx</div> */}
         </div>
         <div className="atcion">
           <div className='cur'>联系商家</div>

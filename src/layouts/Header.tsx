@@ -147,14 +147,20 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
               </div>
               <span className='phone'>
                 <img src="/images/phone.png" alt="" />
-                400-8932-608</span>
+                400-918-5979</span>
             </div>
           </div>
         </div>
       </div>
-      {curRouter?.showmenu !== 0 &&  <Menu style={{marginTop: 20}} onClick={({ key: curKey }) => {history.push(curKey)}}  mode="horizontal" theme='dark' items={
-       MenuRouter
-      } />}
+      {curRouter?.showmenu !== 0 && <div className='menu-wrap'> {MenuRouter.map(i => <div className={`item ${ i.path === path && 'cur' }`}
+        onClick={() => {
+          history.push(i.path)
+        }}
+      >{i.label}</div>)} </div>
+      //  <Menu style={{marginTop: 20}} onClick={({ key: curKey }) => {history.push(curKey)}}  mode="horizontal" theme='dark' items={
+      //  MenuRouter
+      // } />
+    }
     </div>
   );
 }

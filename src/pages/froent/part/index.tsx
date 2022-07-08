@@ -158,7 +158,7 @@ function AllDevice() {
                 <div className="rg">{i.releaseCityName}</div>
               </div>
               <div className={styles.stit}>{i.remark}</div>
-            <div className='comp'>合肥安弘工程设备租赁有限公司</div> 
+            <div className='comp'>{i.organName}</div> 
             <Button type={'primary'} size='middle' style={{width: '100%'}} className={styles.detail}>查看详情</Button>
         </div>
         </Col>) }

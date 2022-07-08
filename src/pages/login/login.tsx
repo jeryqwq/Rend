@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Input, Button ,message} from 'antd'
 import { useHistory, useLocation } from 'umi';
 import { getUserInfo, pcLogin } from '@/server/login';
-function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
+function Login({ setType }: {setType: (_:'login' | 'regist' | 'forget') => void}) {
   const [loginType, setLoginType] = useState<'person'| 'comp'>('person')
   const history = useHistory()
   const ref = useRef<ProFormInstance>()
@@ -79,7 +79,7 @@ function Login({ setType }: {setType: (_:'login' | 'regist') => void}) {
       </Button>
       <div className="tips">
         <div className="reg" onClick={() => setType('regist')}><img src="/icons/s10.png"/>用户注册</div>
-        <div className="forget">忘记密码</div>
+        <div className="forget" onClick={() => setType('forget')}>忘记密码</div>
       </div>
     </div>
   );

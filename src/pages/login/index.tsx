@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import styles from './index.module.less';
 import Register from './register';
 import Login from './login'
+import Forget from './forget';
 function Login1() {
-  const [type, setType] = useState<'login' | 'regist'>('login')
+  const [type, setType] = useState<'login' | 'regist' |'forget'>('login')
   return (
     <div className={styles['login-wrap']}>
       <div className="login-content">
@@ -13,7 +14,7 @@ function Login1() {
         </div>
         <div className="rg">
           {
-            type === 'login' ? <Login setType={setType}/> : <Register setType={setType}/>
+            type === 'login' ? <Login setType={setType}/> : type === 'regist' ? <Register setType={setType}/>: <Forget  setType={setType}/>
           }
         </div>
       </div>

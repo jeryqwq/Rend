@@ -7,6 +7,8 @@ import { equipmentSaleDetail } from '@/server/rent';
 import { commonRequest, getFiles } from '@/server/common';
 import dayjs from 'dayjs'
 import { mallCart } from '@/server/order';
+import { IdcardOutlined } from '@ant-design/icons'
+
 const { TabPane } = Tabs
 function ProductDetail() {
   const location = useLocation() as any
@@ -100,10 +102,10 @@ function ProductDetail() {
       <div className="lf">
         <div className="item">
         <div className="head-tit" style={{paddingLeft: 10}}>商家</div>
-        <div className="tit-img"> <img src="" alt="" style={{width: 60, height: 60}} />xxx</div>
+        <div className="tit-img"> <img src="" alt="" style={{width: 60, height: 60}} /><span style={{lineHeight: '20px'}}>{productInfo?.organDto?.name}</span></div>
         <div className="person">
-          <div className="label">顺丰认证:</div>
-          <div className="label">经营摩好:xxx</div>
+          <div className="label">身份认证: <IdcardOutlined  style={{color: '#48BC29'}}/></div>
+          {/* <div className="label">经营:xxx</div> */}
         </div>
         <div className="atcion">
           <div className='cur'>联系商家</div>
