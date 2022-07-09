@@ -10,7 +10,7 @@ function AllDevice() {
   const history = useHistory()
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
-    "pages": 10,
+    "pages": 12,
     "size": 12
   })
   const [keyword, setKeyword] = useState(location.query.keyword)
@@ -32,7 +32,7 @@ function AllDevice() {
         method: 'get'
       })
       if(res2.code === '0') {
-        setRlist(res2.data)
+        setRlist(res2.data.slice(0,3))
       }
       const res3 = await commonRequest('/appdict/partsType', { method: 'get' })
       if(res3.code === '0') {

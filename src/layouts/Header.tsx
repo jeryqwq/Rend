@@ -75,6 +75,13 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                     if(res.code === '0') {
                       states = res?.data?.status
                       authRes = res?.data
+                      if(states === 1) {
+                        const res = await getUserInfo()
+                          if(res.code === '0') {
+                           login(res.data)
+                           window.location.reload()
+                          }
+                      }
                     }
                     Modal.confirm({
                       title: '认证提示',
@@ -114,6 +121,13 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                     if(res.code === '0') {
                       states = res?.data?.status
                       authRes = res?.data
+                      if(states === 1) {
+                        const res = await getUserInfo()
+                          if(res.code === '0') {
+                           login(res.data)
+                           window.location.reload()
+                          }
+                      }
                     }
                     Modal.confirm({
                       title: '认证提示',

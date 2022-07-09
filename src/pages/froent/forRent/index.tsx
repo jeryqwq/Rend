@@ -200,6 +200,7 @@ function ForRent() {
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()
+                    location.reload()
                   }
                 }
               }}
