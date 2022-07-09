@@ -10,6 +10,17 @@ function ShopCar() {
   const [total, setTotal] = useState(0)
   const [flag,reload] = useState({})
   const history = useHistory()
+  const [products, setProduct] = useState([])
+  const [isAllChoose, setIsAll] = useState(false)
+  let chooseAll = function(e: any){
+    if(e.target.checked) {
+    setChoose(products)
+    setIsAll(true)
+    }else{
+    setChoose([])
+    setIsAll(false)
+    }
+  }
   useEffect(() => {
     (async () => {
       const res = await commonRequest('/mallCart/myCart', {})
@@ -19,10 +30,12 @@ function ShopCar() {
         res.data?.forEach((i: any) => {
           stores[i.storeId] ? stores[i.storeId].push(i) : (stores[i.storeId] = [i])
         })
+        setProduct(res.data)
         setCarts(stores)
       }
     })()
   }, [flag])
+  
   const totalPrice = choose.map((i:any) => i.productAmount * i.nowPrice).reduce((a: number,b: number) => a + b, 0)
   return (
     <div className='content' style={{paddingTop: 20}}>
@@ -30,7 +43,7 @@ function ShopCar() {
       <table style={{width: '100%', fontSize: 16, color: '#333'}} className={styles.tableWrap}>
         <thead style={{background: '#F2F2F2',border: '1px solid #DCDCDC', height: 60, textAlign: 'center'}}>
           <tr>
-            <td style={{width: 100}}><Checkbox onChange={() => {}}>全选</Checkbox></td>
+            <td style={{width: 100}}><Checkbox onChange={chooseAll} checked={ products.length === choose.length ||  isAllChoose}>全选</Checkbox></td>
             <td style={{width: 420}}>商品信息</td>
             <td style={{width: 130}}>单价</td>
             <td style={{width: 120}}>数量</td>
@@ -42,7 +55,7 @@ function ShopCar() {
          {
           Object.keys(stores).map(storeId => <>
            <tr  style={{width: 100, textAlign: 'center'}}>
-            <td row-gap={6} style={{textAlign: 'left'}}><Checkbox onChange={(e) => {
+            <td row-gap={6} style={{textAlign: 'left'}}><Checkbox checked={stores[storeId].every((i:any) => choose.find((j:any) => j.id === i.id))} onChange={(e) => {
               const val = e.target.checked
               let temp:any = [...choose]
               stores[storeId].forEach((i:any) => {
@@ -53,18 +66,23 @@ function ShopCar() {
                   }else{
                     const idx= temp.findIndex((j:any) => j.id === i.id)
                     idx !== -1 && temp.splice(idx, 1)
+                    setIsAll(false)
                   }
               })
              setChoose(temp)
             }} style={{lineHeight: '20px'}}>{stores[storeId][0]?.storeName}</Checkbox></td>
           </tr>
             {
-              stores[storeId].map((prod: any) =>  <tr className='prods_cont'>
+              stores[storeId].map((prod: any) =>  <tr className='prods_cont' key={prod.id}>
               <td  className='checkbox1'>
                 <Checkbox style={{marginLeft: 25}}  
                   checked={choose.some((i:any) => i.id === prod.id)}
-                  onChange={() => {
+                  onChange={(e) => {
+                    const checked = e.target.checked;
                     const index = choose.findIndex((j:any) => j.id === prod.id)
+                    if(!checked) {
+                      setIsAll(false)
+                    }
                     if(index === -1) {
                       setChoose(choose.concat(prod))
                     }else{
@@ -147,7 +165,7 @@ function ShopCar() {
       </table>
       <div className={ styles.actions }>
        <div className="lf">
-       <Checkbox style={{margin: '0 70px 0 20px'}}>全选</Checkbox>
+       <Checkbox style={{margin: '0 70px 0 20px'}} onClick={chooseAll}  checked={products.length === choose.length ||isAllChoose}>全选</Checkbox>
         <span>删除</span>
         <span style={{margin: '0 100px 0 40px'}}>移入收藏夹</span>
         <span className="prices">
@@ -158,6 +176,10 @@ function ShopCar() {
         <span style={{marginLeft: 50}}>应付总额: <span className='price-bg'>¥{totalPrice}</span></span>
        </div>
         <span className="action" onClick={async () => {
+          if(!choose.length) {
+            message.info('您还未选择结算商品，请选择后下单！')
+            return 
+          }
           let prods: any[] = []
           for (const key in stores) {
             const element = stores[key];

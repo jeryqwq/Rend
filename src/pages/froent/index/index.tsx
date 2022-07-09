@@ -28,6 +28,7 @@ export default function IndexPage() {
   const [sales, setSale] = useState<any[]>([])
   const [news, setNews] = useState<any[]>([])
   const [parts, setParts] =  useState<any[]>([])
+  const [banners, setBanner] = useState<any[]>([])
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType()
@@ -56,18 +57,21 @@ export default function IndexPage() {
       if(res4.code === '0') {
         setSale(res4.data)
       }
-      const res5 = await appNewsPage({
-        size: 3,
-        current: 0
-      })
+      const res5 = await commonRequest('/appnews/findRecomand', { method: 'post' })
       if(res5.code === '0') {
-        setNews(res5.data.records)
+        setNews(res5.data.slice(0, 3))
       }
       const res6 = await commonRequest('/equipmentParts/getRecommList', {
         method: 'get',
       })
       if(res6.code === '0') {
         setParts(res6.data.slice(0,3))
+      }
+      const res7 = await commonRequest('/appnews/findLunbo', {
+        method: 'get'
+      })
+      if(res7.code === '0') {
+        setBanner(res7.data)
       }
     })()
   },[])
@@ -87,19 +91,12 @@ export default function IndexPage() {
           <Menu  onClick={({ key: curKey }) => {
             history.push(curKey)
           }}  mode="horizontal"  items={ MenuRouter } />
-          <Carousel >
-          <div>
-              <img src='/images/bg1.jpeg' style={{width: '100%', height: '100%'}}/>
-          </div>
-          <div>
-            <h3 style={contentStyle}>2</h3>
-          </div>
-          <div>
-            <h3 style={contentStyle}>3</h3>
-          </div>
-          <div>
-            <h3 style={contentStyle}>4</h3>
-          </div>
+          <Carousel autoplay>
+          {
+            banners.map((i: any) => <h3 style={contentStyle}>
+            <img src={i.headUrl} style={{width: '100%', height: '400px'}}/>
+           </h3>)
+          }
           </Carousel>
         </div>
       </div>
