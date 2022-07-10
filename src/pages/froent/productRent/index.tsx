@@ -3,10 +3,11 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 import { Upload, Button, Radio, message } from 'antd'
 import city from '@/constants/city';
-import { getBrands, getDict, getEquipmentType, uploadImg } from '@/server/common';
+import { getBrands, getDict, getEquipmentType, getFiles, uploadImg } from '@/server/common';
 import { PlusOutlined } from '@ant-design/icons'
 import { equipmentLease, equipmentRent } from '@/server/rent';
 import { getUuid } from '@/utils';
+import { useLocation } from 'umi';
  const uploadButton = (
     <div>
       <PlusOutlined />
@@ -20,13 +21,22 @@ function ForRent() {
   const [uuid, setUuid] = useState( getUuid())
   const [prodTypes, setProds] = useState([])
   const [brands, setBrands] = useState([])
-
+  const { state } = useLocation() as any
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType()
       if(res.code === '0') {
-        function trans (items: any[]): any {
-          return items.map((i: any) => ({label: i.name, value: i.id, children: i.children ? trans(i.children) : undefined}))
+        function trans (items: any[], parent?: any): any {
+          return items.map((i: any) => {
+            if(state?.id) {
+              if(state.equipType === i?.id) {
+                formRef.current?.setFieldsValue({
+                  equipType: [parent?.id, state.equipType]
+                })
+              }
+            }
+            return ({label: i.name, value: i.id, children: i.children ? trans(i.children, i) : undefined})
+          })
         }
         setProds(trans(res.data))
       }
@@ -34,12 +44,28 @@ function ForRent() {
       if(res2.code === '0') {
         setBrands(res2.data)
       }
+      if(state?.id) {
+        setUuid(state.id)
+        const res3 = await getFiles(state.id)
+        if(res3.code === '0') {
+          let file1s: any = [], file2:any = []
+          res3?.data?.forEach((i: any) => {
+            if(i.serviceType === 'MAIN_IMG')  {
+              file1s.push(i.path)
+            }else{
+              file2.push(i.path)
+            }
+          })
+          setFileList(file1s)
+          setTotalList(file2)
+        }
+      }
     })()
   }, [])
   return (
     <div className={styles['repaire-wrap']}>
       <div className="repaire-inner">
-      <ProForm submitter={false}  size='large' grid layout='vertical' formRef={formRef}>
+      <ProForm submitter={false}  size='large' grid layout='vertical' initialValues={state} formRef={formRef}>
         <ProForm.Item style={{width: '100%'}}>
         <div className="tit">设备出租</div>
         <div className='stit'>选择发布城市</div>
@@ -129,15 +155,15 @@ function ForRent() {
                 label="设备类型"
               />
               <ProFormSelect
-              colProps={{
-                span: 12
-              }}
-              name="equipBrand"
-              label="设备品牌"
-              options={brands.map((i: any) => ({label: i.brandName, value: i.brandName}))}
-              rules={[{
-                required: true,
-              }]}
+                colProps={{
+                  span: 12
+                }}
+                name="equipBrand"
+                label="设备品牌"
+                options={brands.map((i: any) => ({label: i.brandName, value: i.brandName}))}
+                rules={[{
+                  required: true,
+                }]}
             />
             
             
@@ -213,9 +239,9 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentLease({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1], releaseCityName: values.releaseCityName.join(',')})
+                  const res = await equipmentLease({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1], releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName}, state.id ? 'put':'post')
                   if(res.code === '0') {
-                    message.success('发布成功!')
+                    message.success('保存成功!')
                     location.reload()
                   }
                 }

@@ -1,6 +1,6 @@
 import { ActionType, ProTable } from '@ant-design/pro-components';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { Button,Input, Table, Space, Radio } from 'antd'
+import { Button,Input, Table, Space, Radio, message, Modal } from 'antd'
 import styles from './index.module.less';
 import { commonRequest } from '@/server/common';
 import { useHistory } from 'umi';
@@ -18,6 +18,16 @@ const locaMap = {
   rent: 'rentDetail',
   sall: 'productDetail',
   part: 'partDetail'
+}
+const apiDelMap = {
+  rent: '/equipmentLease',
+  sall: '/equipmentSale',
+  part: '/equipmentParts'
+}
+const addLocMap = {
+  rent: '/productRent',
+  sall: '/sallOld',
+  part: '/addPart'
 }
 function Product() {
   const [params, setParams] = useState({
@@ -79,6 +89,9 @@ function Product() {
         <Radio.Button value="sall">二手设备管理</Radio.Button>
         <Radio.Button value="part">配件管理</Radio.Button>
       </Radio.Group>
+      <Button type='primary' style={{float: 'right'}} onClick={() => {
+        history.push(addLocMap[type])
+      }}>新增</Button>
       <ProTable
         // dataSource={dataList}
         actionRef={tableRef}
@@ -153,8 +166,10 @@ function Product() {
               <br />
               <Button type='link' 
                 onClick={() => {
-                  // const url = { rent: 'productRent', sall: 'sallOld', part }
-                  // history.push()
+                  history.push({
+                    pathname: addLocMap[type],
+                    state: record
+                  })
                 }}
               >修改</Button>
               <br />
@@ -166,7 +181,6 @@ function Product() {
           },
         ]}
         request={async({pageSize, current, ...others}, sort, filter) => {
-            console.log(others, keyword, '---')
             let conditions = []
             others?.status!==undefined && conditions.push({
               column: 'status',
@@ -199,7 +213,6 @@ function Product() {
                 conditions
               },
              })
-            console.log(res.data.records)
             return {
               data: res.data.records,
               total: res.data.total
@@ -207,7 +220,7 @@ function Product() {
         }}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
-            <Input placeholder='编号或商品名查询' style={{width: 140}} onChange={(e) => {
+            <Input placeholder='商品名查询' style={{width: 140}} onChange={(e) => {
               setKeyword(e.target.value)
             }}/>,
             ...dom,
@@ -218,15 +231,56 @@ function Product() {
           // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
           // 注释该行则默认不显示下拉选项
           selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-          // defaultSelectedRowKeys: [1],
         }}
-        tableAlertOptionRender={() => {
+        rowKey="id"
+        tableAlertOptionRender={({selectedRowKeys}) => {
           return (
             <Space size={16}>
-              <a>批量上架</a>
-              <a>批量下架</a>
-              <a>批量删除</a>
-              <a>新增商品</a>
+              <a onClick={async () => {
+                const res = await commonRequest( apiStatusMap[type], {
+                  method: 'put',
+                  data: {
+                    ids: selectedRowKeys,
+                    status: 0
+                  }
+                })
+                if(res.code === '0') {
+                  tableRef.current?.reload()
+                }
+              }}  >批量上架</a>
+              <a
+              onClick={async () => {
+                const res = await commonRequest( apiStatusMap[type], {
+                  method: 'put',
+                  data: {
+                    ids: selectedRowKeys,
+                    status: -1
+                  }
+                })
+                if(res.code === '0') {
+                  tableRef.current?.reload()
+                }
+              }}
+              >批量下架</a>
+              <a
+                onClick={async () => {
+                  Modal.confirm({
+                    title: '提示',
+                    content: '该操作会删除选中的数据，是否继续？',
+                    onOk: async() => {
+                      const res = await commonRequest( apiDelMap[type], {
+                        method: 'delete',
+                        data: {
+                          ids: selectedRowKeys
+                        }
+                      })
+                      if(res.code === '0') {
+                        tableRef.current?.reload()
+                      }
+                    }
+                  })
+                }}
+              >批量删除</a>
             </Space>
           );
         }}

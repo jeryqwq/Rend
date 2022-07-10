@@ -85,9 +85,16 @@ border-radius: 22px;
       justify-content: space-between;
      max-height: 160px;
       overflow: scroll;
+      flex-wrap: wrap;
       margin-top: 14px;
-      .item{
+      .item-info{
         width: 30%;
+       >.lf{
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow:ellipsis;
+        max-width: 260px;
+       }
       }
     }
     .tit{

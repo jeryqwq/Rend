@@ -19,7 +19,7 @@ function User({ children }: { children: React.ReactNode }) {
           <div className={`item ${pathname === '/userCenter/address' && 'cur'}`} onClick={() => history.push('/userCenter/address')}>地址管理</div>
           <div style={{marginTop: 25, borderBottom: 'solid 1px #DCDCDC'}}></div>
           <div className="tit">交易管理</div>
-          <div className={`item ${pathname === '/userCenter/order' && 'cur'}`} onClick={() => history.push('/userCenter/order')}>我的订单</div>
+          <div className={`item ${pathname === '/userCenter/myRepair' && 'cur'}`} onClick={() => history.push('/userCenter/myRepair')}>我的维修</div>
           {/* <div className={`item ${pathname === '/userCenter/soldServer' && 'cur'}`} onClick={() => history.push('/userCenter/soldServer')}>售后服务</div> */}
         </div>
         <div className="rg"> {children}</div>

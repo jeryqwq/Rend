@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.less';
 import { Button, Input, Dropdown, Menu } from 'antd';
-import {EditOutlined} from '@ant-design/icons';
 import {  ShowSaleRouter } from '@/routers';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
 import Line from './Line';
@@ -21,14 +20,13 @@ function Header() {
       <div className='content'>
         <div className={styles.headerWrap} >
           <div className={styles.lf}>
-            <img src='/icons/head.png'/>
+            <img src='/icons/head.png' style={{cursor: 'pointer'}} onClick={() => { history.push('/') }}/>
           </div>
           <div className={styles.rg }>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 55}}>
               <Menu style={{width: 700}} onClick={({ key: curKey }) => {history.push(curKey)}}  mode="horizontal" theme='light' items={
               ShowSaleRouter
               } />
-              <Button size='large' type='primary' style={{width: 150, height: 44}}><EditOutlined />快速发布</Button>
             </div>
           </div>
         </div>

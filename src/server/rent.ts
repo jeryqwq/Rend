@@ -6,23 +6,23 @@ export function equipmentRent (data: any) {
   })
 }
 
-export function equipmentSale (data: any) {
+export function equipmentSale (data: any, method = 'post') {
   return request("/equipmentSale", {
     data,
-    method: 'post'
+    method
   })
 }
-export function equipmentLease (data: any) {
+export function equipmentLease (data: any, method = 'post') {
   return request("/equipmentLease", {
     data,
-    method: 'post'
+    method
   })
 }
 
-export function equipmentPurchase (data: any) {
+export function equipmentPurchase (data: any, method = 'post') {
   return request("/equipmentPurchase", {
     data,
-    method: 'post'
+    method
   })
 }
 export function equipmentPartPage (data: any) { // 二手出售

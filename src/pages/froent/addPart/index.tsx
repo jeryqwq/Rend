@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 import { Upload, Button, Radio, message } from 'antd'
 import city from '@/constants/city';
-import { getBrands, getDict, getEquipmentType, getFiles, uploadImg } from '@/server/common';
+import { commonRequest, getBrands, getDict, getEquipmentType, getFiles, uploadImg } from '@/server/common';
 import { PlusOutlined } from '@ant-design/icons'
 import { equipmentRent, equipmentSale } from '@/server/rent';
 import { getUuid } from '@/utils';
@@ -16,50 +16,25 @@ import { useLocation } from 'umi';
   );
 function ForRent() {
   const [fileList, setFileList] = useState([])
-  const [fileList_total, setTotalList] = useState([])
   const formRef = useRef<ProFormInstance>()
   const [uuid, setUuid] = useState( getUuid())
-  const [prodTypes, setProds] = useState([])
+  const [prodTypes, setPartType] = useState([])
   const [brands, setBrands] = useState([])
   const { state } = useLocation() as any
 
   useEffect(() => {
     (async () => {
-      const res = await getEquipmentType()
-      if(res.code === '0') {
-        function trans (items: any[], parent?: any): any {
-          return items.map((i: any) => {
-            if(state?.id) {
-              if(state.equipType === i?.id) {
-                formRef.current?.setFieldsValue({
-                  equipType: [parent?.id, state.equipType]
-                })
-              }
-            }
-            return ({label: i.name, value: i.id, children: i.children ? trans(i.children, i) : undefined})
-          })
-        }
-        setProds(trans(res.data))
+      const res3 = await commonRequest('/appdict/partsType', { method: 'get' })
+      if(res3.code === '0') {
+        setPartType(res3.data?.map((i: any) => ({ label: i.name ,value: i.code })))
       }
-      const res2 = await getBrands()
-      if(res2.code === '0') {
-        setBrands(res2.data)
+      const res4 = await commonRequest('/appdict/partsBrand', { method: 'get' })
+      if(res4.code === '0') {
+        setBrands(res4.data?.map((i: any) => ({ label: i.name ,value: i.code })))
       }
       if(state?.id) {
         setUuid(state.id)
-        const res3 = await getFiles(state.id)
-        if(res3.code === '0') {
-          let file1s: any = [], file2:any = []
-          res3?.data?.forEach((i: any) => {
-            if(i.serviceType === 'MAIN_IMG')  {
-              file1s.push(i.path)
-            }else{
-              file2.push(i.path)
-            }
-          })
-          setFileList(file1s)
-          setTotalList(file2)
-        }
+        setFileList([state.mainImgPath])
       }
     })()
   }, [])
@@ -68,7 +43,7 @@ function ForRent() {
       <div className="repaire-inner">
       <ProForm submitter={false}  size='large' initialValues={state} grid layout='vertical' formRef={formRef}>
         <ProForm.Item style={{width: '100%'}}>
-        <div className="tit">出售二手设备</div>
+        <div className="tit">配件{ state?.id ? '编辑': '新增' }</div>
         <div className='stit'>选择发布城市</div>
           <ProFormCascader label="当前发布城市" 
                colProps={{
@@ -84,7 +59,7 @@ function ForRent() {
               }}
               name="releaseCityName"
             />
-            <ProFormText label="设备名称" name="equipName"  rules={[{
+            <ProFormText label="零件名称" name="partsName"  rules={[{
                 required: true,
               }]}
               colProps={{
@@ -104,42 +79,29 @@ function ForRent() {
               }]}
             />
           </ProForm.Item>
-
-        <div className='stit'>设备图片</div>
-        <ProForm.Item required label="整体外观" style={{width: '100%'}}>
+        <div className='stit'>零件图片</div>
+        <ProFormText name="mainImgPath" hidden/>
+        <ProForm.Item required label="零件图片" style={{width: '100%'}}>
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
-                maxCount={5}
+                maxCount={1}
                 fileList={fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'MAIN_IMG',sort: fileList.length })
                   if(res.code === '0') {
-                    setFileList(fileList.concat(res.data.path))
+                    formRef.current?.setFieldsValue({
+                      mainImgPath: res.data.path
+                    })
+                    setFileList([res.data.path])
                   }
                 }}
               >
                 {fileList.length >= 8 ? null : uploadButton}
               </Upload>
         </ProForm.Item>
-        <ProForm.Item required label="细节展示" style={{width: '100%'}}>
-          <Upload
-                listType="picture-card"
-                accept='.png,.jpg,.jpeg' 
-                maxCount={10}
-                fileList={fileList_total.map(i => ({ url:  '/lease-center/' + i, uid: i, name: '预览图'}))}
-                onChange={async (e) => {
-                  const file = e.file.originFileObj
-                  const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'DETAIL_IMG', sort: fileList_total.length  })
-                  if(res.code === '0') {
-                    setTotalList(fileList_total.concat(res.data.path))
-                  }
-                }}
-              >
-                {fileList_total.length >= 8 ? null : uploadButton}
-              </Upload>
-        </ProForm.Item>
+       
         <div className='stit' style={{width: '100%'}}>基本信息</div>
         <ProFormCascader
                 colProps={{
@@ -152,16 +114,16 @@ function ForRent() {
                   options: prodTypes,
                   showSearch: true
                 }}
-                name="equipType"
-                label="设备类型"
+                name="partsType"
+                label="零件类型"
               />
               <ProFormSelect
               colProps={{
                 span: 12
               }}
-              name="equipBrand"
-              label="设备品牌"
-              options={brands.map((i: any) => ({label: i.brandName, value: i.brandName}))}
+              name="partsBrand"
+              label="零件品牌"
+              options={brands}
               rules={[{
                 required: true,
               }]}
@@ -173,8 +135,8 @@ function ForRent() {
                 span: 12
               }}
               placeholder="如： 307E"
-              name="equipModel"
-              label="设备型号"
+              name="partsModel"
+              label="零件型号"
               rules={[{
                 required: true,
               }]}
@@ -190,16 +152,7 @@ function ForRent() {
                 required: true,
               }]}
             />
-              <ProFormDigit label="工作小时数"
-                colProps={{
-                  span: 12
-                }}
-                name='workTime'
-                rules={[{
-                  required: true,
-                }]}
-              />
-              <ProFormDigit label="整机序列号"
+              <ProFormDigit label="序列号"
                 colProps={{
                   span: 12,
                 }}
@@ -215,7 +168,7 @@ function ForRent() {
               rules={[{
                 required: true,
               }]}
-              name="salePrice"
+              name="price"
               label="出售价格"
               />
             <ProFormTextArea 
@@ -228,7 +181,7 @@ function ForRent() {
               }}
               
               name="description"
-              placeholder="请对设备的技术参数、设备状况、提供的配套辅件、服务项目、服务商实力进行说明（限200字）"
+              placeholder="请对零件的技术参数、零件状况、提供的配套辅件、服务项目、服务商实力进行说明（限200字）"
               label="详细说明"/>
            
           </ProForm>
@@ -238,9 +191,13 @@ function ForRent() {
                 const values = await formRef.current?.validateFields()
                 if(values) {
                   // const values = formRef.current?.getFieldsValue()
-                  const res = await equipmentSale({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1],releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName}, state.id ? 'put':'post')
+                  // const res = await equipmentSale(, state?.id ? 'put':'post')
+                  const res = await commonRequest('/equipmentParts', {
+                    method: state?.id ? 'put':'post',
+                    data: {...state,...values, id: uuid, partsType: values.partsType[values.partsType.length - 1],releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName}
+                  })
                   if(res.code === '0') {
-                    message.success('发布成功!')
+                    message.success('保存成功!')
                     formRef.current?.resetFields()
                     location.reload()
                   }

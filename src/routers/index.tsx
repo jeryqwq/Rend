@@ -29,7 +29,9 @@ const saleRouter = {
       key: '/saler/repair',
       exact: true,
       component: '@/pages/back/repair/index',
-    }
+    },
+   
+    
   ]
 }
   const routes  = { path: '/', component: '@/layouts/index', routes:[
@@ -81,6 +83,27 @@ const saleRouter = {
     key: '/news/detail',
     path:'/news/detail',
     component: '@/pages/froent/news/detail',
+    hide: true
+  },
+  {
+    label: '新增零件',
+    key: '/addPart',
+    path:'/addPart',
+    component: '@/pages/froent/addPart',
+    hide: true
+  },
+  {
+    label: '新增课程',
+    key: '/addCourse',
+    path:'/addCourse',
+    component: '@/pages/froent/addCourse',
+    hide: true
+  },
+  {
+    label: '课程详情',
+    key: '/courseDetail',
+    path:'/courseDetail',
+    component: '@/pages/froent/courseDetail',
     hide: true
   },
   {
@@ -210,6 +233,13 @@ const saleRouter = {
         key: '/userCenter/address',
         path:'/userCenter/address',
         component: '@/pages/froent/address',
+      }
+      ,{
+        path: '/userCenter/myRepair',
+        label: '维修管理',
+        key: '/userCenter/myRepair',
+        exact: true,
+        component: '@/pages/back/myRepair/index',
       }
     ]
   },

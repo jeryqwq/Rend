@@ -1,51 +1,137 @@
-import React from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
-import {Button, Pagination} from 'antd'
+import {Button, message} from 'antd'
+import { ActionType, ProTable } from '@ant-design/pro-components';
+import { commonRequest } from '@/server/common';
+import { useHistory } from 'umi';
 function Repair() {
+  const history = useHistory()
+  const tableRef = useRef<ActionType>()
+  const [typeEnum, setEnum] = useState({})
+  useEffect(() => {
+    (async() => {
+      const res = await commonRequest('/mallBrandInfo/all', { method: 'post', data: {} })
+      if(res.code === '0') {
+        let _data:any = {}
+        res.data.forEach((i: any) => {
+          _data[i.brandName] = i.brandName
+        })
+        setEnum(_data)
+      }
+    })()
+  }, [])
   return (
    <div className='content'>
      <div className={styles['repair-wrap']}>
       <div className="tit">
         <span style={{background: 'white', paddingRight: 10}}>维修管理</span>
       </div>
-      <table >
-        <thead>
-          <tr>
-            <td>需求ID</td>
-            <td>品牌</td>
-            <td>型号</td>
-            <td>问题描述</td>
-            <td>照片</td>
-            <td>名字</td>
-            <td>城市</td>
-            <td>手机号</td>
-            <td>状态</td>
-            <td>操作</td>
-          </tr>
-        </thead>
-        <tbody>
-         {
-          new Array(5).fill(1).map(i =>  <tr>
-            <td>1111</td>
-            <td>1111</td>
-            <td>1111</td>
-            <td>1111</td>
-            <td><img style={{width: 80, height: 80}}/></td>
-            <td>1111</td>
-            <td>1111</td>
-            <td>1111</td>
-            <td>1111</td>
-            <td><Button type={'link'}>接单</Button></td>
-          </tr>)
-         }
-        </tbody>
-      </table>
+      <Button type='primary' style={{float: 'right'}} onClick={() => {
+        history.push('/repair')
+      }}>新增</Button>
+      <ProTable 
+        columns={[
+          {
+            dataIndex: 'id',
+            title: '需求ID',
+            ellipsis: true,   
+            copyable: true,
+            hideInSearch: true
+          },
+          {
+            dataIndex: 'equipBrand',
+            title: '品牌',
+            valueEnum: typeEnum,
+            valueType: 'select'
+          },
+          {
+            dataIndex: 'equipModel',
+            title: '型号',
+            
+          },
+          {
+            dataIndex: 'mainImgPath',
+            title: '照片',
+            render(text) {
+              return <img src={"/lease-center/" + text} style={{width: 80, height: 80}}/>
+            },
+            hideInSearch: true
+          },
+          {
+            dataIndex: 'problemDesc',
+            title: '描述',
+            ellipsis: true, 
+            width: 350
+          }, {
+            dataIndex: 'releaseCityName',
+            title: '城市',
+            hideInSearch: true
+          }, {
+            dataIndex: 'contactNumber',
+            title: '手机号',
+            hideInSearch: true
+          },
+          {
+            dataIndex: 'id',
+            title: '操作',
+            hideInSearch: true,
+            render(text){
+              return <Button type="link" onClick={async () => {
+                const res = await commonRequest('/equipmentRepairInfo/doTakeOrder', {
+                  method: 'get',
+                  params: {
+                    id: text
+                  }
+                })
+                if(res.code === '0') {
+                  message.success('接单成功！')
+                  tableRef.current?.reload()
+                }
+              }}>接单</Button>
+            }
+          },
+        ]}
+        pagination={
+          {
+            pageSize: 10
+          }
+        }
+        actionRef={tableRef}
+        request={async ({pageSize, current, ...others}) => {
+          let conditions = []
+          others?.equipBrand !==undefined && conditions.push({
+            column: 'equip_brand',
+            operator: 'eq',
+            value: others?.equipBrand
+          })
+          others?.equipModel !==undefined && conditions.push({
+            column: 'equip_model',
+            operator: 'like',
+            value: others?.equipModel
+          })
+          others?.problemDesc !==undefined && conditions.push({
+            column: 'problem_desc',
+            operator: 'like',
+            value: others?.problemDesc
+          })
+          const res = await commonRequest('/equipmentRepairInfo/pageWait', {
+            data:{
+              size: pageSize,
+             current,
+             conditions
+            },
+            method: 'post'
+          })
+          if(res.code === '0') {
+            return {
+              data: res.data.records,
+              total: res.data.total
+            }
+          }
+          return { }
+        }}
+      />
          <div className='page-wrap'>
-         <Pagination 
-         showQuickJumper
-      onChange={(num: number, size) => {
-        
-       }} current={1} defaultCurrent={1} total={40}/>
          </div>
     </div>
    </div>

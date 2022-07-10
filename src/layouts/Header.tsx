@@ -31,7 +31,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
       <div className='content'>
         <div className={styles.headerWrap} >
           <div className={styles.lf}>
-            <img src='/icons/head.png'/>
+            <img src='/icons/head.png' style={{cursor: 'pointer'}} onClick={() => { history.push('/') }}/>
           </div>
           <div className={styles.rg}>
             <Button.Group>

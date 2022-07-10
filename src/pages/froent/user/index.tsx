@@ -20,7 +20,7 @@ function User() {
       method: 'post',
       data:{
         "current": 0,
-        size: 10
+        size: 99999
       }
     })
     if(res.code === '0') {

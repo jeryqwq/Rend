@@ -53,7 +53,7 @@ function Order() {
             orderDetail?.details?.map((i:any) =>  <tr  style={{textAlign: 'center'}}>
             <td><img src={'/lease-center/' + i.mainImgPath} alt=""  style={{width: 100, height: 100, marginLeft: 20}}/></td>
             <td style={{lineHeight: '30px'}}>{i.equipName}
-            <div style={{color: '#999', fontSize: 14}}>{i.equipBrand + ' ' + i.equipModel} </div>
+            {/* <div style={{color: '#999', fontSize: 14}}>{i.equipBrand + ' ' + i.equipModel} </div> */}
             </td>
             <td>{i.equipPrice}</td>
             <td>{i.equipAmount}</td>

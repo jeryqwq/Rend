@@ -1,60 +1,122 @@
-import { ProTable } from '@ant-design/pro-components';
-import React from 'react';
-import { Button,Input, Table, Space } from 'antd'
+import { ActionType, ProTable } from '@ant-design/pro-components';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button,Input, Table, Space, Modal } from 'antd'
+import {EditOutlined} from '@ant-design/icons';
 import styles from './index.module.less';
+import { useHistory } from 'umi';
+import { commonRequest } from '@/server/common';
 function Product() {
+  const history = useHistory()
+  const [courseType, setType] = useState<any>({});
+  const tableRef = useRef<ActionType>()
+  const [keyword, setKeyword] = useState('')
+  useEffect(() => {
+    (async() => {
+      const res = await commonRequest('/appdict/kcpxlx', { method: 'get' })
+      if(res.code === '0') {
+        let _data:any = {}
+        res.data?.forEach((i:any) => {
+          _data[i.code] = i.name
+        })
+        setType(_data)
+      }
+    })()
+  }, [])
   return (
     <div className='content' >
       <div className={styles.wrap}>
       <div className="tit">
         <span style={{background: 'white', paddingRight: 10}}>培训管理</span>
+      <Button size='large' 
+      onClick={() => {
+        history.push('/addCourse')
+      }}
+      type='primary' style={{float: 'right', marginTop: 10}}>新增</Button>
       </div>
       <ProTable
-        request={async () => {
+        actionRef={tableRef}
+        request={async ({pageSize, current, ...others}) => {
+          let conditions = []
+          others?.status!==undefined && conditions.push({
+            column: 'status',
+            operator: 'eq',
+            value: others?.status
+          })
+          others?.courseTypeText!==undefined && conditions.push({
+            column: 'course_type',
+            operator: 'eq',
+            value: others?.courseTypeText
+          })
+          keyword &&  conditions.push({
+            column:'course_name',
+            operator: 'like',
+            value: keyword
+          })
+          const res2 = await commonRequest('/trainingCourse/page', { method: 'post',
+          data: {
+            size: pageSize,
+            current,
+            conditions
+          },})
+          if(res2.code !== '0') {
+            return {}
+          }
           return {
-            total: 10,
-            data: new Array(8).fill(1).map(i => ({})),
-            size: 8,
+            total: res2.data.total,
+            data: res2.data.records,
+            size: pageSize,
           }
         }}
         columns={[
           {
-            title: '商品ID',
+            title: '课程ID',
             dataIndex: 'id',
+            hideInSearch: true,
+            copyable: true
+          },
+          {
+            title: '课程标题',
+            dataIndex: 'courseName',
             hideInSearch: true
           },
           {
-            title: '商品标题',
-            dataIndex: 'id',
-            hideInSearch: true
-
+            title: '课程类型',
+            dataIndex: 'courseTypeText',
+            valueEnum:courseType
           },
           {
-            title: '设备类型',
-            dataIndex: 'id'
-          },
+          title: '缩略图',
+          dataIndex: 'mainImgPath',
+          hideInSearch: true,
+          render(text){
+            return <img src={'/lease-center/' + text} alt="" style={{width: 80,height:80 }} />
+          }
+         },
           {
-            title: '设备型号',
-            dataIndex: 'id'
-          },
-          {
-            title: '缩略图',
-            dataIndex: 'id',
+            title: '发布地区',
+            dataIndex: 'releaseCityName',
             hideInSearch: true
           }, {
-            title: '所在地',
-            dataIndex: 'id',
+            title: '价格',
+            dataIndex: 'price',
             hideInSearch: true
-
-          }, {
-            title: '租金',
-            dataIndex: 'id',
-            hideInSearch: true
-
           },
           {
             title: '状态',
-            dataIndex: 'id',
+            dataIndex: 'status',
+            valueEnum:{
+              '0': '上架',
+              '-1': '下架'
+            }
+          },
+          {
+            title: '是否推荐',
+            dataIndex: 'isRecomm',
+            valueEnum: {
+              '0': '是',
+              '-1': '否'
+            },
+            hideInSearch: true
           },
           {
             title: '操作',
@@ -62,41 +124,144 @@ function Product() {
             hideInSearch: true,
             renderText(text, record, index, action) {
               return <>
-              <Button type='link'>上架</Button>
+              <Button type='link' onClick={async () => {
+               const res = await commonRequest('/trainingCourse/batchShelf', {
+                method: 'put',
+                data: {
+                  ids: [record.id],
+                 status: record.status === 0 ? -1 : 0
+                }
+               })
+               if(res.code === '0') {
+                tableRef.current?.reload()
+               }
+              }}>{ record.status === 0 ? '下架' : '上架' }</Button>
               <br />
-              <Button type='link'>修改</Button>
+              <Button type='link' onClick={async () => {
+               const res = await commonRequest('/trainingCourse/batchRecommed', {
+                method: 'put',
+                data: {
+                  ids: [record.id],
+                 status: record.isRecomm === 0 ? -1 : 0
+                }
+               })
+               if(res.code === '0') {
+                tableRef.current?.reload()
+               }
+              }}>{ record.isRecomm === 0 ? '非推荐' : '推荐' }</Button>
               <br />
-
-              <Button type='link'>预览</Button>
+              <Button type='link'
+                onClick={() => {
+                  history.push({
+                    pathname: '/addCourse',
+                    state: record
+                  })
+                }}
+              >修改</Button>
+              <br />
+              <Button type='link' onClick={() => {
+                history.push(`/courseDetail?id=${record.id}`)
+              }}>预览</Button>
               </>
             },
           },
         ]}
         search={{
           optionRender: (searchConfig, formProps, dom) => [
-            <Input placeholder='编号或商品名查询' style={{width: 140}}/>,
+            <Input placeholder='商品名查询' style={{width: 140}} onChange={(e) => {
+              setKeyword(e.target.value)
+            }}/>,
             ...dom,
            ,
           ],
         }}
+        rowKey="id"
         rowSelection={{
           // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
           // 注释该行则默认不显示下拉选项
           selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
-          // defaultSelectedRowKeys: [1],
         }}
-        tableAlertOptionRender={() => {
+        tableAlertOptionRender={({selectedRowKeys}) => {
           return (
             <Space size={16}>
-              <a>批量上架</a>
-              <a>批量下架</a>
-              <a>批量删除</a>
-              <a>新增商品</a>
+              <a onClick={async () => {
+                const res = await commonRequest('/trainingCourse/batchShelf', {
+                  method: 'put',
+                  data: {
+                    ids: selectedRowKeys,
+                    status: 0
+                  }
+                })
+                if(res.code === '0') {
+                  tableRef.current?.reload()
+                }
+              }}  >批量上架</a>
+              <a
+              onClick={async () => {
+                const res = await commonRequest('/trainingCourse/batchShelf', {
+                  method: 'put',
+                  data: {
+                    ids: selectedRowKeys,
+                    status: -1
+                  }
+                })
+                if(res.code === '0') {
+                  tableRef.current?.reload()
+                }
+              }}
+              >批量下架</a>
+               <a
+                onClick={async () => {
+                  const res = await commonRequest('/trainingCourse/batchRecommed', {
+                    method: 'put',
+                    data: {
+                      ids: selectedRowKeys,
+                     status: 0
+                    }
+                   })
+                   if(res.code === '0') {
+                    tableRef.current?.reload()
+                   }
+                }}
+              >批量推荐</a>
+               <a
+                onClick={async () => {
+                  const res = await commonRequest('/trainingCourse/batchRecommed', {
+                    method: 'put',
+                    data: {
+                      ids: selectedRowKeys,
+                     status: -1
+                    }
+                   })
+                   if(res.code === '0') {
+                    tableRef.current?.reload()
+                   }
+                }}
+              >批量非推荐</a>
+              <a
+                onClick={async () => {
+                  Modal.confirm({
+                    title: '提示',
+                    content: '该操作会删除选中的数据，是否继续？',
+                    onOk: async() => {
+                      const res = await commonRequest('/trainingCourse', {
+                        method: 'delete',
+                        data: {
+                          ids: selectedRowKeys
+                        }
+                      })
+                      if(res.code === '0') {
+                        tableRef.current?.reload()
+                      }
+                    }
+                  })
+                }}
+              >批量删除</a>
             </Space>
           );
         }}
         options={false}
-        tableExtraRender={() => <span style={{color: '#858585', fontSize: 18, padding: '0 30px'}}>商品总数: 50   已上架: 40   已下架: 10</span>}
+        tableExtraRender={() => <span style={{color: '#858585', fontSize: 18, padding: '0 30px'}}>商品总数: {tableRef.current?.pageInfo?.total}</span>}
       />
       </div>
     </div>

@@ -11,7 +11,7 @@ function Message() {
   const [total, setTotal] = useState(0)
   useEffect(() => {
     (async() => {
-      const res = commonRequest('/appnotice/page', {
+      const res = await commonRequest('/appnotice/page', {
         method: 'post',
         data:{
           ...params
@@ -22,7 +22,7 @@ function Message() {
         setTotal(res.data.total)
       }
     })()
-  },[])
+  },[params])
   return (
     <div className={styles['msg-wrap']}>
      {
