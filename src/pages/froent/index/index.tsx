@@ -29,6 +29,8 @@ export default function IndexPage() {
   const [news, setNews] = useState<any[]>([])
   const [parts, setParts] =  useState<any[]>([])
   const [banners, setBanner] = useState<any[]>([])
+  const [course, setCourse] =  useState<any[]>([])
+
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType()
@@ -72,6 +74,12 @@ export default function IndexPage() {
       })
       if(res7.code === '0') {
         setBanner(res7.data)
+      }
+      const res8 = await commonRequest('/trainingCourse/getRecommList', {
+        method: 'get'
+      })
+      if(res8.code === '0') {
+        setCourse(res8.data)
       }
     })()
   },[])
@@ -170,7 +178,7 @@ export default function IndexPage() {
           <h2 className='title'>培训课程</h2>
           <Row gutter={18}>
             {
-              new Array(3).fill(1).map(i => <Col><CourseItem /></Col>)
+             course.map(i => <Col><CourseItem item={i}/></Col>)
             }
           </Row>
         </div>

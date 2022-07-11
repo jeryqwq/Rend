@@ -106,15 +106,15 @@ function Product() {
             dataIndex: 'status',
             valueEnum:{
               '0': '上架',
-              '-1': '下架'
+              '1': '下架'
             }
           },
           {
             title: '是否推荐',
             dataIndex: 'isRecomm',
             valueEnum: {
-              '0': '是',
-              '-1': '否'
+              '1': '是',
+              '0': '否'
             },
             hideInSearch: true
           },
@@ -142,13 +142,13 @@ function Product() {
                 method: 'put',
                 data: {
                   ids: [record.id],
-                 status: record.isRecomm === 0 ? -1 : 0
+                 status: record.isRecomm === 0 ? 1 : 0
                 }
                })
                if(res.code === '0') {
                 tableRef.current?.reload()
                }
-              }}>{ record.isRecomm === 0 ? '非推荐' : '推荐' }</Button>
+              }}>{ record.isRecomm === 0 ? '推荐' : '非推荐' }</Button>
               <br />
               <Button type='link'
                 onClick={() => {

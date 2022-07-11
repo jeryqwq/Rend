@@ -6,13 +6,15 @@ import styles from './index.module.less';
 import { request } from 'umi';
 import { getCode, getLoginFwxy, regist } from '@/server/login';
 import { uploadImg } from '@/server/common';
+let interval:any
 function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
   const [userInfo, setUserInfo ] = useState({})
   const personRef = useRef<ProFormInstance>()
   const compRef = useRef<ProFormInstance>()
-
+  const timer = useRef(60)
   const [checked, setChecked] = useState(false)
   const [logOrReg, setLogOrReg] = useState<'person' | 'comp'>('person')
+  const [, set] = useState({})
   return (
     <div >
       
@@ -41,12 +43,29 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 fieldProps={{
                   addonAfter: <a onClick={async () => {
                     if(!personRef.current?.getFieldError('phone').length) {
-                      const res = await getCode({ phone: personRef.current?.getFieldValue('phone'), service: 'register' })
-                      if(res.code === '0') {
-                        message.success('验证码发送成功，请在手机短信查看')
+                      if(!personRef.current?.getFieldValue('phone')) {
+                        message.error('请填写电话号码')
+                      }
+                      if(interval) {
+                        return
+                      }else{
+                        const res = await getCode({ phone: personRef.current?.getFieldValue('phone'), service: 'register' })
+                        if(res.code === '0') {
+                          message.success('验证码发送成功，请在手机短信查看')
+                          interval = setInterval(() => {
+                            if(timer.current <= 0 ) {
+                              clearInterval(interval)
+                              timer.current = 60
+                              interval = undefined
+                            }else{
+                              timer.current =  timer.current -1
+                            }
+                            set({})
+                          }, 1000)
+                        }
                       }
                     }
-                  }}>发送验证码</a>
+                  }}>{ !interval ? '发送验证码' : timer.current}</a>
                 }}
               />
                <ProFormText name='password'
@@ -113,12 +132,31 @@ function Register({ setType }: {setType: (_:'login' | 'regist') => void}) {
                 fieldProps={{
                   addonAfter: <a onClick={async () => {
                     if(!compRef.current?.getFieldError('phone').length) {
-                      const res = await getCode({ phone: compRef.current?.getFieldValue('phone'), service:  'register'})
-                      if(res.code === '0') {
-                        message.success('验证码发送成功，请在手机短信查看')
+                      if(!compRef.current?.getFieldValue('phone')) {
+                        message.error('请填写电话号码')
                       }
+                      if(interval) {
+                        return
+                      }else{
+                        const res = await getCode({ phone: compRef.current?.getFieldValue('phone'), service:  'register'})
+                        if(res.code === '0') {
+                          message.success('验证码发送成功，请在手机短信查看')
+                          interval = setInterval(() => {
+                            if(timer.current <= 0 ) {
+                              clearInterval(interval)
+                              interval = undefined
+                              timer.current = 60
+                            }else{
+                              timer.current =  timer.current -1
+                            }
+                            set({})
+                          }, 1000)
+                        }
+                      }
+                      
+                     
                     }
-                  }}>发送验证码</a>
+                  }}>{ !interval ? '发送验证码' : timer.current}</a>
                 }}
               />
                <ProFormText name='password'

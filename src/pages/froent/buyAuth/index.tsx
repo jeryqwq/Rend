@@ -26,6 +26,7 @@ function Repair() {
   const userId = user.user.id
   const formRef = useRef<ProFormInstance>()
   const history = useHistory()
+
   useEffect(() => {
     (async () => {
       const res = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 2 } })
@@ -35,11 +36,23 @@ function Repair() {
         if(res.data.status === 1) {
           message.info('您已认证过，不需要认证了')
           history.push('/')
+        }else{
+          setFileList([res?.data?.yyzzUrl])
+          setFileList1([res?.data?.cardUrl1])
+          setFileList2([res?.data?.cardUrl2])
+          setOthers(res?.data?.otherUrl.split(','))
         }
-        setFileList([res?.data?.yyzzUrl])
-        setFileList1([res?.data?.cardUrl1])
-        setFileList2([res?.data?.cardUrl2])
-        setOthers(res?.data?.otherUrl.split(','))
+       }else{
+        const res2 = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 1 } })
+        if(res2.code === '0') {
+          if(res2.data) {
+            formRef.current?.setFieldsValue(res2.data)
+            setFileList([res2?.data?.yyzzUrl])
+            setFileList1([res2?.data?.cardUrl1])
+            setFileList2([res2?.data?.cardUrl2])
+            setOthers(res2?.data?.otherUrl.split(','))
+          }
+        }
        }
       }
      })()
@@ -51,9 +64,10 @@ function Repair() {
       <div className="repaire-inner">
       <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
       <h1>企业信息</h1>
-
-        <ProForm formRef={formRef} submitter={false}  grid size='large' >
-          <ProFormText
+        <ProForm formRef={formRef} submitter={false}  grid size='large'  >
+         {
+          user.user.type !== 2 && <>
+           <ProFormText
             colProps={{
               span: 12
             }}
@@ -103,6 +117,8 @@ function Repair() {
                 {yyzzUrlfileList.length >= 8 ? null : uploadButton}
               </Upload>
         </ProForm.Item>
+          </> 
+         }
         <div className='stit' style={{width: '100%'}}>联系方式</div>
           <ProFormText 
             colProps={{

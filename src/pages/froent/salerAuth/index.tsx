@@ -9,7 +9,6 @@ import { PlusOutlined } from '@ant-design/icons'
 import { equipmentRepairInfo } from '@/server/rent';
 import { useHistory } from 'umi';
 import useUserInfo from '@/hooks/useLogin';
-
 const uploadButton = (
   <div>
     <PlusOutlined />
@@ -41,6 +40,17 @@ function Repair() {
         setFileList1([res?.data?.cardUrl1])
         setFileList2([res?.data?.cardUrl2])
         setOthers(res?.data?.otherUrl.split(','))
+       }else{
+        const res2 = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 2 } })
+        if(res2.code === '0') {
+          if(res2.data) {
+            formRef.current?.setFieldsValue(res2.data)
+            setFileList([res2?.data?.yyzzUrl])
+            setFileList1([res2?.data?.cardUrl1])
+            setFileList2([res2?.data?.cardUrl2])
+            setOthers(res2?.data?.otherUrl.split(','))
+          }
+        }
        }
      }
     })()
@@ -54,7 +64,9 @@ function Repair() {
       <h1>企业信息</h1>
 
         <ProForm formRef={formRef} submitter={false}  grid size='large' >
-          <ProFormText
+         {
+          user.user.type !==2 && <>
+           <ProFormText
             colProps={{
               span: 12
             }}
@@ -102,6 +114,8 @@ function Repair() {
                 {yyzzUrlfileList.length >= 8 ? null : uploadButton}
               </Upload>
         </ProForm.Item>
+          </>
+         }
         <div className='stit' style={{width: '100%'}}>联系方式</div>
           <ProFormText 
             colProps={{
