@@ -25,7 +25,9 @@ function ForRent() {
       <div className="repaire-inner">
         <div className="tit">租用设备</div>
         <div className='stit'>选择发布城市</div>
-        <ProForm submitter={false}  grid size='large' formRef={formRef}>
+        <ProForm submitter={false}  grid size='large' formRef={formRef}
+         
+        >
           <ProFormCascader label="项目地点" 
                colProps={{
                 span: 12
@@ -196,7 +198,7 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentRent({...values, id: uuid, releaseCityName: values.releaseCityName.join(',')})
+                  const res = await equipmentRent({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), startTime: values.startTime.format('YYYY/MM/DD').toString()})
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

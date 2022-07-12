@@ -158,7 +158,7 @@ function Product() {
                   })
                 }}
               >修改</Button>
-              <br />
+              <br/>
               <Button type='link' onClick={() => {
                 history.push(`/courseDetail?id=${record.id}`)
               }}>预览</Button>
@@ -216,7 +216,7 @@ function Product() {
                     method: 'put',
                     data: {
                       ids: selectedRowKeys,
-                     status: 0
+                     status: 1
                     }
                    })
                    if(res.code === '0') {
@@ -230,7 +230,7 @@ function Product() {
                     method: 'put',
                     data: {
                       ids: selectedRowKeys,
-                     status: -1
+                     status: 0
                     }
                    })
                    if(res.code === '0') {

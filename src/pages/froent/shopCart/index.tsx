@@ -193,7 +193,8 @@ function ShopCar() {
           }
           history.push({pathname: '/orderAddress',
           state: {
-            prods
+            prods,
+            isCart: 1
           }})
         }}>下单</span>
       </div>

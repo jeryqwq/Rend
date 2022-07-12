@@ -72,7 +72,7 @@ function ProductDetail() {
                 prods: [{
                 details:[{
                   ...productInfo,mainImgPath: mainImg[0],
-                  price: productInfo.salePrice,
+                  price: productInfo.monthlyRent,
                   productAmount: 1,
                  type:'EquipmentLease',
                  productName: productInfo.partsName,

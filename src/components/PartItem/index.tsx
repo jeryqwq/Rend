@@ -1,10 +1,17 @@
 import React from 'react';
 import {Image } from 'antd';
 import styles from './index.module.less';
+import { useHistory } from 'umi';
 function DeviceItem({item}: {item: any}) {
+  const history = useHistory()
+
   return (
     <div className={styles['item-wrap']}>
-      <div className={styles['img-wrap']}>
+      <div className={styles['img-wrap']} style={{cursor: 'pointer'}} 
+        onClick={() => {
+          history.push('/partDetail?id=' + item.id)
+        }}
+      >
         <img
           width={210}
           height={185}

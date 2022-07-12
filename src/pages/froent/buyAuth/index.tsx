@@ -40,7 +40,7 @@ function Repair() {
           setFileList([res?.data?.yyzzUrl])
           setFileList1([res?.data?.cardUrl1])
           setFileList2([res?.data?.cardUrl2])
-          setOthers(res?.data?.otherUrl.split(','))
+          res?.data?.otherUrl && setOthers(res?.data?.otherUrl.split(','))
         }
        }else{
         const res2 = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 1 } })
@@ -50,7 +50,7 @@ function Repair() {
             setFileList([res2?.data?.yyzzUrl])
             setFileList1([res2?.data?.cardUrl1])
             setFileList2([res2?.data?.cardUrl2])
-            setOthers(res2?.data?.otherUrl.split(','))
+            res2?.data?.otherUrl &&  setOthers(res2?.data?.otherUrl.split(','))
           }
         }
        }
@@ -143,6 +143,10 @@ function Repair() {
                 accept='.png,.jpg,.jpeg' 
                 maxCount={1}
                 fileList={cardUrl1fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
+                onRemove={() => {
+                  setFileList1([])
+                  return false
+                }}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'AUTH_MAIN',sort: cardUrl1fileList.length })
@@ -159,6 +163,11 @@ function Repair() {
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
                 maxCount={1}
+                onRemove={() => {
+                  setFileList2([])
+                  return false
+
+                }}
                 fileList={cardUrl2fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
@@ -178,6 +187,11 @@ function Repair() {
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
                 maxCount={1}
+                onRemove={() => {
+                  setOthers([])
+                  return false
+
+                }}
                 fileList={otherfileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
@@ -216,6 +230,7 @@ function Repair() {
                   message.success('保存成功!')
                   formRef.current?.resetFields()
                   setFileList([])
+                  window.location.reload()
                 }
               }
               }else{

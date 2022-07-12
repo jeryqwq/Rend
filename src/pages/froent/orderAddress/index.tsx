@@ -12,6 +12,7 @@ function OrderAddress() {
   const { state } = location as any
   console.log(state)
   if(!state?.prods) return <div>非法进入</div>
+  const isCart = state.isCart
   let totalCount = 0
   let  totalPrice = 0;
   let allProdus:any[] = []
@@ -124,7 +125,7 @@ function OrderAddress() {
               data:{
                 "address": address[curIdx].address,
                 "contactNumber": address[curIdx].contactNumber,
-                "productVos": allProdus.map((i: any) => ({ isCart: 0, num: 1, productId: i.productId, type: i.type })),
+                "productVos": allProdus.map((i: any) => ({ isCart: isCart === 1 ? 1 : 0, num: 1, productId: i.productId || i.id, type: i.type })),
                 "receiveUser": address[curIdx].receiveUser
               }
             })

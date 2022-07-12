@@ -66,7 +66,7 @@ function Course() {
          }}
          style={{display: 'inline-block', width: '50%', marginTop: 25, cursor: 'pointer'}}>
             <div className='item' >
-            <img src="/images/repair-bg.png" style={{width: 248, height: 166}} />
+            <img src={'/lease-center/' + i.mainImgPath}style={{width: 248, height: 166}} />
             <div className="rg">
               <div className="tit">{i.courseName} </div>
               <div className="stit">{i.organName}</div>

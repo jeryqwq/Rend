@@ -21,15 +21,15 @@ function Order() {
     <div className={styles['order-wrap']}>
        <div className='order-status'>
         <Steps current={orderDetail.orderStatus}>
-          <Step stepNumber={1} title={orderStatus[1]} description={orderDetail.createDate} />
-          <Step stepNumber={2} title={orderStatus[2]}   />
-          <Step stepNumber={3} title={orderStatus[3]} />
-          <Step stepNumber={10} title={orderStatus[10]}  />
+          <Step stepNumber={1} status={orderDetail.orderStatus >= 1 ? 'finish' : 'wait'} title={orderStatus[1]} description={orderDetail.createDate} />
+          <Step stepNumber={2} status={orderDetail.orderStatus >= 2 ? 'finish' : 'wait'} title={orderStatus[2]}   />
+          <Step stepNumber={3} status={orderDetail.orderStatus >= 3 ? 'finish' : 'wait'} title={orderStatus[3]} />
+          <Step stepNumber={10} status={orderDetail.orderStatus >= 10 ? 'finish' : 'wait'} title={orderStatus[10]}  />
           <Step title="完成"  />
         </Steps>
         <div className="status">
           订单状态：{orderStatus[orderDetail.orderStatus as 10]}
-          <Button  style={{borderColor: '#FE2525', color: '#FE2525', marginLeft: 150}}>联系商家</Button>
+          {/* <Button  style={{borderColor: '#FE2525', color: '#FE2525', marginLeft: 150}}>联系商家</Button> */}
         </div>
        </div>
        <div className="desc">

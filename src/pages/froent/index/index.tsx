@@ -112,7 +112,7 @@ export default function IndexPage() {
 
     <div style={{ paddingTop: 25, background: '#F6F6F6' }}>
       <div className='content' >
-        <span style={{float: 'right',}}>更多</span>
+        {/* <span style={{float: 'right',}}>更多</span> */}
         <h2 className='title'>为您推荐</h2>
         <Row gutter={12}>
           {
@@ -124,7 +124,7 @@ export default function IndexPage() {
 
     <div style={{ paddingTop: 25, background: 'white'}}>
       <div className='content' >
-        <span style={{float: 'right',cursor: 'pointer'}}>更多</span>
+        {/* <span style={{float: 'right',cursor: 'pointer'}}>更多</span> */}
         <h2 className='title'>品牌设备</h2>
         <Row gutter={12}>
           {
@@ -141,7 +141,7 @@ export default function IndexPage() {
 
     <div style={{ paddingTop: 25, background: '#F6F6F6' }}>
         <div className='content' >
-          <span style={{float: 'right',}}>更多</span>
+          <a style={{float: 'right', color: '#333'}} href="#/sallList" >更多</a>
           <h2 className='title'>二手推荐</h2>
           <Row gutter={12}>
             {
@@ -155,7 +155,7 @@ export default function IndexPage() {
       <div className='content' >
         <div style={{display: 'flex', justifyContent: 'space-between'}}>
           <div style={{width: 670}}>
-            <span style={{float: 'right', cursor: 'pointer'}}>更多</span>
+            <a style={{float: 'right', cursor: 'pointer'}} href="#/part">更多</a>
             <h2 className='title'>配件零件</h2>
             <Row gutter={15}>
               {
@@ -174,7 +174,7 @@ export default function IndexPage() {
 
     <div style={{ padding: '25px 0 20px 0',  background: '#F6F6F6' }}>
         <div className='content' >
-          <span style={{float: 'right', cursor: 'pointer'}}>更多</span>
+          <a style={{float: 'right', cursor: 'pointer'}} href="#/course">更多</a>
           <h2 className='title'>培训课程</h2>
           <Row gutter={18}>
             {
@@ -186,7 +186,7 @@ export default function IndexPage() {
 
     <div style={{ padding: '25px 0', background: 'white'}}>
       <div className='content' >
-        <span style={{float: 'right',cursor: 'pointer'}}>更多</span>
+        <a style={{float: 'right',cursor: 'pointer'}} href="news">更多</a>
         <h2 className='title'>行业资讯</h2>
         <Row gutter={0}>
           {
