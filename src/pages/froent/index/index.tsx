@@ -124,12 +124,12 @@ export default function IndexPage() {
 
     <div style={{ paddingTop: 25, background: 'white'}}>
       <div className='content' >
-        {/* <span style={{float: 'right',cursor: 'pointer'}}>更多</span> */}
+        <span style={{float: 'right',cursor: 'pointer'}} onClick={() => {history.push('/brandList')}}>更多</span>
         <h2 className='title'>品牌设备</h2>
         <Row gutter={12}>
           {
            brands.map(i => <Col span={4}>
-              <div className={styles['brand-item']} onClick={() => {}}>
+              <div className={styles['brand-item']} >
                 <img src={'/lease-center' + i.brandLogo} width={190} height={117} />
                 <div className='tit'>{i.brandName}</div>
               </div>

@@ -192,6 +192,13 @@ const saleRouter = {
     hide: true
   },
   {
+    label: '品牌列表',
+    key: '/brandList',
+    path:'/brandList',
+    component: '@/pages/froent/brandList/index',
+    hide: true
+  },
+  {
     label: '用户中心',
     key: '/userCenter',
     path:'/userCenter',
