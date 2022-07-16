@@ -31,7 +31,7 @@ function Message() {
         <span> <img src="/images/rang.png" alt="" style={{marginRight: 10}} />系统通知</span>
         <span style={{color: '#999'}}>{i.sendTime	}</span>
       </div>
-      <div className="stit">{i.serviceType}</div>
+      <div className="stit">{i.serviceTypeName}</div>
       <div className="txt">{i.msg	}</div>
     </div>)
      }

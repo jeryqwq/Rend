@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'umi';
 import { Descriptions, Button, Tabs, message } from 'antd';
 import styles from './index.module.less';
-import { equipmentSaleDetail } from '@/server/rent';
+import { equipmentSaleDetail, getStoreCommon, getStoreOthers } from '@/server/rent';
 import { commonRequest, getFiles } from '@/server/common';
 import dayjs from 'dayjs'
 import { mallCart } from '@/server/order';
@@ -15,17 +15,50 @@ function ProductDetail() {
   const [productInfo, setProduct] = useState<any>({})
   const [activeType, setActive] = useState<'detail' | 'attration'>('detail')
   const [commonList, setCommon] = useState<any[]>([])
+  const [others, setOther] = useState<any[]>([])
   useEffect(() => {
     (async () => {
       const res = await commonRequest(`/trainingCourse/${id}`,{ method: 'get' })
       if(res.code === '0') {
         setProduct(res.data)
       }
-      const res2 = await commonRequest(`/trainingCourse/getRecommList`, {
-        method: 'get'
+      const res3 = await commonRequest('/trainingCourse/page', {
+        method: 'post',
+        data: {
+          conditions: [{
+            "column": "d.organ_id",
+            "operator": "ne",
+            "value": res.data.organId
+          },{
+            "column": "d.id",
+            "operator": "eq",
+            "value": res.data.id
+          }],
+          current: 1,
+          size: 5
+        }
       })
-      if(res2.code === '0') {
-        setCommon(res2.data)
+     if(res3.code ==='0') {
+      setCommon(res3.data.records)
+      }
+      const res4 = await commonRequest('/trainingCourse/page', {
+        method: 'post',
+        data: {
+          conditions: [{
+            "column": "d.organ_id",
+            "operator": "ne",
+            "value": res.data.organId
+          },{
+            "column": "d.course_type",
+            "operator": "eq",
+            "value": res.data.courseType
+          }],
+          current: 1,
+          size: 5
+        }
+      })
+     if(res4.code ==='0') {
+      setOther(res4.data.records)
       }
     })()
   },[])
@@ -98,16 +131,18 @@ function ProductDetail() {
           <div>进入店铺</div>
         </div>
         </div>
-        <div className="item" style={{textAlign: 'center'}}>
+        {
+          commonList.map( (i:any) => <div className="item" style={{textAlign: 'center'}}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
-          <img style={{width: 181, height: 184, margin: '5px 0'}}/>
+          <img src={'/lease-center/' + i.mainImgPath} style={{width: 181, height: 184, margin: '5px 0'}}/>
           <div className="ot-tit">
-          福建省福州市鼓楼区挖掘机设备出租
+          {i.courseName}
           </div>
           <div className="price">
-            ¥153414元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.price}元 <span style={{color: '#666666', fontSize: 13}}></span>
           </div>
-        </div>
+        </div>)
+        }
       </div>
       <div className="rg">
           <div className="head-tit">
@@ -134,16 +169,16 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
-          commonList.map(i =>  <div className="item">
-          <img src="" style={{width: 210, height: 185}} alt="" />
+          others.map(i =>  <div className="item">
+          <img  src={'/lease-center/' + i.mainImgPath}  style={{width: 210, height: 185}} alt="" />
           <div className="itit">
-          福建省福州市鼓楼区挖掘机设备出租
+          {i.courseName}
           </div>
           <div className="price">
-            ¥153414元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.price}元 <span style={{color: '#666666', fontSize: 13}}></span>
           </div>
           <div className="add">
-            地区： 福州市
+            地区： {i.releaseCityName}
           </div>
         </div>)
         }

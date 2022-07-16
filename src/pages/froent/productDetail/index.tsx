@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'umi';
 import { Descriptions, Button, Tabs, message } from 'antd';
 import styles from './index.module.less';
-import { equipmentSaleDetail } from '@/server/rent';
+import { equipmentSaleDetail, getStoreCommon, getStoreOthers } from '@/server/rent';
 import { commonRequest, getFiles } from '@/server/common';
 import dayjs from 'dayjs'
 import { mallCart } from '@/server/order';
@@ -18,6 +18,8 @@ function ProductDetail() {
   const [mainImg, setMain] = useState<string[]>([])
   const [subsImg, setSubs] = useState<string[]>([])
   const [mainIndex, setMainIdx] = useState(0)
+  const [commonStore, setCommon] = useState<any[]>([])
+  const [storeOther, setOther] = useState<any[]>([])
   useEffect(() => {
     (async () => {
       const res = await equipmentSaleDetail(id)
@@ -38,6 +40,14 @@ function ProductDetail() {
         })
         setSubs(subs)
         setMain(mains)
+      }
+      const res3 = await getStoreCommon(res.data.organId, id)
+      if(res3.code ==='0') {
+        setCommon(res3.data.records)
+      }
+      const res4 = await getStoreOthers(res.data.organId, res.data.equipType)
+      if(res4.code === '0') {
+        setOther(res4.data.records)
       }
     })()
   },[])
@@ -101,26 +111,29 @@ function ProductDetail() {
       <div className="lf">
         <div className="item">
         <div className="head-tit" style={{paddingLeft: 10}}>商家</div>
-        <div className="tit-img"> <img src="" alt="" style={{width: 60, height: 60}} /><span style={{lineHeight: '20px'}}>{productInfo?.organDto?.name}</span></div>
+        <div className="tit-img"> <img src="/images/store.png" alt="" style={{width: 60, height: 60}} /><span style={{lineHeight: '20px'}}>{productInfo?.organDto?.name}</span></div>
         <div className="person">
           <div className="label">身份认证: <IdcardOutlined  style={{color: '#48BC29'}}/></div>
           {/* <div className="label">经营:xxx</div> */}
         </div>
         <div className="atcion">
-          <div className='cur'>联系商家</div>
+          <div className='cur' onClick={() => {
+          }}>联系商家</div>
           <div>进入店铺</div>
         </div>
         </div>
-        <div className="item" style={{textAlign: 'center'}}>
+        {
+          commonStore.map(i => <div className="item" style={{textAlign: 'center'}}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
-          <img style={{width: 181, height: 184, margin: '5px 0'}}/>
+          <img style={{width: 181, height: 184, margin: '5px 0'}} src={'/lease-center/' + i.mainImgPath}/>
           <div className="ot-tit">
-          福建省福州市鼓楼区挖掘机设备出租
+          {i.equipName}
           </div>
           <div className="price">
-            ¥153414元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.monthlyRent} <span style={{color: '#666666', fontSize: 13}}>/月</span>
           </div>
-        </div>
+        </div>)
+        }
       </div>
       <div className="rg">
           <div className="head-tit">
@@ -147,16 +160,16 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
-          new Array(5).fill(1).map(i =>  <div className="item">
-          <img src="" style={{width: 210, height: 185}} alt="" />
+          storeOther.map(i =>  <div className="item">
+          <img src={'/lease-center/' + i.mainImgPath} style={{width: 210, height: 185}} alt="" />
           <div className="itit">
-          福建省福州市鼓楼区挖掘机设备出租
+          {i.equipName} 
           </div>
           <div className="price">
-            ¥153414元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.monthlyRent}元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
           </div>
           <div className="add">
-            地区： 福州市
+            地区： {i.releaseCityName}
           </div>
         </div>)
         }

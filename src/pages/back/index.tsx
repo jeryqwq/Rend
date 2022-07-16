@@ -10,8 +10,6 @@ const orderType = {
   'EquipmentLease': '设备出租订单',
   EquipmentSale: '二手出售订单',
   EquipmentParts: '配件订单',
-
-
 }
 function Back() {
   const [ add, setAdd ] = useState<any>({})
@@ -121,7 +119,7 @@ function Back() {
             <div style={{maxHeight: 200, overflow: 'auto'}}>
             {commons?.length ? commons.map((i:any) => <div>
             <div className="item-info" style={{color: '#999'}}>
-              <span >{i.serviceType}</span>
+              <span >{i.serviceTypeName}</span>
               <span >{i.sendTime}</span>
             </div>
             <div className="item-info" style={{color: '#010101', fontSize: 16}}>

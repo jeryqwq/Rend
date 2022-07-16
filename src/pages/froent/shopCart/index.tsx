@@ -200,7 +200,7 @@ function ShopCar() {
       </div>
       
       <div className={styles.line3}>
-      <div className="tit">其他商家相关货品推荐</div>
+      {/* <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
           new Array(5).fill(1).map(i =>  <div className="item">
@@ -215,8 +215,8 @@ function ShopCar() {
             地区： 福州市
           </div>
         </div>)
-        }
-      </div>
+        } */}
+      {/* </div> */}
     </div>
     </div>
   );

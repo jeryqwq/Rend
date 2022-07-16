@@ -125,7 +125,7 @@ function OrderAddress() {
               data:{
                 "address": address[curIdx].address,
                 "contactNumber": address[curIdx].contactNumber,
-                "productVos": allProdus.map((i: any) => ({ isCart: isCart === 1 ? 1 : 0, num: 1, productId: i.productId || i.id, type: i.type })),
+                "productVos": allProdus.map((i: any) => ({ carId:i.id ,isCart: isCart === 1 ? 1 : 0, num: 1, productId: i.productId || i.id, type: i.type })),
                 "receiveUser": address[curIdx].receiveUser
               }
             })

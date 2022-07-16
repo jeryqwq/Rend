@@ -19,7 +19,7 @@ function ForRent() {
   const formRef = useRef<ProFormInstance>()
   const [uuid, setUuid] = useState( getUuid())
   const [prodTypes, setPartType] = useState([])
-  const [brands, setBrands] = useState([])
+  // const [brands, setBrands] = useState([])
   const { state } = useLocation() as any
 
   useEffect(() => {
@@ -28,10 +28,10 @@ function ForRent() {
       if(res3.code === '0') {
         setPartType(res3.data?.map((i: any) => ({ label: i.name ,value: i.code })))
       }
-      const res4 = await commonRequest('/appdict/partsBrand', { method: 'get' })
-      if(res4.code === '0') {
-        setBrands(res4.data?.map((i: any) => ({ label: i.name ,value: i.code })))
-      }
+      // const res4 = await commonRequest('/appdict/partsBrand', { method: 'get' })
+      // if(res4.code === '0') {
+      //   setBrands(res4.data?.map((i: any) => ({ label: i.name ,value: i.code })))
+      // }
       if(state?.id) {
         setUuid(state.id)
         setFileList([state.mainImgPath])
@@ -107,9 +107,6 @@ function ForRent() {
                 colProps={{
                   span: 12
                 }}
-                rules={[{
-                  required: true,
-                }]}
                 fieldProps={{
                   options: prodTypes,
                   showSearch: true
@@ -117,16 +114,12 @@ function ForRent() {
                 name="partsType"
                 label="零件类型"
               />
-              <ProFormSelect
+              <ProFormText
               colProps={{
                 span: 12
               }}
               name="partsBrand"
               label="零件品牌"
-              options={brands}
-              rules={[{
-                required: true,
-              }]}
             />
             
             
@@ -157,9 +150,6 @@ function ForRent() {
                   span: 12,
                 }}
                 name="serialNumber"
-                rules={[{
-                  required: true,
-                }]}
               />
               <ProFormDigit 
                 colProps={{

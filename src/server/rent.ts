@@ -96,3 +96,39 @@ export function mallBrandInfo  (data: any){
   })
 }
 
+export function getStoreCommon (organId: string, id: string, k1 = 'd.organ_id', k2 = 'd.id') {
+  return    request('/equipmentLease/page', {
+    method: 'post',
+    data: {
+      size: 4,
+      current: 0,
+      conditions:[{
+        operator: 'eq',
+        columns: k1,
+        value: organId
+      },{
+        operator: 'ne',
+        columns: k2,
+        value: id
+      }]
+    }
+  })
+}
+export function getStoreOthers (organId: string, typeid: string, k1 = 'd.organ_id', k2 = 'e.equip_type') {
+  return    request('/equipmentLease/page', {
+    method: 'post',
+    data: {
+      size: 5,
+      current: 0,
+      conditions:[{
+        operator: 'ne',
+        columns: k1,
+        value: organId
+      },{
+        operator: 'eq',
+        columns: k2,
+        value: typeid
+      }]
+    }
+  })
+}

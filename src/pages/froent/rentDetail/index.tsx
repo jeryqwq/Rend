@@ -19,6 +19,9 @@ function ProductDetail() {
   const [subsImg, setSubs] = useState<string[]>([])
   const [mainIndex, setMainIdx] = useState(0)
   const history = useHistory()
+  const [others, setOhter] = useState<any[]>([])
+  const [otherStores, setOhterStore] = useState<any[]>([])
+
   useEffect(() => {
     (async () => {
       const res = await equipmentSaleDetail(id, 'equipmentLease')
@@ -39,6 +42,34 @@ function ProductDetail() {
         })
         setSubs(subs)
         setMain(mains)
+      }
+      const res3 = await commonRequest('/equipmentLease/page', {
+        data: {"conditions": [
+          {"operator":"ne","column":"d.organ_id","value": res.data.organId}
+            ,{"operator":"ne","column":"d.id","value": res.data.id}
+          ],
+          "current": 1,
+          "pages": 5,
+          "size": 5}
+          ,
+        method: 'post'
+      })
+      if(res3.code === '0') {
+        setOhter(res3.data.records)
+      }
+      const res4 = await commonRequest('/equipmentLease/page', {
+        data: {"conditions": [
+          {"operator":"ne","column":"d.organ_id","value": res.data.organId}
+            ,{"operator":"eq","column":"d.id","value": res.data.id}
+          ],
+          "current": 1,
+          "pages": 5,
+          "size": 5}
+          ,
+        method: 'post'
+      })
+      if(res4.code === '0') {
+        setOhter(res4.data.records)
       }
     })()
   },[])
@@ -61,8 +92,8 @@ function ProductDetail() {
             <Descriptions.Item label="地区">{productInfo.releaseCityName?.replace(',', '-')}</Descriptions.Item>
             <Descriptions.Item label="品牌">{productInfo.equipBrand}</Descriptions.Item>
             <Descriptions.Item label="发布者">{productInfo.createName}</Descriptions.Item>
-            <Descriptions.Item label="最新更新时间">{ productInfo.views}</Descriptions.Item>
-            <Descriptions.Item label="设备浏览数">{productInfo.updateDate}</Descriptions.Item>
+            <Descriptions.Item label="最新更新时间">{ productInfo.updateDate}</Descriptions.Item>
+            <Descriptions.Item label="设备浏览数">{productInfo.views}</Descriptions.Item>
           </Descriptions>
           <div className="actions">
             <Button type={'primary'} color="#FF4302" size='large' style={{width: 190, height: 44}}
@@ -102,7 +133,7 @@ function ProductDetail() {
       <div className="lf">
         <div className="item">
         <div className="head-tit" style={{paddingLeft: 10}}>商家</div>
-        <div className="tit-img"> <img src="" alt="" style={{width: 60, height: 60}} /><span style={{lineHeight: '20px'}}>{productInfo?.organDto?.name}</span></div>
+        <div className="tit-img"> <img src="/images/store.png" alt="" style={{width: 60, height: 60}} /><span style={{lineHeight: '20px'}}>{productInfo?.organDto?.name}</span></div>
         <div className="person">
           <div className="label">身份认证: <IdcardOutlined  style={{color: '#48BC29'}}/></div>
           {/* <div className="label">经营:xxx</div> */}
@@ -112,16 +143,18 @@ function ProductDetail() {
           <div>进入店铺</div>
         </div>
         </div>
-        <div className="item" style={{textAlign: 'center'}}>
+        {
+          others.map((i: any) => <div className="item" style={{textAlign: 'center'}}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
-          <img style={{width: 181, height: 184, margin: '5px 0'}}/>
+          <img src={'/lease-center/' + i.mainImgPath} style={{width: 181, height: 184, margin: '5px 0'}}/>
           <div className="ot-tit">
-          福建省福州市鼓楼区挖掘机设备出租
+          {i.equipName}
           </div>
           <div className="price">
-            ¥153414元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.monthlyRent}元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
           </div>
-        </div>
+        </div>)
+        }
       </div>
       <div className="rg">
           <div className="head-tit">
@@ -148,16 +181,16 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
-          new Array(5).fill(1).map(i =>  <div className="item">
-          <img src="" style={{width: 210, height: 185}} alt="" />
+          otherStores.map(i =>  <div className="item">
+          <img src={'/lease-center/' + i.mainImgPath} style={{width: 210, height: 185}} alt="" />
           <div className="itit">
-          福建省福州市鼓楼区挖掘机设备出租
+          {i.equipName}
           </div>
           <div className="price">
-            ¥153414元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.monthlyRent}元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
           </div>
           <div className="add">
-            地区： 福州市
+            地区： {i.releaseCityName}
           </div>
         </div>)
         }

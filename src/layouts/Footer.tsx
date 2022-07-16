@@ -8,7 +8,7 @@ function Footer() {
   const footerInfo = <> <Divider style={{margin: '12px 0'}}/>
   <div className='info'>电话: 0591-83987222  </div>         
   <div className='info'>地址:福州市马尾区江滨东大道100-1世创国际中心</div>
-  <div className='info'>闽ICP备17171717号-11          Copyright © 2019 版权所有</div> </>
+  <div className='info'>闽ICP备2022009747号-11          Copyright © 2019 版权所有</div> </>
   return (
     <div style={{background: '#F6F6F6'}}>
       <div className='content'>
