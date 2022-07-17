@@ -60,7 +60,7 @@ function ProductDetail() {
       const res4 = await commonRequest('/equipmentLease/page', {
         data: {"conditions": [
           {"operator":"ne","column":"d.organ_id","value": res.data.organId}
-            ,{"operator":"eq","column":"d.id","value": res.data.id}
+            ,{"operator":"eq","column":"d.equip_type","value": res.data.equipType}
           ],
           "current": 1,
           "pages": 5,

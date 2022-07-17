@@ -37,7 +37,7 @@ function User() {
           <div className="auth">品牌商认证</div>
         </div>
         <div className="rg">
-          <div className="item">
+          {/* <div className="item">
             <div>关注供应商</div>
             <div className='num'>4</div>
           </div>
@@ -48,7 +48,7 @@ function User() {
           <div className="item">
             <div>优惠券</div>
             <div className='num'>4</div>
-          </div>
+          </div> */}
         </div>
       </div>
       {/* <div className="line2"></div> */}

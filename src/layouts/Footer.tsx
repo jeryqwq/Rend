@@ -14,7 +14,7 @@ function Footer() {
       <div className='content'>
         <div className={styles.footer}>
           <div className="lf">
-            <div>
+            <div style={{marginTop: 20}}>
                <Row gutter={50} style={{lineHeight: '30px'}}>
                 <Col style={{cursor: 'pointer'}}><div onClick={() => {
                   history.push('/buyAuth')

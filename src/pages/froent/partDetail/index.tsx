@@ -1,7 +1,7 @@
 import Bread from '@/components/Bread';
 import React, { useEffect, useState } from 'react';
 import { useHistory, useLocation } from 'umi';
-import { Descriptions, Button, Tabs, message } from 'antd';
+import { Descriptions, Button, Tabs, message, Row, Col } from 'antd';
 import styles from './index.module.less';
 import { equipmentSaleDetail, getStoreCommon, getStoreOthers } from '@/server/rent';
 import { commonRequest, getFiles } from '@/server/common';
@@ -37,7 +37,7 @@ function ProductDetail() {
       const res4 = await commonRequest('/equipmentParts/page', {
         method: 'post',
         data: {"conditions": [
-          {"operator":"ne","column":"d.organ_id","value":res.data.organId},{"operator":"eq","column":"d.equip_type","value": res.data.equipType}
+          {"operator":"ne","column":"d.organ_id","value":res.data.organId},{"operator":"eq","column":"d.parts_type","value": res.data.partsType}
         ],
         "current": 0,
         "pages": 5,
@@ -119,7 +119,9 @@ function ProductDetail() {
         </div>
         </div>
         {
-          commonStore.map(i => <div className="item" style={{textAlign: 'center'}}>
+          commonStore.map(i => <div className="item" style={{textAlign: 'center'}} onClick={() => {
+            history.replace('/partDetail?id=' + i.id)
+          }}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
           <img style={{width: 181, height: 184, margin: '5px 0'}} src={'/lease-center/' + i.mainImgPath}/>
           <div className="ot-tit">
@@ -156,7 +158,10 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
       { 
-          storeOther.map(i =>  <div className="item">
+          storeOther.map(i => 
+          <div className="item" onClick={() => {
+            history.replace('/partDetail?id=' + i.id)
+          }}>
           <img src={'/lease-center/' + i.mainImgPath} style={{width: 210, height: 185}} alt="" />
           <div className="itit">
           {i.partsName} 
@@ -167,7 +172,8 @@ function ProductDetail() {
           <div className="add">
             地区： {i.releaseCityName}
           </div>
-        </div>)
+        </div>
+          )
         }
       </div>
     </div>

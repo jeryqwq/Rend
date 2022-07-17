@@ -85,7 +85,7 @@ function Product() {
           setType(e.target.value);
           tableRef.current?.reloadAndRest()
         }} defaultValue="rent" size="large">
-        <Radio.Button value="rent" >租凭管理</Radio.Button>
+        <Radio.Button value="rent" >设备租凭管理</Radio.Button>
         <Radio.Button value="sall">二手设备管理</Radio.Button>
         <Radio.Button value="part">配件管理</Radio.Button>
       </Radio.Group>

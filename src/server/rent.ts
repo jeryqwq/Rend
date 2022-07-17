@@ -97,7 +97,7 @@ export function mallBrandInfo  (data: any){
 }
 
 export function getStoreCommon (organId: string, id: string, k1 = 'd.organ_id', k2 = 'd.id') {
-  return    request('/equipmentLease/page', {
+  return  request('/equipmentLease/page', {
     method: 'post',
     data: {
       size: 4,

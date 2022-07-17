@@ -41,16 +41,46 @@ function ProductDetail() {
         setSubs(subs)
         setMain(mains)
       }
-      const res3 = await getStoreCommon(res.data.organId, id)
+      const res3 = await commonRequest('/equipmentSale/page',{
+        method: 'post',
+        data: {
+          size: 5,
+          current: 0,
+          conditions:[{
+            operator: 'eq',
+            columns: 'd.organ_id',
+            value: res.data.organId
+          },{
+            operator: 'ne',
+            columns: 'd.id',
+            value: res.data.id
+          }]
+        }
+      })
       if(res3.code ==='0') {
         setCommon(res3.data.records)
       }
-      const res4 = await getStoreOthers(res.data.organId, res.data.equipType)
+      const res4 = await commonRequest('/equipmentSale/page',{
+        method: 'post',
+        data: {
+          size: 5,
+          current: 0,
+          conditions:[{
+            operator: 'ne',
+            columns: 'd.organ_id',
+            value: res.data.organId
+          },{
+            operator: 'eq',
+            columns: 'd.equip_type',
+            value: res.data.equipType
+          }]
+        }
+      })
       if(res4.code === '0') {
         setOther(res4.data.records)
       }
     })()
-  },[])
+  },[id])
   return (
     <div className='content' style={{marginTop: 20}}>
       <Bread breads={['全部设备', '二手设备', '设备详情']}/>
@@ -123,14 +153,16 @@ function ProductDetail() {
         </div>
         </div>
         {
-          commonStore.map(i => <div className="item" style={{textAlign: 'center'}}>
+          commonStore.map(i => <div className="item" style={{textAlign: 'center'}} onClick={() => {
+            history.replace('/productDetail?id=' + i.id)
+          }}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
           <img style={{width: 181, height: 184, margin: '5px 0'}} src={'/lease-center/' + i.mainImgPath}/>
           <div className="ot-tit">
           {i.equipName}
           </div>
           <div className="price">
-            ¥{i.monthlyRent} <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.salePrice} <span style={{color: '#666666', fontSize: 13}}></span>
           </div>
         </div>)
         }
@@ -160,13 +192,15 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
-          storeOther.map(i =>  <div className="item">
+          storeOther.map(i =>  <div className="item" onClick={() => {
+            history.replace('/productDetail?id=' + i.id)
+          }}>
           <img src={'/lease-center/' + i.mainImgPath} style={{width: 210, height: 185}} alt="" />
           <div className="itit">
           {i.equipName} 
           </div>
           <div className="price">
-            ¥{i.monthlyRent}元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
+            ¥{i.salePrice}元 <span style={{color: '#666666', fontSize: 13}}></span>
           </div>
           <div className="add">
             地区： {i.releaseCityName}
