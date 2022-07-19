@@ -61,7 +61,7 @@ function ProductDetail() {
       setOther(res4.data.records)
       }
     })()
-  },[])
+  },[id])
   return (
     <div className='content' style={{marginTop: 20}}>
       <Bread breads={['课程详情']}/>
@@ -132,7 +132,9 @@ function ProductDetail() {
         </div>
         </div>
         {
-          commonList.map( (i:any) => <div className="item" style={{textAlign: 'center'}}>
+          commonList.map( (i:any) => <div className="item" style={{textAlign: 'center'}} onClick={() => {
+            history.replace('/courseDetail?id=' + i.id)
+          }}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
           <img src={'/lease-center/' + i.mainImgPath} style={{width: 181, height: 184, margin: '5px 0'}}/>
           <div className="ot-tit">
@@ -169,7 +171,9 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
-          others.map(i =>  <div className="item">
+          others.map(i =>  <div className="item" onClick={() => {
+            history.replace('/courseDetail?id=' + i.id)
+          }}>
           <img  src={'/lease-center/' + i.mainImgPath}  style={{width: 210, height: 185}} alt="" />
           <div className="itit">
           {i.courseName}

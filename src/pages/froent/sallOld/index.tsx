@@ -238,7 +238,7 @@ function ForRent() {
                 const values = await formRef.current?.validateFields()
                 if(values) {
                   // const values = formRef.current?.getFieldsValue()
-                  const res = await equipmentSale({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1],releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName}, state.id ? 'put':'post')
+                  const res = await equipmentSale({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1],releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName}, state?.id ? 'put':'post')
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

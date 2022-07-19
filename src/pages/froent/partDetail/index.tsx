@@ -47,7 +47,7 @@ function ProductDetail() {
         setOther(res4.data.records || [])
       }
     })()
-  },[])
+  },[id])
   return (
     <div className='content' style={{marginTop: 20}}>
       <Bread breads={['设备详情']}/>

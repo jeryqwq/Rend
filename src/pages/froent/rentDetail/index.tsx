@@ -45,10 +45,10 @@ function ProductDetail() {
       }
       const res3 = await commonRequest('/equipmentLease/page', {
         data: {"conditions": [
-          {"operator":"ne","column":"d.organ_id","value": res.data.organId}
+          {"operator":"eq","column":"d.organ_id","value": res.data.organId}
             ,{"operator":"ne","column":"d.id","value": res.data.id}
           ],
-          "current": 1,
+          "current": 0,
           "pages": 5,
           "size": 5}
           ,
@@ -62,17 +62,17 @@ function ProductDetail() {
           {"operator":"ne","column":"d.organ_id","value": res.data.organId}
             ,{"operator":"eq","column":"d.equip_type","value": res.data.equipType}
           ],
-          "current": 1,
+          "current": 0,
           "pages": 5,
           "size": 5}
           ,
         method: 'post'
       })
       if(res4.code === '0') {
-        setOhter(res4.data.records)
+        setOhterStore(res4.data.records)
       }
     })()
-  },[])
+  },[id])
   return (
     <div className='content' style={{marginTop: 20}}>
       <Bread breads={['全部设备', '设备出租', '设备详情']}/>
@@ -144,7 +144,9 @@ function ProductDetail() {
         </div>
         </div>
         {
-          others.map((i: any) => <div className="item" style={{textAlign: 'center'}}>
+          others.map((i: any) => <div className="item" style={{textAlign: 'center'}} onClick={() => {
+            history.replace('/rentDetail?id=' + i.id)
+          }}>
           <div className="head-tit" style={{paddingLeft: 10, color: '#666666', fontSize: 13, background: 'white',borderColor: 'transparent', borderBottom: '1px solid #DCDCDC'}}>商家还在供应</div>
           <img src={'/lease-center/' + i.mainImgPath} style={{width: 181, height: 184, margin: '5px 0'}}/>
           <div className="ot-tit">
@@ -181,11 +183,13 @@ function ProductDetail() {
       <div className="tit">其他商家相关货品推荐</div>
       <div className="others">
         { 
-          otherStores.map(i =>  <div className="item">
-          <img src={'/lease-center/' + i.mainImgPath} style={{width: 210, height: 185}} alt="" />
-          <div className="itit">
-          {i.equipName}
-          </div>
+          otherStores.map(i =>  <div className="item" onClick={() => {
+            history.replace('/rentDetail?id=' + i.id)
+          }}>
+          <img src={'/lease-center/' + i.mainImgPath} style={{width: 210, height: 185}} />
+            <div className="itit">
+            {i.equipName}
+            </div>
           <div className="price">
             ¥{i.monthlyRent}元 <span style={{color: '#666666', fontSize: 13}}>/月</span>
           </div>
