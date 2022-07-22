@@ -7,13 +7,27 @@ import { Upload, Button, Radio, message } from 'antd'
 import { getUuid } from '@/utils';
 import {  equipmentPurchase, equipmentRent } from '@/server/rent';
 import { getBrands, getDict, getEquipmentType } from '@/server/common';
+import { useLocation } from 'umi';
+import moment from 'moment';
 let allProdTypes
 function ForRent() {
   const formRef = useRef<ProFormInstance>()
   const [uuid, setUuid] = useState( getUuid())
   const [prodTypes, setProds] = useState([])
   const [brands, setBrands] = useState([])
-
+  const location = useLocation() as any
+  const state = location.state
+  useEffect(() => {
+    (async () => {
+    
+      state && formRef.current?.setFieldsValue({
+        ...state,
+        startTime: moment(state.startTime),
+        releaseCityName: state.releaseCityName.split(',')
+      })
+      state?.id && setUuid(state.id);
+    })()
+  }, [])
   useEffect(() => {
     (async () => {
       const res = await getDict('/mechineType')
@@ -118,11 +132,11 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentPurchase({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), equipType: values.equipType[values.equipType.length - 1]})
+                  const res = await equipmentPurchase({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), equipType: values.equipType[values.equipType.length - 1]}, state?.id ? 'put' : 'post' )
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()
-                    location.reload()
+                    window.location.reload()
                   }
                 }
               }}

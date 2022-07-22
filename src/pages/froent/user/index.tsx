@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 import { Button, Modal, message } from 'antd'
 import { commonRequest } from '@/server/common';
 import useUserInfo from '@/hooks/useLogin';
 import { useHistory } from 'umi';
 import { orderStatus } from '@/constants/var';
+import { ActionType, ProTable } from '@ant-design/pro-components';
 
 function User() {
   const {user} = useUserInfo()
@@ -12,6 +13,8 @@ function User() {
   const [orders, setOrder] = useState([])
   const [total, setTotal] = useState(0)
   const history = useHistory()
+  const tableRent = useRef<ActionType>()
+  const tableBuy = useRef<ActionType>()
   useEffect(() => {
     reload()
   }, [])
@@ -31,10 +34,10 @@ function User() {
   return (
     <div className={styles['user-wrap']}>
       <div className="line1">
-        <img src="" style={{width: 80, height: 80, borderRadius: '50%', marginLeft: 20}} alt="" />
+        <img src='images/store.png' style={{width: 80, height: 80, borderRadius: '50%', marginLeft: 20}} alt="" />
         <div className="center">
           <div className="tit">{userInfo.name}</div>
-          <div className="auth">品牌商认证</div>
+          <div className="auth">{userInfo.type === 2 ? '企业认证' : '个人'}</div>
         </div>
         <div className="rg">
           {/* <div className="item">
@@ -89,6 +92,175 @@ function User() {
             </div>
           </div>)
           }
+        </div>
+      </div>
+      <div className="line3">
+        <div className="tit">我的求购</div>
+        <div className="order">
+          <ProTable 
+          search={false}
+          actionRef={tableBuy}
+          columns={[
+            {
+              dataIndex: 'equipModel',
+              title: '求购型号',
+            },
+            {
+              dataIndex: 'equipBrand',
+              title: '求购品牌'
+            },
+            {
+              dataIndex: 'contactNumber',
+              title: '联系人'
+            },
+            {
+              dataIndex: 'releaseCityName',
+              title: '城市'
+            },
+            {
+              dataIndex: 'reviceOrganName',
+              title: '指派商家'
+            },
+            {
+              dataIndex: 'id',
+              title: '操作',
+              render(tx,item) {
+                return <>
+                  <Button type={'link'} onClick={() => {
+                    history.push({
+                      pathname: `/forBuy`,
+                      state: item
+                    })
+                  }}>编辑</Button>
+                  <Button type={'link'} onClick={async () => {
+                    Modal.confirm({
+                      content: '是否删除？',
+                      onOk: async () => {
+                        const res = await commonRequest('/equipmentPurchase', {
+                          method: 'delete',
+                          data: {
+                            ids: [tx]
+                          }
+                        })
+                        if(res.code === '0') {
+                          tableBuy.current?.reloadAndRest()
+                          message.success('删除成功')
+                        }
+                      }
+                    })
+                  }}>删除</Button>
+                </>
+              }
+            }
+          ]}
+          pagination={{
+            pageSize: 10
+          }}
+            
+            request={async ({pageSize, current}) => {
+              const res = await commonRequest('/equipmentPurchase/pageMySend',{
+                method: 'post',
+                data:{
+                  size: pageSize,
+                  current
+                }
+              })
+              if(res.code === '0') {
+                return {
+                  data: res.data.records,
+                  current,
+                  total: res.data.total
+                }
+              }
+             return {
+
+             }
+            }}
+          />
+        </div>
+      </div>
+      <div className="line3">
+        <div className="tit">我的求租</div>
+        <div className="order">
+        <ProTable 
+          pagination={{
+            pageSize: 10
+          }}
+          actionRef={tableRent}
+          search={false}
+            columns={[
+              {
+                dataIndex: 'equipName',
+                title: '品牌名称',
+              },
+              {
+                dataIndex: 'equipType',
+                title: '品牌类型'
+              },
+              {
+                dataIndex: 'contactName',
+                title: '联系人'
+              },
+              {
+                dataIndex: 'detailAddress',
+                title: '详细地址'
+              },
+              {
+                dataIndex: 'reviceOrganName',
+                title: '指派商家'
+              },
+              {
+                dataIndex: 'id',
+                title: '操作',
+                render(tx,item) {
+                  return <>
+                    <Button type={'link'} onClick={() => {
+                      history.push({
+                        pathname: `/forRent`,
+                        state: item
+                      })
+                    }}>编辑</Button>
+                    <Button type={'link'} onClick={async () => {
+                      Modal.confirm({
+                        content: '是否删除？',
+                        onOk: async () => {
+                          const res = await commonRequest('/equipmentRent', {
+                            method: 'delete',
+                            data: {
+                              ids: [tx]
+                            }
+                          })
+                          if(res.code === '0') {
+                            tableRent.current?.reloadAndRest()
+                            message.success('删除成功')
+                          }
+                        }
+                      })
+                    }}>删除</Button>
+                  </>
+                }
+              }
+            ]}
+            request={async ({pageSize, current}) => {
+              const res = await commonRequest('/equipmentRent/pageMySend',{
+                method: 'post',
+                data:{
+                  size: pageSize,
+                  current
+                }
+              })
+              if(res.code === '0') {
+                return {
+                  data: res.data.records,
+                  current,
+                  total: res.data.total
+                }
+              }
+             return {
+
+             }
+            }}
+          />
         </div>
       </div>
     </div>

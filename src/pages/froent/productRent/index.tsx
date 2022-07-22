@@ -242,7 +242,7 @@ function ForRent() {
                   const res = await equipmentLease({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1], releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName}, state?.id ? 'put':'post')
                   if(res.code === '0') {
                     message.success('保存成功!')
-                    location.reload()
+                    window.location.reload()
                   }
                 }
               }}

@@ -20,6 +20,10 @@ request.use(async (ctx, next) => {
     localStorage.removeItem('USER')
     window.location.hash = 'login'
     message.info(res.msg)
+  }else if(res.code === '0'){
+
+  }else{
+    message.info(res.msg)
   }
 });
 export default request

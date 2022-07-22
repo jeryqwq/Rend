@@ -26,6 +26,7 @@ function Repair() {
   const userId = user.user.id
   const formRef = useRef<ProFormInstance>()
   const history = useHistory()
+  const [sysorgin, setSys] = useState({})
 
   useEffect(() => {
     (async () => {
@@ -37,6 +38,7 @@ function Repair() {
           message.info('您已认证过，不需要认证了')
           history.push('/')
         }else{
+          setSys(res.data)
           setFileList([res?.data?.yyzzUrl])
           setFileList1([res?.data?.cardUrl1])
           setFileList2([res?.data?.cardUrl2])
@@ -46,6 +48,7 @@ function Repair() {
         const res2 = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 1 } })
         if(res2.code === '0') {
           if(res2.data) {
+            setSys(res2.data)
             formRef.current?.setFieldsValue(res2.data)
             setFileList([res2?.data?.yyzzUrl])
             setFileList1([res2?.data?.cardUrl1])
@@ -89,7 +92,6 @@ function Repair() {
               span: 12
             }}
             name="name"
-            rules={[{required: true}]}
           />
           <ProFormText 
             label="统一社会信用代码"
@@ -97,7 +99,6 @@ function Repair() {
               span: 12
             }}
             name="compCode"
-            rules={[{required: true}]}
           />
         <ProForm.Item label="企业营业执照" style={{width: '100%'}} required>
           <Upload
@@ -107,7 +108,6 @@ function Repair() {
                 fileList={yyzzUrlfileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
-                  console.log(file)
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'AUTH_IMG',sort: yyzzUrlfileList.length })
                   if(res.code === '0') {
                     setFileList([res.data.path])
@@ -119,13 +119,11 @@ function Repair() {
         </ProForm.Item>
           </> 
          }
-        <div className='stit' style={{width: '100%'}}>联系方式</div>
+        <div className='stit' style={{width: '100%'}}>法人信息</div>
           <ProFormText 
             colProps={{
               span: 12
             }}
-            rules={[{required: true}]}
-
             label="法人姓名"
             name="legalUser"
           />
@@ -134,10 +132,9 @@ function Repair() {
               span: 12
             }}
             label="法人身份证"
-            rules={[{required: true,}]}
             name="legalIdCard"
           />
-            <ProForm.Item label="法人身份证正面" style={{width: '50%'}} required>
+            <ProForm.Item label="法人身份证正面" style={{width: '50%'}} >
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
@@ -158,7 +155,7 @@ function Repair() {
                 {cardUrl1fileList.length >= 8 ? null : uploadButton}
               </Upload>
         </ProForm.Item>
-        <ProForm.Item label="法人身份证反面" style={{width: '50%'}} required>
+        <ProForm.Item label="法人身份证反面" style={{width: '50%'}} >
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
@@ -182,7 +179,7 @@ function Repair() {
         </ProForm.Item>
         <h1 style={{width: '100%'}}>其他资质材料</h1>
 
-        <ProForm.Item label="其他材料扫描件" style={{width: '50%'}} required>
+        <ProForm.Item label="其他材料扫描件" style={{width: '50%'}} >
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
@@ -209,11 +206,12 @@ function Repair() {
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
              onClick={ async () => {
               const values = await formRef.current?.validateFields()
-              if(yyzzUrlfileList.length && cardUrl1fileList.length && cardUrl2fileList.length ){
+              if(user.user.type === 2 || yyzzUrlfileList.length ){
               if(values) {
                 const res = await commonRequest('/sysOrgan', {
                   method: 'post',
                   data: {
+                    ...sysorgin,
                     ...values,
                     yyzzUrl: yyzzUrlfileList[0],
                     cardUrl1: cardUrl1fileList[0],
@@ -223,7 +221,7 @@ function Repair() {
                     type: 2,
                     serverId: userId,
                     serverType: 'user',
-                    compName: values.name
+                    compName: values.name || sysorgin.name
                   }
                 })
                 if(res.code === '0') {
@@ -234,7 +232,7 @@ function Repair() {
                 }
               }
               }else{
-                message.warn('请上传相关照片后提交')
+                message.warn('请上传营业执照后提交')
               }
             }}
             >提交</Button>

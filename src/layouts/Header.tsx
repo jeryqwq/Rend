@@ -87,7 +87,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                       title: '认证提示',
                       content: <>
                       <img src='/images/auth.png'/>
-                      <h3>认证成为品牌商才可以发布设备哦</h3>
+                      <h3>认证信息审核</h3>
                       </>,
                       okText: (states === 0) ? '认证中' : (states === -1) ? '认证失败':'我要认证',
                       onOk: async() =>{

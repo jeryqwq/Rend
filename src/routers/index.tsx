@@ -61,7 +61,7 @@ const saleRouter = {
     component: '@/pages/froent/repair/index',
   },
   {
-    label: '培训课程',
+    label: '技能培训',
     key: '/course',
     path:'/course',
     component: '@/pages/froent/course/index',

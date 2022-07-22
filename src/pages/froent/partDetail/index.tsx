@@ -60,7 +60,7 @@ function ProductDetail() {
         <div className="rg">
           <div className="tit">{productInfo.partsName}</div>
           <div className="part1">
-            单价:<span className='price'>¥{productInfo.price} /元</span>/月
+            单价:<span className='price'>¥{productInfo.price} /元</span>
           </div>
           <Descriptions column={1} contentStyle={{color: '#333', fontSize: 15}}  labelStyle={{width: 105, color: '#666666', fontSize: 15}}>
             <Descriptions.Item label="地区">{productInfo.releaseCityName}</Descriptions.Item>
@@ -144,7 +144,7 @@ function ProductDetail() {
               <Descriptions.Item label="设备品牌">{productInfo.partsBrand}</Descriptions.Item>
               <Descriptions.Item label="出厂日期">{productInfo.productionDate && dayjs(productInfo.productionDate).format('YYYY-MM-DD')}</Descriptions.Item>
               {/* <Descriptions.Item label="整机序列号">{productInfo.serialNumber}</Descriptions.Item> */}
-              <Descriptions.Item label="设备型号">{productInfo.partsModel}</Descriptions.Item>
+              <Descriptions.Item label="配件型号">{productInfo.partsModel}</Descriptions.Item>
               {/* <Descriptions.Item label="工作小时数">{productInfo.workTime}小时</Descriptions.Item> */}
             </Descriptions>
             <div className="stit">产品详情</div>

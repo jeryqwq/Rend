@@ -1,8 +1,8 @@
 import  request, { obj2Str } from './request';
-export function equipmentRent (data: any) {
+export function equipmentRent (data: any, method = 'post') {
   return request("/equipmentRent", {
     data,
-    method: 'post'
+    method
   })
 }
 

@@ -7,17 +7,27 @@ import { Upload, Button, Radio, message } from 'antd'
 import { getUuid } from '@/utils';
 import {  equipmentRent } from '@/server/rent';
 import { getDict } from '@/server/common';
+import { useLocation } from 'umi';
+import moment from 'moment';
 
 function ForRent() {
   const formRef = useRef<ProFormInstance>()
   const [uuid, setUuid] = useState( getUuid())
   // const [prodTypes, setProds] = useState([])
+  const location = useLocation() as any
+  const state = location.state
   useEffect(() => {
     (async () => {
       // const res = await getDict('/mechineType')
       // if(res.code === '0') {
       //   setProds(res.data)
       // }
+      state && formRef.current?.setFieldsValue({
+        ...state,
+        startTime: moment(state.startTime),
+        releaseCityName: state.releaseCityName.split(',')
+      })
+      state?.id && setUuid(state.id);
     })()
   }, [])
   return (
@@ -114,72 +124,74 @@ function ForRent() {
               width={437}
               />
           <div className='stit'>其他信息</div>
-            <ProFormField colProps={{
-                span: 12
-              }}
-              rules={[{required: true}]}
-
-              name="invoiceType"
-              label="发票"
-              >
-                <Radio.Group
-                  size='large'
-
+         
+                <ProFormRadio.Group
+                 colProps={{
+                  span: 12
+                }}
+                rules={[{required: true}]}
+                name="invoiceType"
+                label="发票"
                   options={[{
                     label: '不需要',
-                    value: '0'
+                    value: 0
                   },{
                     label: '增值税普票',
-                    value: '1'
+                    value: 1
                   }, {
                     label: '增值税专票',
-                    value: '2'
+                    value:2
                   }]}
-                  optionType="button"
-                  buttonStyle="solid"
+                  fieldProps={{
+                    size: 'large',
+                    optionType: 'button',
+                    buttonStyle: 'solid'
+                  }}
                 />
-            </ProFormField>
-            <ProFormField colProps={{
-                span: 12
-              }}
-              rules={[{required: true}]}
-              name="reqOperator"
-              label="机手">
-                <Radio.Group
-                size='large'
+                <ProFormRadio.Group
+                 colProps={{
+                  span: 12
+                }}
+                rules={[{required: true}]}
+                name="reqOperator"
+                label="机手"
                   options={[{
                     label: '需要',
-                    value: '1'
+                    value:1
                   },{
                     label: '不需要',
-                    value: '0'
+                    value: 0
                   }]}
-                  optionType="button"
-                  buttonStyle="solid"
+                  fieldProps={{
+                    size: 'large',
+                    optionType: 'button',
+                    buttonStyle: 'solid'
+                  }}
                 />
-            </ProFormField>
-            <ProFormField colProps={{
-                span: 12
-              }}
-              rules={[{required: true}]}
-              label="付款方式"
-              >
-                <Radio.Group
-                  size='large'
+         
+                <ProFormRadio.Group
+                colProps={{
+                  span: 12
+                }}
+                fieldProps={{
+                  size: 'large',
+                  optionType: 'button',
+                  buttonStyle: 'solid'
+                }}
+                rules={[{required: true}]}
+                name="paymentMethod"
+                label="付款方式"
                   options={[{
                     label: '预付',
-                    value: '1'
+                    value: 1
                   },{
                     label: '后付',
-                    value: '2'
+                    value: 2
                   }, {
                     label: '现付',
-                    value: '3'
+                    value: 3
                   }]}
-                  optionType="button"
-                  buttonStyle="solid"
                 />
-            </ProFormField>
             <ProFormTextArea 
             colProps={{
               span: 24
@@ -198,11 +210,11 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentRent({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), startTime: values.startTime.format('YYYY/MM/DD').toString()})
+                  const res = await equipmentRent({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), startTime: values?.startTime?.format('YYYY/MM/DD').toString()}, state?.id ? 'put' : 'post')
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()
-                    location.reload()
+                    window.location.reload()
                   }
                 }
               }}

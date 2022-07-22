@@ -18,9 +18,11 @@ function Footer() {
                <Row gutter={50} style={{lineHeight: '30px'}}>
                 <Col style={{cursor: 'pointer'}}><div onClick={() => {
                   history.push('/buyAuth')
-                }}>个体工程公司会员入驻</div><div onClick={() => {
+                }}>个人会员入驻</div><div onClick={() => {
                   history.push('/salerAuth')
-                }}>品牌代理商会员入驻</div> </Col>
+                }}>品牌代理商会员入驻</div>
+                <div>平台法律顾问</div>
+                </Col>
                 <Col><div>设备求租</div><div>出租发布</div></Col>
                 <Col><div>平台规则</div><div>用户协议</div></Col>
                 <Col><div>用户协议</div><div>服务规则</div></Col>

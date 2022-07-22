@@ -171,7 +171,7 @@ function ForRent() {
                   if(res.code === '0') {
                     message.success('保存成功!')
                     formRef.current?.resetFields()
-                    location.reload()
+                    window.location.reload()
                   }
                 }
               }}
