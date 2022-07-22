@@ -160,7 +160,7 @@ function AllDevice() {
               />
               </div>
               <div className="line">
-                <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.salePrice}</span> /月</div>
+                <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.salePrice}</span> </div>
                 <div className="rg">{i.releaseCityName.split(',')[1]}</div>
               </div>
             <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.equipName}</div>

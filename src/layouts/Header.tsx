@@ -133,7 +133,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                       title: '认证提示',
                       content: <>
                       <img src='/images/auth.png'/>
-                      <h3>认证成为施工单位才可以租赁设备</h3>
+                      <h3>认证信息审核</h3>
                       </>,
                       okText: (states === 0) ? '认证中' : (states === -1) ? '认证失败':'我要认证',
                       onOk:async() =>{

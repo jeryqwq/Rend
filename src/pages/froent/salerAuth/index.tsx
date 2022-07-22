@@ -37,21 +37,21 @@ function Repair() {
           history.push('/')
           return
         }
-        setFileList([res?.data?.yyzzUrl])
-        setFileList1([res?.data?.cardUrl1])
-        setFileList2([res?.data?.cardUrl2])
+        res?.data?.yyzzUrl && setFileList([res?.data?.yyzzUrl])
+        res?.data?.cardUrl1 && setFileList1([res?.data?.cardUrl1])
+        res?.data?.cardUrl2 && setFileList2([res?.data?.cardUrl2])
         setSys(res.data)
-        setOthers(res?.data?.otherUrl.split(','))
+        res?.data?.otherUrl && setOthers(res?.data?.otherUrl.split(','))
        }else{
         const res2 = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 2 } })
         if(res2.code === '0') {
           if(res2.data) {
             formRef.current?.setFieldsValue(res2.data)
-            setFileList([res2?.data?.yyzzUrl])
-            setFileList1([res2?.data?.cardUrl1])
-            setFileList2([res2?.data?.cardUrl2])
+            res2?.data?.yyzzUrl && setFileList([res2?.data?.yyzzUrl])
+            res2?.data?.cardUrl1 && setFileList1([res2?.data?.cardUrl1])
+            res2?.data?.cardUrl2 && setFileList2([res2?.data?.cardUrl2])
             setSys(res2.data)
-            setOthers(res2?.data?.otherUrl.split(','))
+            res2?.data?.otherUrl && setOthers(res2?.data?.otherUrl.split(','))
           }
         }
        }
@@ -61,7 +61,7 @@ function Repair() {
   return (
     <div className={styles['repaire-wrap']}>
   <div className='bg'>RONG SHENG DA</div>
-        <div className="tit2">品牌商认证</div>
+        <div className="tit2">企业个人信息认证</div>
       <div className="repaire-inner">
       <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
       <h1>企业信息</h1>
@@ -73,14 +73,12 @@ function Repair() {
               span: 12
             }}
             name="callUser"
-            rules={[{required: true}]}
             label="联系人"
           />
           <ProFormText 
             colProps={{
               span: 12
             }}
-            rules={[{required: true}]}
             label="联系电话"
             name="callPhone"
           />
@@ -90,7 +88,6 @@ function Repair() {
               span: 12
             }}
             name="name"
-            rules={[{required: true}]}
           />
           <ProFormText 
             label="统一社会信用代码"
@@ -98,9 +95,8 @@ function Repair() {
               span: 12
             }}
             name="compCode"
-            rules={[{required: true}]}
           />
-        <ProForm.Item label="企业营业执照" style={{width: '100%'}} required>
+        <ProForm.Item label="企业营业执照" style={{width: '100%'}} >
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
@@ -118,22 +114,22 @@ function Repair() {
         </ProForm.Item>
           </>
          }
-        <div className='stit' style={{width: '100%'}}>法人信息</div>
+        <div className='stit' style={{width: '100%'}}>个人信息</div>
           <ProFormText 
             colProps={{
               span: 12
             }}
-            label="法人姓名"
+            label="个人姓名"
             name="legalUser"
           />
            <ProFormText 
             colProps={{
               span: 12
             }}
-            label="法人身份证"
+            label="个人身份证"
             name="legalIdCard"
           />
-            <ProForm.Item label="法人身份证正面" style={{width: '50%'}} >
+            <ProForm.Item label="个人身份证正面" style={{width: '50%'}} >
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
@@ -150,7 +146,7 @@ function Repair() {
                 {cardUrl1fileList.length >= 8 ? null : uploadButton}
               </Upload>
         </ProForm.Item>
-        <ProForm.Item label="法人身份证反面" style={{width: '50%'}} >
+        <ProForm.Item label="个人身份证反面" style={{width: '50%'}} >
           <Upload
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
@@ -191,10 +187,10 @@ function Repair() {
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
              onClick={ async () => {
               const values = await formRef.current?.validateFields()
-              if(!yyzzUrlfileList[0] && user.user.type !==2 ) {
-                message.warning('请上传企业营业执照')
-                return
-              }
+              // if(!yyzzUrlfileList[0] && user.user.type !==2 ) {
+              //   message.warning('请上传企业营业执照')
+              //   return
+              // }
               if(values) {
                 console.log(values, sysorgin)
                 const res = await commonRequest('/sysOrgan', {

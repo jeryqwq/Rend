@@ -19,7 +19,6 @@ function ForRent() {
   const state = location.state
   useEffect(() => {
     (async () => {
-    
       state && formRef.current?.setFieldsValue({
         ...state,
         startTime: moment(state.startTime),
@@ -36,8 +35,18 @@ function ForRent() {
       }
       const res2 = await getEquipmentType()
       if(res2.code === '0') {
-        function trans (items: any[]): any {
-          return items.map((i: any) => ({label: i.name, value: i.id, children: i.children ?  trans(i.children) : undefined}))
+        let _val:any = []
+        function trans (items: any[], parentID?: string): any {
+          return items.map((i: any) => {
+            if(i.id === state?.equipType) {
+              parentID && _val.push(parentID)
+              _val.push(i.id)
+              formRef.current?.setFieldsValue({
+                equipType: _val
+              })
+            }
+            return ({label: i.name, value: i.id, children: i.children ?  trans(i.children, i.id) : undefined})
+          })
         }
         allProdTypes = trans(res2.data)
         setProds(allProdTypes)
