@@ -109,7 +109,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                       }
                     })
                   }
-                }} items={[{ label: '设备出租', key: 'productRent' }, { label: '出售二手设备', key: 'sallOld' }]}/>} placement="bottom">
+                }} items={[{ label: '设备出租', key: 'productRent' }, { label: '出售二手设备', key: 'sallOld' }, { label: '出售新机', key: 'sallNew' }]}/>} placement="bottom">
                 <span className='btn-round' style={{marginRight: 27, left: 0}}><span>发布设备</span></span>
                 </Dropdown>
                 <Dropdown overlay={<Menu onClick={async (e) => {
