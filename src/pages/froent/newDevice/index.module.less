@@ -1,0 +1,97 @@
+.line{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: dashed 1px #ddd;
+  padding: 13px 0;
+  :global{
+    .lf{
+      width: 80px;
+      font-size: 14px;
+      color: #000;
+    }
+    .rg{
+      flex: 1;
+    }
+  }
+}
+.search{
+  
+  border: 1px solid #BEBEBE;
+  margin-top: 20px;
+  padding: 20px;
+}
+.devices{
+  display: flex;
+  background: #F6F6F6;
+  margin-top: 20px;
+  justify-content: space-between;
+    .lf{
+      width: 970px;
+      padding: 10px 10px 0 10px;
+    }
+    .rg{
+      background-color: white;
+      width: 220px;
+      height: 930px;
+    }
+}
+.item-wrap{
+  width: 230px;
+  display: inline-block;
+  margin-bottom: 5px;
+  background: white;
+  .detail{
+    display: none;
+  }
+  &.hover{
+    &:hover{
+      img{
+        height: 144px;
+      }
+      .detail{
+        display: block;
+      }
+    }
+  }
+  :global{
+    .comp{
+      font-size: 14px;
+      color: #999999;
+      margin: 0 10px 10px 10px;
+    }
+   
+    .line{
+      display: flex;
+      justify-content: space-between;
+      align-items:flex-end;
+      margin: 5px 10px;
+      >.lf{
+        font-size: 12px;
+        color: #333;
+      }
+      >.rg{
+        font-size: 14px;
+      }
+    
+    }
+  }
+  .img-wrap{
+    background-color: white;
+    text-align: center;
+    padding: 5px 0;
+    img{
+      height: 184px;
+    }
+  }
+
+}
+
+.hotPrice{
+  background-color: #B11B04;
+  color: #FFFFFF;
+  text-align: center;
+  height: 60px;
+  line-height: 60px;
+font-size: 24px;
+}

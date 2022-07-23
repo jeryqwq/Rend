@@ -49,6 +49,12 @@ const saleRouter = {
     component: '@/pages/froent/allDevice/index',
   },
   {
+    label: '新机出售',
+    key: '/newDevice',
+    path:'/newDevice',
+    component: '@/pages/froent/newDevice/index',
+  },
+  {
     label: '二手设备',
     key: '/sallList',
     path:'/sallList',
@@ -149,6 +155,13 @@ const saleRouter = {
     component: '@/pages/froent/sallOld/index',
   },
   {
+    label: '发布新机',
+    key: '/sallNew',
+    path:'/sallNew',
+    hide: true,
+    component: '@/pages/froent/sallNew/index',
+  },
+  {
     label: '求购设备',
     key: '/forBuy',
     path:'/forBuy',
@@ -161,6 +174,13 @@ const saleRouter = {
     key: '/productDetail',
     path:'/productDetail',
     component: '@/pages/froent/productDetail/index',
+    hide: true
+  },
+  {
+    label: '新机详情',
+    key: '/newDetail',
+    path:'/newDetail',
+    component: '@/pages/froent/newDetail/index',
     hide: true
   },
   {

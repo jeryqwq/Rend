@@ -1,54 +1,55 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
-import { Row, Col, Button, Tag,Pagination } from 'antd'
-import { equipmentAllPage, equipmentLeasePage } from '@/server/rent';
+import { Row, Col, Button,Tag, Pagination } from 'antd'
+import { equipmentSalePage } from '@/server/rent';
 import { commonRequest, getBrands, getDict, getEquipmentType } from '@/server/common';
 import city from '@/constants/city';
 import { useHistory, useLocation } from 'umi';
 let allProdTypes: any
-
 function AllDevice() {
   const location = useLocation() as any
+
   const history = useHistory()
-  const [keyword, setKeyword] = useState(location.query.keyword)
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
     "pages": 10,
-    "size": 12
+    "size": 8
   })
+  const [keyword, setKeyword] = useState(location.query.keyword)
   const [brands, setBrands] = useState([])
   const [list, setList] = useState([])
   const [total, setTotal] = useState(0)
   const [params, setParams] = useState<Record<string, any>>({})
   const [prodTypes, setProds] = useState([])
   const [curCity, setCurCity] = useState(city)
-  const [reCommonList, setReCom] = useState([])
+  const [recommons, setRecommon] = useState([])
   useEffect(() => {
     (async () => {
       const res = await getBrands()
       if(res.code === '0') {
         setBrands(res.data)
       }
-      const res2 = await getEquipmentType()
-      if(res2.code === '0') {
+      const res3 = await getEquipmentType()
+      if(res3.code === '0') {
         function trans (items: any[]): any {
           return items.map((i: any) => ({name: i.name, code: i.id, children: i.children ?  trans(i.children) : undefined}))
         }
-        allProdTypes = trans(res2.data)
+        allProdTypes = trans(res3.data)
         setProds(allProdTypes)
       }
-      const res3 = await commonRequest('/equipmentLease/getRecommList', {
+
+      const res4 = await commonRequest('/equipmentSale/getRecommList', {
         method: 'get'
       })
-      if(res3.code === '0') {
-        setReCom(res3.data.slice(0, 3))
+      if(res4.code === '0') {
+        setRecommon(res4.data.slice(0, 3))
       }
     })()
   },[])
 
   useEffect(() => {
     (async () => {
-      const res = await equipmentAllPage({...pageInfo, ...params, equipName: keyword})
+      const res = await equipmentSalePage({...pageInfo, ...params, equipName: keyword, isNew: 1})
       if(res.code === '0') {
         setList(res.data.records || [])
         setTotal(res.data.total || 0)
@@ -68,6 +69,7 @@ function AllDevice() {
                 equipType: undefined
               })
               allProdTypes && setProds(allProdTypes)
+
             }}
           >全部</Button></Col>
          { prodTypes.map((i: any) => <Col><Button  size='small' 
@@ -78,6 +80,7 @@ function AllDevice() {
             equipType: i.code
           })
           i.children && setProds(i.children)
+
          }}
          >{i.name}</Button></Col>) } 
         </Row>
@@ -130,7 +133,6 @@ function AllDevice() {
           }}>{i.label}</Button></Col>) }
         </Row>
       </div>
-
       {
       keyword &&  <div className={styles.line}>
       <div className="lf">搜索关键词</div>
@@ -143,17 +145,13 @@ function AllDevice() {
      }
      </div>
 
+    
+
       <div className={styles['devices']}>
         <div className={styles.lf}><Row gutter={10}>
         { list.map((i: any) => <Col style={{marginBottom: 5}}>
           <div className={`${styles['item-wrap']} ${ styles.hover }`} style={{cursor: 'pointer'}} onClick={() => {
-            if(i.isNew === 1) {
-              history.push('/newDetail?id=' + i.id + '&type=' + 'equipmentSale')
-            }else if(i.isNew === 0) {
-              history.push('/productDetail?id=' + i.id + '&type=' + 'equipmentSale')
-            }else{
-              history.push('/rentDetail?id=' + i.id + '&type=' + 'equipmentSale')
-            }
+            history.push('/productDetail?id=' + i.id)
           }}>
             <div className={`${styles['img-wrap']}`}>
               <img
@@ -162,7 +160,7 @@ function AllDevice() {
               />
               </div>
               <div className="line">
-                <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.price}</span>{i.type === 'EquipmentLease' ?  ' /月' : ''}</div>
+                <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.salePrice}</span> </div>
                 <div className="rg">{i.releaseCityName.split(',')[1]}</div>
               </div>
             <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.equipName}</div>
@@ -172,13 +170,9 @@ function AllDevice() {
         </Col>) }
       </Row></div>
       <div className={styles.rg}>
-        <div className={styles.hotPrice}>热门新机</div>
+        <div className={styles.hotPrice}>特价推荐</div>
        {
-        reCommonList.map((i:any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220, cursor: 'pointer'}}
-        onClick={() => {
-          history.push('/rentDetail?id=' + i.id + '&type=' + 'equipmentSale')
-        }}
-        >
+         recommons.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}
@@ -187,7 +181,7 @@ function AllDevice() {
            />
            </div>
            <div className="line">
-             <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.monthlyRent}</span> /月</div>
+             <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.salePrice}</span> </div>
              <div className="rg">{i.releaseCityName}</div>
            </div>
          <div style={{textAlign: 'left',margin: '0 10px'}}>{i.equipName}</div>

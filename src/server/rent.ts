@@ -43,7 +43,11 @@ export function equipmentPartPage (data: any) { // 二手出售
   })
 }
 export function equipmentSalePage (data: any) { // 二手出售
-  let conditions:any[] = [];
+  let conditions:any[] = [{
+    column: 'is_new',
+    operator: 'eq',
+    value: data.isNew === 1 ? 1 : 0
+  }];
   [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
     if(data[i.name]) {
       conditions.push({
@@ -59,6 +63,24 @@ export function equipmentSalePage (data: any) { // 二手出售
     method: 'post'
   })
 }
+export function equipmentAllPage (data: any) { // 二手出售
+  let conditions:any[] = [];
+  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
+    if(data[i.name]) {
+      conditions.push({
+        column: i.col,
+        operator: i.op,
+        value: data[i.name]
+      })
+    }
+  })
+  data.conditions = conditions
+  return request("/equipmentLease/pageAllEquipment", {
+    data,
+    method: 'post'
+  })
+}
+
 
 export function equipmentRepairInfo(data: any) {
   return request('/equipmentRepairInfo', {
@@ -104,11 +126,11 @@ export function getStoreCommon (organId: string, id: string, k1 = 'd.organ_id', 
       current: 0,
       conditions:[{
         operator: 'eq',
-        columns: k1,
+        column: k1,
         value: organId
       },{
         operator: 'ne',
-        columns: k2,
+        column: k2,
         value: id
       }]
     }
@@ -122,11 +144,11 @@ export function getStoreOthers (organId: string, typeid: string, k1 = 'd.organ_i
       current: 0,
       conditions:[{
         operator: 'ne',
-        columns: k1,
+        column: k1,
         value: organId
       },{
         operator: 'eq',
-        columns: k2,
+        column: k2,
         value: typeid
       }]
     }

@@ -68,7 +68,7 @@ function ForRent() {
       <div className="repaire-inner">
       <ProForm submitter={false}  size='large' initialValues={state} grid layout='vertical' formRef={formRef}>
         <ProForm.Item style={{width: '100%'}}>
-        <div className="tit">出售二手设备</div>
+        <div className="tit">新机发布</div>
         <div className='stit'>选择发布城市</div>
           <ProFormCascader label="当前发布城市" 
                colProps={{
@@ -190,15 +190,6 @@ function ForRent() {
                 required: true,
               }]}
             />
-              <ProFormDigit label="工作小时数"
-                colProps={{
-                  span: 12
-                }}
-                name='workTime'
-                rules={[{
-                  required: true,
-                }]}
-              />
               <ProFormDigit label="整机序列号"
                 colProps={{
                   span: 12,
@@ -238,7 +229,7 @@ function ForRent() {
                 const values = await formRef.current?.validateFields()
                 if(values) {
                   // const values = formRef.current?.getFieldsValue()
-                  const res = await equipmentSale({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1],releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName, isNew: 0}, state?.id ? 'put':'post')
+                  const res = await equipmentSale({...values, id: uuid, equipType: values.equipType[values.equipType.length - 1],releaseCityName:  Array.isArray(values.releaseCityName) ? values.releaseCityName.join(',') : values.releaseCityName, isNew: 1}, state?.id ? 'put':'post')
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

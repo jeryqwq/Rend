@@ -1,0 +1,171 @@
+.line2{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 30px;
+  :global {
+
+    .lf{
+      width: 200px;
+        .item{
+           border: 1px solid #DCDCDC; 
+          .ot-tit{
+            color: #333;
+            font-size: 16px;
+            text-align: left;
+            padding: 0 10px;
+          }
+          .price{
+            text-align: left;
+            color: #FF0505;
+            font-size: 19px;
+            padding: 0 10px;
+
+          }
+        }
+        .tit-img{
+          padding: 10px;
+          display: flex;
+          justify-content: flex-start;
+        }  
+       .person{
+        border-top: dashed 1px rgb(210, 208, 208);
+        color: #999;
+        font-size: 12px;
+        padding: 20px 10px;
+      padding: 10px;
+      }
+      .atcion{
+        display: flex;
+        height: 32px;
+        text-align: center;
+        line-height: 32px;
+        color: #033333;
+        font-size: 14px;
+        background-color: #95C0FF;
+        >div{
+          flex: 1;
+          cursor: pointer;
+          &.cur{
+            background: #105CCE;
+            color: white;
+            }
+        }
+      }
+
+    }
+    .rg{
+      width: 980px;
+      .prod-cont{
+        padding: 36px;
+        .stit{
+          margin: 14px 0;
+          font-size: 17px;
+        }
+        .detail{
+          margin: 20px 0 ;
+          color: #666666;
+        }
+      }
+    }
+    .head-tit{
+      color: #333;
+      font-size: 16px;
+      background: #F2F2F2;
+      height: 46px;
+      line-height: 46px;
+      border: 1px solid #DCDCDC;
+      display: flex;
+      justify-content: flex-start;
+      >.item{
+        width: 235px;
+        text-align: center;
+        cursor: pointer;
+        border-top: solid 4px transparent;
+        line-height: 42px;
+        &.active{
+          border-top: solid 4px @primary-color;
+          background-color: white;
+          color: @primary-color;
+        }
+      }
+    }
+  }
+}
+.line3{
+
+
+  :global {
+    .tit{
+  background-color: #F2F2F2;
+
+  padding-left: 30px;
+
+      color: #333333;
+      font-size: 16px;
+      margin: 15px 0;
+      border: 1px solid #DCDCDC;
+  line-height: 46px;
+height: 46px;
+    }
+    .others{
+      display: flex;
+      justify-content: space-around;
+      >.item{
+       width: 210px;
+      }
+    }
+    .price{
+      text-align: left;
+      color: #FF0505;
+      font-size: 19px;
+      padding: 0 10px;
+
+    }
+
+  }
+}
+.line1{
+  display: flex;
+  justify-content: space-between;
+  :global {
+    .lf{
+      width: 410px;
+      .subs{
+        height: 72px;
+        margin-top: 10px;
+       white-space: nowrap;
+        overflow: scroll;
+        img{
+          width: 72px;
+          height: 72px;
+          margin-right: 10px;
+        }
+      }
+    }
+    .ant-descriptions-row > td{
+      padding-bottom: 10px;
+    }
+    .rg{
+      width: 730px;
+      .part1{
+        padding: 0 15px;
+        background: #F2F2F2;
+        height: 64px;
+        margin: 20px 0;
+        color: #666666;
+        font-size: 15px;
+        line-height: 64px;
+        .price{
+          color: #FF0505;
+          font-size: 22px;
+          margin: 0 10px;
+        }
+      }
+      .tit{
+
+        font-size: 28px;
+        color: #333;
+      }
+    }
+  }
+}

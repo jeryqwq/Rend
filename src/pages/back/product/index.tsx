@@ -7,40 +7,44 @@ import { useHistory } from 'umi';
 const apiMap = {
   rent: '/equipmentLease/pageMy',
   sall: '/equipmentSale/page',
-  part: '/equipmentParts/page'
+  part: '/equipmentParts/page',
+  new: '/equipmentSale/page'
 }
 const apiStatusMap = {
   rent: '/equipmentLease/batchShelf',
   sall: '/equipmentSale/batchShelf',
-  part: '/equipmentParts/batchShelf'
+  part: '/equipmentParts/batchShelf',
+  new: '/equipmentSale/batchShelf',
 }
 const locaMap = {
   rent: 'rentDetail',
   sall: 'productDetail',
-  part: 'partDetail'
+  part: 'partDetail',
+  new: 'productDetail',
+
 }
 const apiDelMap = {
   rent: '/equipmentLease',
   sall: '/equipmentSale',
-  part: '/equipmentParts'
+  part: '/equipmentParts',
+  new: '/equipmentSale',
 }
 const addLocMap = {
   rent: '/productRent',
   sall: '/sallOld',
-  part: '/addPart'
+  part: '/addPart',
+  new: '/sallNew',
 }
 function Product() {
-  const [params, setParams] = useState({
-    size: 8,
-    current: 0 
-  })
+ 
   const history = useHistory()
   const tableRef = useRef<ActionType>()
-  const [type, setType] = useState<'rent' | 'sall' | 'part'>('rent')
+  const [type, setType] = useState<'rent' | 'sall' | 'part' | 'new'>('rent')
   const [manageValueEnum, setEnum] = useState<Record<string, any>>({
     rent: [],
     sall: [],
-    part: []
+    part: [],
+    new: []
   })
   const [keyword, setKeyword] = useState('')
   useEffect(() => {
@@ -69,12 +73,9 @@ function Product() {
             part: res3.data.map((i: any) => ({label: i.name, value: i.code}))
           }
         })
-        setTimeout(() => {
-          console.log(manageValueEnum)
-        }, 200);
        }
     })()
-  }, [params, type])
+  }, [type])
   return (
     <div className='content' >
       <div className={styles.wrap}>
@@ -86,6 +87,7 @@ function Product() {
           tableRef.current?.reloadAndRest()
         }} defaultValue="rent" size="large">
         <Radio.Button value="rent" >设备租凭管理</Radio.Button>
+        <Radio.Button value="new">新机设备管理</Radio.Button>
         <Radio.Button value="sall">二手设备管理</Radio.Button>
         <Radio.Button value="part">配件管理</Radio.Button>
       </Radio.Group>
@@ -205,6 +207,13 @@ function Product() {
               operator: 'like',
               value: keyword
             })
+            if(type === 'new' || type === 'sall') {
+              conditions.push({
+                column: 'is_new',
+                operator: 'eq',
+                value: type === 'new' ? 1 : 0
+            })
+            }
             const res = await commonRequest(apiMap[type], {
               method: 'post',
               data: {
