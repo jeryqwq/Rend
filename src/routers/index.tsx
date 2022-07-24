@@ -49,6 +49,12 @@ const saleRouter = {
     component: '@/pages/froent/allDevice/index',
   },
   {
+    label: '设备出租',
+    key: '/rentList',
+    path:'/rentList',
+    component: '@/pages/froent/rentList/index',
+  },
+  {
     label: '新机出售',
     key: '/newDevice',
     path:'/newDevice',
@@ -60,6 +66,7 @@ const saleRouter = {
     path:'/sallList',
     component: '@/pages/froent/sallList/index',
   },
+ 
   {
     label: '设备维修',
     key: '/repair',

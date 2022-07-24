@@ -1,46 +1,47 @@
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
-import { Row, Col, Button,Tag, Pagination } from 'antd'
-import { equipmentPartPage } from '@/server/rent';
+import { Row, Col, Button, Tag,Pagination } from 'antd'
+import { equipmentLeasePage } from '@/server/rent';
 import { commonRequest, getBrands, getDict, getEquipmentType } from '@/server/common';
 import city from '@/constants/city';
 import { useHistory, useLocation } from 'umi';
+let allProdTypes: any
+
 function AllDevice() {
   const location = useLocation() as any
   const history = useHistory()
+  const [keyword, setKeyword] = useState(location.query.keyword)
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
-    "pages": 12,
+    "pages": 10,
     "size": 12
   })
-  const [keyword, setKeyword] = useState(location.query.keyword)
   const [brands, setBrands] = useState([])
   const [list, setList] = useState([])
   const [total, setTotal] = useState(0)
   const [params, setParams] = useState<Record<string, any>>({})
+  const [prodTypes, setProds] = useState([])
   const [curCity, setCurCity] = useState(city)
-  const [recommList, setRlist] = useState([])
-  const [partsType, setPartType] = useState([])
-
+  const [reCommonList, setReCom] = useState([])
   useEffect(() => {
     (async () => {
-      // const res = await getBrands()
-      // if(res.code === '0') {
-      //   setBrands(res.data)
-      // }
-      const res2 = await commonRequest('/equipmentParts/getRecommList', {
+      const res = await getBrands()
+      if(res.code === '0') {
+        setBrands(res.data)
+      }
+      const res2 = await getEquipmentType()
+      if(res2.code === '0') {
+        function trans (items: any[]): any {
+          return items.map((i: any) => ({name: i.name, code: i.id, children: i.children ?  trans(i.children) : undefined}))
+        }
+        allProdTypes = trans(res2.data)
+        setProds(allProdTypes)
+      }
+      const res3 = await commonRequest('/equipmentLease/getRecommList', {
         method: 'get'
       })
-      if(res2.code === '0') {
-        setRlist(res2.data.slice(0,3))
-      }
-      const res3 = await commonRequest('/appdict/partsType', { method: 'get' })
       if(res3.code === '0') {
-        setPartType(res3.data)
-      }
-      const res4 = await commonRequest('/appdict/partsBrand', { method: 'get' })
-      if(res4.code === '0') {
-        setBrands(res4.data)
+        setReCom(res3.data.slice(0, 3))
       }
     })()
   },[])
@@ -48,8 +49,11 @@ function AllDevice() {
     setKeyword(location.query.keyword)
   }, [location.query.keyword])
   useEffect(() => {
+      setParams({...params, equipType: location.query.type})
+  }, [location.query.type])
+  useEffect(() => {
     (async () => {
-      const res = await equipmentPartPage({...pageInfo, ...params, partsName: keyword})
+      const res = await equipmentLeasePage({...pageInfo, ...params, equipName: keyword})
       if(res.code === '0') {
         setList(res.data.records || [])
         setTotal(res.data.total || 0)
@@ -59,49 +63,50 @@ function AllDevice() {
   return (
     <div className='content'>
      <div className={styles['search']}>
-
-     <div className={styles.line}>
-        <div className="lf">类型</div>
-        <Row className="rg" gutter={15}>
-          <Col><Button  size='small' type={!params['partsType'] ? 'primary' : 'text'}
-          onClick={() => {
-            setParams({
-              ...params,
-              partsType: undefined
-            })
-          }}
+      <div className={styles.line}>
+        <div className="lf">设备</div>
+        <Row className="rg" gutter={[20, 15]}>
+          <Col><Button  size='small' type={!params['equipType'] ? 'primary' : 'text'}
+            onClick={() => {
+              setParams({
+                ...params,
+                equipType: undefined
+              })
+              allProdTypes && setProds(allProdTypes)
+            }}
           >全部</Button></Col>
-          { partsType.map((i: any) => <Col><Button  size='small'
-           type={ params['partsType'] === i.code ? 'primary' : 'text' }
-          onClick={() => {
-            setParams({
-              ...params,
-              partsType: i.code
-            })
-          }}>{i.name}</Button></Col>) }
+         { prodTypes.map((i: any) => <Col><Button  size='small' 
+         type={ params['equipType'] === i.code ? 'primary' : 'text' }
+         onClick={() => {
+          setParams({
+            ...params,
+            equipType: i.code
+          })
+          i.children && setProds(i.children)
+         }}
+         >{i.name}</Button></Col>) } 
         </Row>
       </div>
 
-
       <div className={styles.line}>
-        <div className="lf">类型</div>
+        <div className="lf">品牌</div>
         <Row className="rg" gutter={15}>
-          <Col><Button  size='small' type={!params['partsBrand'] ? 'primary' : 'text'}
+          <Col><Button  size='small' type={!params['equipBrand'] ? 'primary' : 'text'}
           onClick={() => {
             setParams({
               ...params,
-              partsBrand: undefined
+              equipBrand: undefined
             })
           }}
           >全部</Button></Col>
           { brands.map((i: any) => <Col><Button  size='small'
-           type={ params['partsBrand'] === i.name ? 'primary' : 'text' }
+           type={ params['equipBrand'] === i.brandName ? 'primary' : 'text' }
           onClick={() => {
             setParams({
               ...params,
-              partsBrand: i.name
+              equipBrand: i.brandName
             })
-          }}>{i.name}</Button></Col>) }
+          }}>{i.brandName}</Button></Col>) }
         </Row>
       </div>
 
@@ -130,7 +135,8 @@ function AllDevice() {
           }}>{i.label}</Button></Col>) }
         </Row>
       </div>
-     {
+
+      {
       keyword &&  <div className={styles.line}>
       <div className="lf">搜索关键词</div>
      <div style={{flex: 1}}>
@@ -140,14 +146,13 @@ function AllDevice() {
      </div>
     </div>
      }
-   </div>
-    
+     </div>
 
       <div className={styles['devices']}>
         <div className={styles.lf}><Row gutter={10}>
         { list.map((i: any) => <Col style={{marginBottom: 5}}>
           <div className={`${styles['item-wrap']} ${ styles.hover }`} style={{cursor: 'pointer'}} onClick={() => {
-            history.push('/partDetail?id=' + i.id)
+            history.push('/rentDetail?id=' + i.id + '&type=' + 'equipmentSale')
           }}>
             <div className={`${styles['img-wrap']}`}>
               <img
@@ -156,19 +161,23 @@ function AllDevice() {
               />
               </div>
               <div className="line">
-                <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.price}</span> </div>
-                <div className="rg">{i.releaseCityName}</div>
+                <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.monthlyRent}</span> /月</div>
+                <div className="rg">{i.releaseCityName.split(',')[1]}</div>
               </div>
-              <div className={styles.stit}>{i.remark}</div>
+            <div style={{textAlign: 'left',height: 50,overflow: 'hidden', margin: '0 10px'}}>{i.equipName}</div>
             <div className='comp'>{i.organName}</div> 
             <Button type={'primary'} size='middle' style={{width: '100%'}} className={styles.detail}>查看详情</Button>
         </div>
         </Col>) }
       </Row></div>
       <div className={styles.rg}>
-        <div className={styles.hotPrice}>热卖配件</div>
+        <div className={styles.hotPrice}>热门新机</div>
        {
-        recommList.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+        reCommonList.map((i:any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220, cursor: 'pointer'}}
+        onClick={() => {
+          history.push('/rentDetail?id=' + i.id + '&type=' + 'equipmentSale')
+        }}
+        >
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}
@@ -176,12 +185,11 @@ function AllDevice() {
              src={'/lease-center/' + i.mainImgPath}
            />
            </div>
-           <div className={styles.stit} >{i.description}</div>
            <div className="line">
-             <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.price}</span> </div>
-             <div className="rg">销量：900</div>
+             <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.monthlyRent}</span> /月</div>
+             <div className="rg">{i.releaseCityName}</div>
            </div>
-     
+         <div style={{textAlign: 'left',margin: '0 10px'}}>{i.equipName}</div>
      </div>)
        }
        

@@ -48,7 +48,7 @@ export function equipmentSalePage (data: any) { // 二手出售
     operator: 'eq',
     value: data.isNew === 1 ? 1 : 0
   }];
-  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
+  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
     if(data[i.name]) {
       conditions.push({
         column: i.col,
@@ -65,7 +65,7 @@ export function equipmentSalePage (data: any) { // 二手出售
 }
 export function equipmentAllPage (data: any) { // 二手出售
   let conditions:any[] = [];
-  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
+  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
     if(data[i.name]) {
       conditions.push({
         column: i.col,
@@ -96,7 +96,7 @@ export function equipmentSaleDetail(id: string, type = 'equipmentSale') {
 
 export function equipmentLeasePage(data:any){
   let conditions:any[] = [];
-  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq',name: 'equipType', col: 'equip_type' }, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
+  [{ name: 'equipName', col: 'equip_name', op: 'like'},{ name: 'releaseCityName', col: 'release_city_name', op: 'like'}, { op: 'eq', name: 'equipBrand', col: 'equip_brand'}].forEach(i => {
     if(data[i.name]) {
       conditions.push({
         column: i.col,

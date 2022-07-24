@@ -6,6 +6,7 @@ const locMap = {
   '二手设备': '/sallList',
   '全部设备': '/allDevice',
   '新机出售': '/newDevice',
+  '设备出租': '/rentList'
 }
 
 function Bread({ breads }: {breads: Array<React.ReactNode>}) {

@@ -6,7 +6,6 @@ import { MenuRouter } from '@/routers';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
 import { ShowSaleRouter } from '@/routers';
 
-import useLogin from '@/hooks/useLogin';
 import Line from './Line';
 import useUserInfo from '@/hooks/useLogin';
 import { commonRequest } from '@/server/common';
