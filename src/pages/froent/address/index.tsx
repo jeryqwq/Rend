@@ -25,7 +25,9 @@ function Address() {
       <Button type='link' style={{marginTop: 20}}>新增地址</Button>
       <ProForm formRef={formRef} submitter={false} autoFocusFirstInput={false} grid style={{width: 610}}>
         <ProFormText label="姓名" name="receiveUser" rules={[{required: true}]}/>
-        <ProFormText label="手机" name="contactNumber" rules={[{required: true}]}/>
+        <ProFormText label="手机" name="contactNumber" rules={[{required: true,
+           pattern: /^1[3-9]\d{9}$/,
+           message: '手机号码不匹配，请检查后重新输入'}]}/>
         <ProFormCascader label="地址" 
             colProps={{
             span: 12
@@ -41,7 +43,9 @@ function Address() {
           name="city"
         />
         <ProFormText label="详细地址" name="address" rules={[{required: true}]}/>
-        <ProFormText label="邮编" name="zipCode" rules={[{required: true}]}/>
+        <ProFormText label="邮编" name="zipCode" rules={[{required: true,
+        pattern: /^[1-9][0-9]{5}$/,
+        message: '邮编格式不匹配，请检查后重新输入'}]}/>
       </ProForm>
       <Button type={'primary'} onClick={async () => {
         await formRef.current?.validateFields()
@@ -87,7 +91,10 @@ function Address() {
                   icon: null,
                   content: <ProForm formRef={formRef} submitter={false} initialValues={{...i, city: [i.provinceName, i.cityName]}} autoFocusFirstInput={false} grid >
                         <ProFormText label="姓名" name="receiveUser" rules={[{required: true}]}/>
-                        <ProFormText label="手机" name="contactNumber" rules={[{required: true}]}/>
+                        <ProFormText label="手机" name="contactNumber" rules={[{required: true,
+                          pattern: /^1[3-9]\d{9}$/,
+                          message: '手机号码不匹配，请检查后重新输入'
+                        }]}/>
                         <ProFormCascader label="地址"
                             colProps={{
                             span: 12
@@ -103,7 +110,9 @@ function Address() {
                           name="city"
                         />
                         <ProFormText label="详细地址" name="address" rules={[{required: true}]}/>
-                        <ProFormText label="邮编" name="zipCode" rules={[{required: true}]}/>
+                        <ProFormText label="邮编" name="zipCode" rules={[{required: true,
+                            pattern: /^[1-9][0-9]{5}$/,
+                            message: '邮编格式不匹配，请检查后重新输入'}]}/>
                   </ProForm>,
                   onOk :async() => {
         await formRef.current?.validateFields()

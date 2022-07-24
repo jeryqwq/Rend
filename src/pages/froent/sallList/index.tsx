@@ -46,7 +46,9 @@ function AllDevice() {
       }
     })()
   },[])
-
+  useEffect(() => {
+    setKeyword(location.query.keyword)
+  }, [location.query.keyword])
   useEffect(() => {
     (async () => {
       const res = await equipmentSalePage({...pageInfo, ...params, equipName: keyword})

@@ -18,6 +18,20 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
   const curRouter = MenuRouter.find(i => i.path === path)
   const { user, login } = useUserInfo()
   const userInfo = user?.user
+  function search (val: string) {
+    switch (searchType) {
+      case 'ershou':
+        history.push('/sallList?keyword=' + val)
+        break;
+        case 'peijian':
+          history.push('/part?keyword=' + val)
+          break; case 'shebei':
+          history.push('/allDevice?keyword=' + val)
+          break;
+      default:
+        break;
+    }
+  }
   return (
     <div  className={styles['for-menu']}>
       <div className={`${styles['line-header']}`} >
@@ -63,7 +77,15 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                     prefix={<SearchOutlined className='theme-color'/>}
                     style={{ width: 490, height:45, marginRight: 20 }}
                   />
-                  <div className="search-his"><span>挖掘</span><span>土方</span><span>起重机</span><span>挖掘</span></div>
+                  <div className="search-his"><span onClick={() => {
+                    search('挖掘')
+                  }}>挖掘</span><span onClick={() => {
+                    search('土方')
+                  }}>土方</span><span onClick={() => {
+                    search('起重机')
+                  }}>起重机</span><span onClick={() => {
+                    search('螺丝')
+                  }}>螺丝</span></div>
                 </div>
               <div>
                 <Dropdown overlay={<Menu onClick={async (e) => {

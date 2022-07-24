@@ -44,10 +44,12 @@ function AllDevice() {
       }
     })()
   },[])
-
+  useEffect(() => {
+    setKeyword(location.query.keyword)
+  }, [location.query.keyword])
   useEffect(() => {
     (async () => {
-      const res = await equipmentPartPage({...pageInfo, ...params, equipName: keyword})
+      const res = await equipmentPartPage({...pageInfo, ...params, partsName: keyword})
       if(res.code === '0') {
         setList(res.data.records || [])
         setTotal(res.data.total || 0)

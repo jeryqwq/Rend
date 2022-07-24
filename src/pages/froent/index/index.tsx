@@ -92,7 +92,9 @@ export default function IndexPage() {
             全部产品
           </Button>
         <div className="menu-lf">
-          <Menu style={{height: '100%', overflow: 'auto'}} mode="vertical" theme='dark' items={prods} />
+          <Menu style={{height: '100%', overflow: 'auto'}} onClick={({key}) => {
+            history.push('/allDevice?type=' + key)
+          }} mode="vertical" theme='dark' items={prods} />
         </div>
         </div>
         <div className="rg">

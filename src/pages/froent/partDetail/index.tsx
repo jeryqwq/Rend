@@ -50,7 +50,7 @@ function ProductDetail() {
   },[id])
   return (
     <div className='content' style={{marginTop: 20}}>
-      <Bread breads={['设备详情']}/>
+      <Bread breads={['零件详情']}/>
       <div className={styles.line1}>
         <div className="lf">
           <img src={'/lease-center/' + productInfo.mainImgPath} alt="" style={{width: '100%', height: 300}}/>

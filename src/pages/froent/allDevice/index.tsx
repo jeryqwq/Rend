@@ -24,6 +24,12 @@ function AllDevice() {
   const [curCity, setCurCity] = useState(city)
   const [reCommonList, setReCom] = useState([])
   useEffect(() => {
+    setKeyword(location.query.keyword)
+  }, [location.query.keyword])
+  useEffect(() => {
+      setParams({...params, equipType: location.query.type})
+  }, [location.query.type])
+  useEffect(() => {
     (async () => {
       const res = await getBrands()
       if(res.code === '0') {

@@ -1,10 +1,20 @@
 import React from 'react';
 import {Button } from 'antd';
 import styles from './index.module.less';
+import { useHistory } from 'umi';
 function DeviceItem({ width, height, item }: { width?: number, height?: number, item: any }) {
+  const history = useHistory()
   return (
     <div className={`${styles['item-wrap']}`}>
-      <div className={`${styles['img-wrap']}`}>
+      <div className={`${styles['img-wrap']}`} onClick={() => {
+        if(item.isNew === 1) {
+          history.push('/newDetail?id=' + item.id + '&type=' + 'equipmentSale')
+        }else if(item.isNew === 0) {
+          history.push('/productDetail?id=' + item.id + '&type=' + 'equipmentSale')
+        }else{
+          history.push('/rentDetail?id=' + item.id + '&type=' + 'equipmentSale')
+        }
+      }}>
         <img
           width={width || 220}
           height={  height }

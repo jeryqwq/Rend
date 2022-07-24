@@ -83,7 +83,7 @@ function ProductDetail() {
   },[id])
   return (
     <div className='content' style={{marginTop: 20}}>
-      <Bread breads={['全部设备', '二手设备', '设备详情']}/>
+      <Bread breads={[productInfo.isNew === 1 ? '新机出售' : '二手设备', '设备详情']}/>
       <div className={styles.line1}>
         <div className="lf">
           <img src={'/lease-center' + mainImg[mainIndex]} alt="" style={{width: '100%', height: 300}}/>
@@ -179,7 +179,9 @@ function ProductDetail() {
               <Descriptions.Item label="出厂日期">{productInfo.productionDate && dayjs(productInfo.productionDate).format('YYYY-MM-DD')}</Descriptions.Item>
               <Descriptions.Item label="整机序列号">{productInfo.serialNumber}</Descriptions.Item>
               <Descriptions.Item label="设备型号">{productInfo.equipModel}</Descriptions.Item>
-              <Descriptions.Item label="工作小时数">{productInfo.workTime}小时</Descriptions.Item>
+              {
+                productInfo.isNew === 0 && <Descriptions.Item label="工作小时数">{productInfo.workTime}小时</Descriptions.Item>
+              }
             </Descriptions>
             <div className="stit">产品详情</div>
             <div className="detail">{productInfo.description}</div>
