@@ -187,11 +187,11 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
           </div>
         </div>
       </div>
-      {curRouter?.showmenu !== 0 && <div className='menu-wrap'> {MenuRouter.map(i => <div className={`item ${ i.path === path && 'cur' }`}
+      {curRouter?.showmenu !== 0 && <div className='menu-wrap'><div className='content'> {MenuRouter.map(i => <div className={`item ${ i.path === path && 'cur' }`}
         onClick={() => {
           history.push(i.path)
         }}
-      >{i.label}</div>)} </div>
+      >{i.label}</div>)}</div> </div>
       //  <Menu style={{marginTop: 20}} onClick={({ key: curKey }) => {history.push(curKey)}}  mode="horizontal" theme='dark' items={
       //  MenuRouter
       // } />

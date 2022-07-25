@@ -49,7 +49,7 @@ const saleRouter = {
     component: '@/pages/froent/allDevice/index',
   },
   {
-    label: '设备出租',
+    label: '设备租赁',
     key: '/rentList',
     path:'/rentList',
     component: '@/pages/froent/rentList/index',

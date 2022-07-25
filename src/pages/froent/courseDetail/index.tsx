@@ -127,8 +127,10 @@ function ProductDetail() {
           {/* <div className="label">经营:xxx</div> */}
         </div>
         <div className="atcion">
-          <div className='cur'>联系商家</div>
-          <div>进入店铺</div>
+          <div className='cur' onClick={() => {
+            message.info('电话：' + productInfo?.organDto?.callPhone)
+          }}>联系商家</div>
+          {/* <div>进入店铺</div> */}
         </div>
         </div>
         {

@@ -6,8 +6,9 @@ import { Button,Modal,Input, message } from 'antd'
 import { EditOutlined } from '@ant-design/icons'
 import { commonRequest } from '@/server/common';
 import Message from '../message';
+import { getUserInfo } from '@/server/login';
 function UserInfo() {
-  const { user } = useUserInfo()
+  const { user , login} = useUserInfo()
   const userInfo = user.user
   return (
     <div className={styles['info-wrap']}>
@@ -29,13 +30,18 @@ function UserInfo() {
             onOk: async() => {
               const res = await commonRequest('/apiuser/updateName', {
                 method: 'get',
-                data: {
+                params: {
                   name: temp
                 }
               })
               if(res.code === '0') {
-                message.success('修改成功!')
-              }
+                message.success('修改成功!');
+                const res2 = await getUserInfo()
+                if(res2.code === '0') {
+                  login(res2.data)
+                  window.location.reload()
+                }
+               }
             }
           })
         }}><EditOutlined />修改</Button>

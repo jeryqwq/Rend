@@ -170,7 +170,7 @@ function ShopCar() {
         <span>删除</span>
         {/* <span style={{margin: '0 100px 0 40px'}}>移入收藏夹</span> */}
         <span className="prices">
-          <div>共 <span className='num' style={{fontSize: 16}}>{total}</span> 件商品， 以选择 <span className='num' style={{fontSize: 16}}>{choose.length}</span> 件</div>
+          <div>共 <span className='num' style={{fontSize: 16}}>{total}</span> 件商品， 已选择 <span className='num' style={{fontSize: 16}}>{choose.length}</span> 件</div>
           <div>商品合计 : <span className='num'> ¥{ totalPrice }</span>   活动优惠 : <span className="num">
             -¥0.00</span></div>
         </span>
