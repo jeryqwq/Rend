@@ -19,16 +19,16 @@ function AllDevice() {
   const [brands, setBrands] = useState([])
   const [list, setList] = useState([])
   const [total, setTotal] = useState(0)
-  const [params, setParams] = useState<Record<string, any>>({})
+  const [params, setParams] = useState<Record<string, any>>({
+    equipType: location.query.type
+  })
   const [prodTypes, setProds] = useState([])
   const [curCity, setCurCity] = useState(city)
   const [reCommonList, setReCom] = useState([])
   useEffect(() => {
     setKeyword(location.query.keyword)
   }, [location.query.keyword])
-  useEffect(() => {
-      setParams({...params, equipType: location.query.type})
-  }, [location.query.type])
+
   useEffect(() => {
     (async () => {
       const res = await getBrands()

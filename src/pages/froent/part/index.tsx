@@ -168,7 +168,9 @@ function AllDevice() {
       <div className={styles.rg}>
         <div className={styles.hotPrice}>热卖配件</div>
        {
-        recommList.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+        recommList.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220, cursor: 'pointer'}}onClick={() => {
+          history.push('/partDetail?id=' + i.id)
+        }}>
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}
@@ -181,7 +183,6 @@ function AllDevice() {
              <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{i.price}</span> </div>
              <div className="rg">销量：900</div>
            </div>
-     
      </div>)
        }
        

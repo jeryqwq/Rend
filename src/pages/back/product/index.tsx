@@ -1,14 +1,14 @@
 import { ActionType, ProTable } from '@ant-design/pro-components';
 import React, { MutableRefObject, useEffect, useRef, useState } from 'react';
-import { Button,Input, Table, Space, Radio, message, Modal } from 'antd'
+import { Button,Input, Table, Space, Radio, message, Modal, InputNumber } from 'antd'
 import styles from './index.module.less';
 import { commonRequest } from '@/server/common';
 import { useHistory } from 'umi';
 const apiMap = {
   rent: '/equipmentLease/pageMy',
-  sall: '/equipmentSale/page',
-  part: '/equipmentParts/page',
-  new: '/equipmentSale/page'
+  sall: '/equipmentSale/pageMy',
+  part: '/equipmentParts/pageMy',
+  new: '/equipmentSale/pageMy'
 }
 const apiStatusMap = {
   rent: '/equipmentLease/batchShelf',
@@ -153,6 +153,63 @@ function Product() {
             hideInSearch: true,
             renderText(text, record, index, action) {
               return <>
+              {
+                type === 'part' && <>
+                   <Button type='link' 
+                      onClick={() => {
+                        let _data = '';
+                        Modal.confirm({
+                          content: <InputNumber min={1}  onChange={(e) => {
+                            _data = e
+                          }}/>,
+                          title: '请输入入库数量',
+                          onOk: async() => {
+                            const res = await commonRequest('/equipmentStroeRecord', {
+                              data: {
+                                type: 1,
+                                serviceType: 'EquipmentParts',
+                                serviceId: text,
+                                num: _data
+                              },
+                              method: 'post'
+                            })
+                            if(res.code === '0') {
+                              message.info('入库成功')
+                              tableRef.current?.reloadAndRest()
+                            }
+                          },
+                        })
+                      }}
+                    >入库</Button>
+                    <br/>
+                     <Button type='link' 
+                         onClick={() => {
+                          let _data = '';
+                          Modal.confirm({
+                            content: <InputNumber min={1} onChange={(e) => {
+                              _data = e
+                            }}/>,
+                            title: '请输入出库数量',
+                            onOk: async() => {
+                              const res = await commonRequest('/equipmentStroeRecord', {
+                                data: {
+                                  type: 2,
+                                  serviceType: 'EquipmentParts',
+                                  serviceId: text,
+                                  num: _data
+                                },
+                                method: 'post'
+                              })
+                              if(res.code === '0') {
+                                message.info('出库成功')
+                                tableRef.current?.reloadAndRest()
+                              }
+                            },
+                          })
+                        }}
+                    >出库</Button>
+                </>
+              }
               <Button type='link' onClick={async () => {
                const res = await commonRequest( apiStatusMap[type], {
                 method: 'put',

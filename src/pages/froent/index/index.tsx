@@ -104,7 +104,7 @@ export default function IndexPage() {
           <Carousel autoplay>
           {
             banners.map((i: any) => <h3 style={contentStyle}>
-            <img src={i.headUrl} style={{width: '100%', height: '400px'}}/>
+            <img src={'/lease-center/' + i.headUrl} style={{width: '100%', height: '400px'}}/>
            </h3>)
           }
           </Carousel>
@@ -188,7 +188,7 @@ export default function IndexPage() {
 
     <div style={{ padding: '25px 0', background: 'white'}}>
       <div className='content' >
-        <a style={{float: 'right',cursor: 'pointer'}} href="news">更多</a>
+        <a style={{float: 'right',cursor: 'pointer'}} href="#/news">更多</a>
         <h2 className='title'>行业资讯</h2>
         <Row gutter={0}>
           {

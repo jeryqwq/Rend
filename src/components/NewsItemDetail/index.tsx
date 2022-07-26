@@ -7,7 +7,7 @@ function NewsItemDetail({item}: {item: any}) {
   const history = useHistory()
   return (
     <div className={styles['item-wrap']}>
-      <img src={headUrl} alt="" style={{width: 238, height: 165}} />
+      <img src={'/lease-center/' + item.headUrl} style={{height: 200, width: 350, marginRight: 10}}/>
       <div className="rg">
         <div className="tit">{title}</div>
         <div className="time">{publishTime}</div>

@@ -9,7 +9,7 @@ function News({ index, item }: {index: number, item: any}) {
       his.push('/news/detail?id=' + item.id)
     }}
     style={{flexDirection: index % 2 === 0 ? 'column' : 'column-reverse', cursor: 'pointer'}} >
-      <img src={item.headUrl} height={200} width='100%'/>
+      <img src={'/lease-center/' + item.headUrl} height={200} width='100%'/>
       <div className={`item ${ index % 2 === 1 && 'sty2'  }`} >
         <p className='tit'>{item.title}</p>
         <p className='stit'>{item.summary}</p>

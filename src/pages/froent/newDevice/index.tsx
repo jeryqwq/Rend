@@ -8,7 +8,6 @@ import { useHistory, useLocation } from 'umi';
 let allProdTypes: any
 function AllDevice() {
   const location = useLocation() as any
-
   const history = useHistory()
   const [pageInfo, setPageInfo] = useState({
     "current": 1,
@@ -172,7 +171,9 @@ function AllDevice() {
       <div className={styles.rg}>
         <div className={styles.hotPrice}>特价推荐</div>
        {
-         recommons.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+         recommons.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}} style={{cursor: 'pointer'}} onClick={() => {
+          history.push('/productDetail?id=' + i.id)
+        }}>
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}

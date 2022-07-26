@@ -174,7 +174,11 @@ function AllDevice() {
       <div className={styles.rg}>
         <div className={styles.hotPrice}>特价推荐</div>
        {
-         recommons.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220}}>
+         recommons.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220, cursor: 'pointer'}}
+         onClick={() => {
+          history.push('/productDetail?id=' + i.id)
+        }}
+         >
          <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
            <img
              width={220}
