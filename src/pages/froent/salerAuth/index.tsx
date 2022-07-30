@@ -126,7 +126,7 @@ function Repair() {
             colProps={{
               span: 12
             }}
-            label="个人身份证"
+            label="个人身份证号码"
             name="legalIdCard"
           />
             <ProForm.Item label="个人身份证正面" style={{width: '50%'}} >

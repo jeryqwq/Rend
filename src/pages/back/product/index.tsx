@@ -86,7 +86,7 @@ function Product() {
           setType(e.target.value);
           tableRef.current?.reloadAndRest()
         }} defaultValue="rent" size="large">
-        <Radio.Button value="rent" >设备租凭管理</Radio.Button>
+        <Radio.Button value="rent" >设备租赁管理</Radio.Button>
         <Radio.Button value="new">新机设备管理</Radio.Button>
         <Radio.Button value="sall">二手设备管理</Radio.Button>
         <Radio.Button value="part">配件管理</Radio.Button>
@@ -181,33 +181,7 @@ function Product() {
                         })
                       }}
                     >入库</Button>
-                    <br/>
-                     <Button type='link' 
-                         onClick={() => {
-                          let _data = '';
-                          Modal.confirm({
-                            content: <InputNumber min={1} onChange={(e) => {
-                              _data = e
-                            }}/>,
-                            title: '请输入出库数量',
-                            onOk: async() => {
-                              const res = await commonRequest('/equipmentStroeRecord', {
-                                data: {
-                                  type: 2,
-                                  serviceType: 'EquipmentParts',
-                                  serviceId: text,
-                                  num: _data
-                                },
-                                method: 'post'
-                              })
-                              if(res.code === '0') {
-                                message.info('出库成功')
-                                tableRef.current?.reloadAndRest()
-                              }
-                            },
-                          })
-                        }}
-                    >出库</Button>
+                 
                 </>
               }
               <Button type='link' onClick={async () => {
@@ -221,7 +195,7 @@ function Product() {
                if(res.code === '0') {
                 tableRef.current?.reload()
                }
-              }}>上架</Button>
+              }}>{ record.status === -1 ? '上架' : '下架' }</Button>
               <br />
               <Button type='link' 
                 onClick={() => {

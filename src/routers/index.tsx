@@ -86,6 +86,18 @@ const saleRouter = {
     component: '@/pages/froent/part/index',
   },
   {
+    label: '物流运输',
+    key: '/transport',
+    path:'/transport',
+    component: '@/pages/froent/transport/index',
+  },
+  {
+    label: '机手求职',
+    key: '/findJob',
+    path:'/findJob',
+    component: '@/pages/froent/findJob/index',
+  },
+  {
     label: '行业动态',
     key: '/news',
     path:'/news',

@@ -130,9 +130,6 @@ function ForRent() {
               placeholder="如： 307E"
               name="partsModel"
               label="零件型号"
-              rules={[{
-                required: true,
-              }]}
             />
             <ProFormDatePicker 
               colProps={{
@@ -145,11 +142,14 @@ function ForRent() {
                 required: true,
               }]}
             />
-              <ProFormDigit label="序列号"
+              <ProFormDigit label="库存"
                 colProps={{
                   span: 12,
                 }}
-                name="serialNumber"
+                name="num"
+                rules={[{
+                  required: true,
+                }]}
               />
               <ProFormDigit 
                 colProps={{

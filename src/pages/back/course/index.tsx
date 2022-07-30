@@ -52,7 +52,7 @@ function Product() {
             operator: 'like',
             value: keyword
           })
-          const res2 = await commonRequest('/trainingCourse/page', { method: 'post',
+          const res2 = await commonRequest('/trainingCourse/pageMy', { method: 'post',
           data: {
             size: pageSize,
             current,
