@@ -9,6 +9,7 @@ import {  equipmentRent } from '@/server/rent';
 import { commonRequest, getDict } from '@/server/common';
 import { useLocation } from 'umi';
 import moment from 'moment';
+import useUserInfo from '@/hooks/useLogin';
 
 function ForRent() {
   const formRef = useRef<ProFormInstance>()
@@ -16,6 +17,8 @@ function ForRent() {
   // const [prodTypes, setProds] = useState([])
   const location = useLocation() as any
   const state = location.state
+  const { user } = useUserInfo()
+
   useEffect(() => {
     (async () => {
       state && formRef.current?.setFieldsValue({
@@ -62,7 +65,7 @@ function ForRent() {
                 span: 12
               }}
               rules={[{required: true}]}
-              name='detailAddress'
+              name='destination'
               label="希望运输目的地"
             />
             <ProFormDigit 
@@ -85,6 +88,10 @@ function ForRent() {
           <div style={{textAlign: 'center'}}>
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
               onClick={ async () => {
+                if(user.user.vip_level !== 2) {
+                  message.error('您还未缴纳会员费，请缴纳重新登录后重试!')
+                  return
+                }
                 const values = await formRef.current?.validateFields()
                 if(values) {
                   const res = await commonRequest('/sourceTransportation', {

@@ -60,7 +60,7 @@ function ForRent() {
   return (
     <div className={styles['repaire-wrap']}>
       <div className="repaire-inner">
-        <div className="tit">求购二手设备</div>
+        <div className="tit">求购新机</div>
         <div className='stit'>选择发布城市</div>
         <ProForm submitter={false}  grid size='large' formRef={formRef}>
           <ProFormCascader label="项目地点" 
@@ -141,7 +141,7 @@ function ForRent() {
               onClick={ async () => {
                 const values = await formRef.current?.validateFields()
                 if(values) {
-                  const res = await equipmentPurchase({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), equipType: values.equipType[values.equipType.length - 1], isNew: 0}, state?.id ? 'put' : 'post' )
+                  const res = await equipmentPurchase({...values, id: uuid, releaseCityName: values.releaseCityName.join(','), equipType: values.equipType[values.equipType.length - 1], isNew: 1}, state?.id ? 'put' : 'post' )
                   if(res.code === '0') {
                     message.success('发布成功!')
                     formRef.current?.resetFields()

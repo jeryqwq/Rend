@@ -176,7 +176,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
                       }
                     })
                   }
-                }} items={[{ label: '求租设备', key: 'forRent' }, { label: '求购二手', key: 'forBuy' }]}/>} placement="bottom">
+                }} items={[{ label: '求租设备', key: 'forRent' }, { label: '求购二手', key: 'forBuy' }, {label: '求购新机', key: 'forNew'}]}/>} placement="bottom">
                 <span className='btn-round rg' ><span style={{left: 0}}>发布需求</span></span>
                 </Dropdown>
               </div>

@@ -186,7 +186,13 @@ const saleRouter = {
     path:'/forBuy',
     component: '@/pages/froent/forBuy/index',
     hide: true
-
+  },
+  {
+    label: '求购新机',
+    key: '/forNew',
+    path:'/forNew',
+    component: '@/pages/froent/forNew/index',
+    hide: true
   },
   {
     label: '设备详情',
