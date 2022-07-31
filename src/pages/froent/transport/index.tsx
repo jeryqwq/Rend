@@ -88,7 +88,8 @@ function ForRent() {
           <div style={{textAlign: 'center'}}>
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
               onClick={ async () => {
-                if(user.user.vip_level !== 2) {
+                console.log(user)
+                if(user.user.vipLevel !== 2) {
                   message.error('您还未缴纳会员费，请缴纳重新登录后重试!')
                   return
                 }

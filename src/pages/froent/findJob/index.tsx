@@ -18,6 +18,7 @@ function ForRent() {
   const location = useLocation() as any
   const state = location.state
   const { user } = useUserInfo()
+  const [dicts, setDict] = useState<any[]>([])
   useEffect(() => {
     (async () => {
       state && formRef.current?.setFieldsValue({
@@ -26,6 +27,12 @@ function ForRent() {
         releaseCityName: state.releaseCityName.split(',')
       })
       state?.id && setUuid(state.id);
+      const res2  = await commonRequest('/appdict/' + 'qztc' ,{
+        method: 'get'
+      })
+      if(res2.code === '0') {
+        setDict(res2.data)
+      }
     })()
   }, [])
   return (
@@ -78,19 +85,10 @@ function ForRent() {
                 rules={[{required: true}]}
                 name="specialty"
                 label="我的特长技能"
-                  options={[{
-                    label: '土石方挖装',
-                    value: 0
-                  },{
-                    label: '破碎锤打击',
-                    value: 1
-                  }, {
-                    label: '钢板桩机',
-                    value:2
-                  }, {
-                    label: '公路边挖削',
-                    value:3
-                  }]}
+                  options={dicts.map(i => ({
+                    label: i.name,
+                    value: i.code
+                  }))}
                   fieldProps={{
                     size: 'large',
                     optionType: 'button',
@@ -102,7 +100,7 @@ function ForRent() {
           <div style={{textAlign: 'center'}}>
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
               onClick={ async () => {
-                if(user.user.vip_level !== 2) {
+                if(user.user.vipLevel !== 2) {
                   message.error('您还未缴纳会员费，请缴纳重新登录后重试!')
                   return
                 }

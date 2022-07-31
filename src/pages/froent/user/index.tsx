@@ -122,6 +122,13 @@ function User() {
               title: '指派商家'
             },
             {
+              dataIndex: 'isNew',
+              title: '类型',
+              render (text){
+                return text === 0 ? '二手' : '新机'
+              }
+            },
+            {
               dataIndex: 'id',
               title: '操作',
               render(tx,item) {

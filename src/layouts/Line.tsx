@@ -27,6 +27,7 @@ function Line() {
       localStorage.removeItem('USER')
       message.success('退出成功!')
       window.location.href = '/#/'
+      window.location.reload()
      }}>
        退出
      </Button>
