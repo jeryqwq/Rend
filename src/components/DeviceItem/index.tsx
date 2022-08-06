@@ -5,7 +5,7 @@ import { useHistory } from 'umi';
 function DeviceItem({ width, height, item }: { width?: number, height?: number, item: any }) {
   const history = useHistory()
   return (
-    <div className={`${styles['item-wrap']}`}>
+    <div className={`${styles['item-wrap']}`} >
       <div className={`${styles['img-wrap']}`} onClick={() => {
         if(item.isNew === 1) {
           history.push('/newDetail?id=' + item.id + '&type=' + 'equipmentSale')
@@ -16,7 +16,7 @@ function DeviceItem({ width, height, item }: { width?: number, height?: number, 
         }
       }}>
         <img
-          height={  height }
+          style={  {width: '100%'} }
           src={'/lease-center/' + item.mainImgPath}
         />
         </div>

@@ -27,7 +27,6 @@ function Repair() {
   const formRef = useRef<ProFormInstance>()
   const history = useHistory()
   const [sysorgin, setSys] = useState({})
-
   useEffect(() => {
     (async () => {
       const res = await commonRequest('/sysOrgan/findMy', { method: 'get', params: { type: 2 } })

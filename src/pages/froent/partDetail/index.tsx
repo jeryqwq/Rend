@@ -53,7 +53,7 @@ function ProductDetail() {
       <Bread breads={['零件详情']}/>
       <div className={styles.line1}>
         <div className="lf">
-          <img src={'/lease-center/' + productInfo.mainImgPath} alt="" style={{width: '100%', height: 300}}/>
+          <img src={'/lease-center/' + productInfo.mainImgPath} alt="" style={{width: '100%'}}/>
           <div className="subs">
           </div>
         </div>

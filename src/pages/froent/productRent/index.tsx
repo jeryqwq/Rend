@@ -3,7 +3,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from './index.module.less';
 import { Upload, Button, Radio, message } from 'antd'
 import city from '@/constants/city';
-import { getBrands, getDict, getEquipmentType, getFiles, uploadImg } from '@/server/common';
+import { commonRequest, getBrands, getDict, getEquipmentType, getFiles, uploadImg } from '@/server/common';
 import { PlusOutlined } from '@ant-design/icons'
 import { equipmentLease, equipmentRent } from '@/server/rent';
 import { getUuid } from '@/utils';
@@ -111,8 +111,24 @@ function ForRent() {
                 accept='.png,.jpg,.jpeg'
                 maxCount={5}
                 fileList={fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
+                onRemove={async ({uid}) => {
+                  const curIdx = fileList.findIndex(i => i === uid)
+                  if(curIdx !== -1) {
+                    fileList.splice(curIdx, 1)
+                    const _list = [...fileList]
+                    setFileList(_list)
+                    const id = uid.split('?id=')[1]
+                    const res = await commonRequest(`/appfile/${id}`, {
+                      method: 'delete'
+                    })
+                    if(res.code === '0') {
+                      message.info('删除成功')
+                    }
+                  }
+                }}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
+                  if(!file) return // del
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'MAIN_IMG',sort: fileList.length })
                   if(res.code === '0') {
                     setFileList(fileList.concat(res.data.path))
@@ -128,8 +144,23 @@ function ForRent() {
                 accept='.png,.jpg,.jpeg' 
                 maxCount={10}
                 fileList={fileList_total.map(i => ({ url:  '/lease-center/' + i, uid: i, name: '预览图'}))}
+                onRemove={async ({uid}) => {
+                  const curIdx = fileList_total.findIndex(i => i === uid)
+                  if(curIdx !== -1) {
+                    fileList_total.splice(curIdx, 1)
+                    setTotalList([...fileList_total])
+                    const id = uid.split('?id=')[1]
+                    const res = await commonRequest(`/appfile/${id}`, {
+                      method: 'delete'
+                    })
+                    if(res.code === '0') {
+                      message.info('删除成功')
+                    }
+                  }
+                }}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
+                  if(!file) return // del
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'DETAIL_IMG', sort: fileList_total.length  })
                   if(res.code === '0') {
                     setTotalList(fileList_total.concat(res.data.path))

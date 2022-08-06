@@ -78,7 +78,7 @@ function ProductDetail() {
       <Bread breads={['全部设备', '设备出租', '设备详情']}/>
       <div className={styles.line1}>
         <div className="lf">
-        <img src={'/lease-center' + mainImg[mainIndex]} alt="" style={{width: '100%', height: 300}}/>
+        <img src={'/lease-center' + mainImg[mainIndex]} alt="" style={{width: '100%'}}/>
           <div className="subs">
             {mainImg.map((i, idx) => <img src={'/lease-center/' + i}  alt=""  onClick={() => setMainIdx(idx)} style={{cursor: 'pointer'}}/>)}
           </div>

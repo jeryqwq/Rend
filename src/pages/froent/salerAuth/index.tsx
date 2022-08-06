@@ -94,6 +94,7 @@ function Repair() {
             colProps={{
               span: 12
             }}
+            rules={user.brand ? [{required: true}] : []}
             name="compCode"
           />
         <ProForm.Item label="企业营业执照" style={{width: '100%'}} >
@@ -128,6 +129,8 @@ function Repair() {
             }}
             label="个人身份证号码"
             name="legalIdCard"
+            rules={!user.brand ? [{required: true}] : []}
+
           />
             <ProForm.Item label="个人身份证正面" style={{width: '50%'}} >
           <Upload

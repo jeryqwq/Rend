@@ -11,7 +11,6 @@ function DeviceItem({item}: { item: any }) {
       }}>
         <img
           width={220}
-          height={225}
           src={'/lease-center/' + item.mainImgPath}
         />
       </div>

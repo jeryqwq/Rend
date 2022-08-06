@@ -179,10 +179,9 @@ function AllDevice() {
           history.push('/productDetail?id=' + i.id)
         }}
          >
-         <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
+         <div className={`${styles['img-wrap']}`} style={{padding: 0, height: 220}}>
            <img
              width={220}
-             style={{height: 220}}
              src={'/lease-center/' + i.mainImgPath}
            />
            </div>

@@ -86,9 +86,24 @@ function ForRent() {
                 listType="picture-card"
                 accept='.png,.jpg,.jpeg' 
                 maxCount={1}
+                onRemove={async ({uid}) => {
+                  const curIdx = fileList.findIndex(i => i === uid)
+                  if(curIdx !== -1) {
+                    fileList.splice(curIdx, 1)
+                    setFileList([...fileList])
+                    const id = uid.split('?id=')[1]
+                    const res = await commonRequest(`/appfile/${id}`, {
+                      method: 'delete'
+                    })
+                    if(res.code === '0') {
+                      message.info('删除成功')
+                    }
+                  }
+                }}
                 fileList={fileList.map(i => ({ url: '/lease-center/' + i, uid: i, name: '预览图'}))}
                 onChange={async (e) => {
                   const file = e.file.originFileObj
+                  if(!file) return
                   const res = await uploadImg(file as File, { serviceId: uuid, serviceType: 'MAIN_IMG',sort: fileList.length })
                   if(res.code === '0') {
                     formRef.current?.setFieldsValue({

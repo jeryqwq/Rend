@@ -171,10 +171,9 @@ function AllDevice() {
         recommList.map((i: any) =>  <div className={`${styles['item-wrap']}`} style={{padding: 0, width: 220, cursor: 'pointer'}}onClick={() => {
           history.push('/partDetail?id=' + i.id)
         }}>
-         <div className={`${styles['img-wrap']}`} style={{padding: 0}}>
+         <div className={`${styles['img-wrap']}`} style={{padding: 0, height: 220}}>
            <img
              width={220}
-             style={{height: 220}}
              src={'/lease-center/' + i.mainImgPath}
            />
            </div>
