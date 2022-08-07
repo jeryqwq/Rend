@@ -21,7 +21,7 @@ function DeviceItem({ width, height, item }: { width?: number, height?: number, 
         />
         </div>
         <div className="line">
-          <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{item.monthlyRent}</span> /月</div>
+          <div className="lf"><span style={{color: '#D90B18', fontSize: 18}}>¥{item.monthlyRent}</span> {item.isNew === undefined && '/月'} <span className="status_prod">{item.isNew === undefined ? '待租' : '待售'}</span></div>
           <div className="rg">{item.releaseCityName}</div>
         </div>
       <div style={{textAlign: 'left'}}>{item.equipName}</div>
