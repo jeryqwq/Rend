@@ -40,10 +40,12 @@ function Footer() {
           <div className="lf">
             <div style={{marginTop: 20}}>
                <Row gutter={50} style={{lineHeight: '30px'}}>
-                <Col style={{cursor: 'pointer'}}><div onClick={() => {
-                  history.push('/buyAuth')
-                }}>个人会员入驻</div><div onClick={() => {
-                  history.push('/salerAuth')
+                <Col style={{cursor: 'pointer'}}><div onClick={async () => {
+                  const res = await loadDict('个人会员入驻')
+                  msgHandler(res.msg)
+                }}>个人会员入驻</div><div  onClick={async () => {
+                  const res = await loadDict('品牌代理商会员入驻')
+                  msgHandler(res.msg)
                 }}>品牌代理商会员入驻</div>
                 <div
                 onClick={async () => {
@@ -68,7 +70,7 @@ function Footer() {
                 }}
                 >平台规则</div><div
                 onClick={async () => {
-                  const res = await loadDict('出租发布')
+                  const res = await loadDict('用户协议')
                   msgHandler(res.msg)
                 }}
                 >用户协议</div></Col>
@@ -102,7 +104,7 @@ function Footer() {
               // </Row>   */}
             </div>
             <div className="rg">
-              <img src="/icons/head.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
+              <img src="/icons/head1.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
               <img src="/images/miniapp.png" alt="" width={123} />
             </div>
           </div>

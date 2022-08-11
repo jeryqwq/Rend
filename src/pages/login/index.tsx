@@ -9,8 +9,8 @@ function Login1() {
     <div className={styles['login-wrap']}>
       <div className="login-content">
         <div className="lf">
-          <img src="/images/bg.png" alt="" style={{ width: '100%' }} />
-          <img src='/images/lflogin.png' style={{ width: 517, marginTop: 15 }}/>
+          <img src="/images/bg3.png" alt="" style={{ width: '100%' }} />
+          <div style={{ width: 517, marginTop: 255, height: 300 }}/>
         </div>
         <div className="rg">
           {

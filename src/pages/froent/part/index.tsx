@@ -84,7 +84,7 @@ function AllDevice() {
 
 
       <div className={styles.line}>
-        <div className="lf">类型</div>
+        <div className="lf">品名</div>
         <Row className="rg" gutter={15}>
           <Col><Button  size='small' type={!params['partsBrand'] ? 'primary' : 'text'}
           onClick={() => {
