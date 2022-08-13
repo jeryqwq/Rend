@@ -11,7 +11,7 @@ function Header() {
     <div  className={styles['for-menu']}>
       <div className={`${styles['line-header']}`} >
         <div className='content'>
-          <div className="lf">欢迎来到融勝达设备租赁网</div>
+          <div className="lf">欢迎来到融勝达工程机械网</div>
           <div className="rg">
             <Line />
           </div>
@@ -20,7 +20,7 @@ function Header() {
       <div className='content'>
         <div className={styles.headerWrap} >
           <div className={styles.lf}>
-            <img src='/icons/head1.png' style={{cursor: 'pointer'}} onClick={() => { history.push('/') }}/>
+            <img src='/icons/head2.png' style={{cursor: 'pointer'}} onClick={() => { history.push('/') }}/>
           </div>
           <div className={styles.rg }>
             <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 55}}>

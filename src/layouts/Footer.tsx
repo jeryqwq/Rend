@@ -104,7 +104,7 @@ function Footer() {
               // </Row>   */}
             </div>
             <div className="rg">
-              <img src="/icons/head1.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
+              <img src="/icons/head2.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
               <img src="/images/miniapp.png" alt="" width={123} />
             </div>
           </div>
