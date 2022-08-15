@@ -3,7 +3,7 @@ import React, {useRef, useState, useEffect} from 'react';
 import styles from './index.module.less';
 import { TreeSelect } from 'antd'
 import city from '@/constants/city';
-import { Upload, Button, Radio, message } from 'antd'
+import { Input, Button, Radio, message, Modal } from 'antd'
 import { getUuid } from '@/utils';
 import {  equipmentRent } from '@/server/rent';
 import { commonRequest, getDict } from '@/server/common';
@@ -100,21 +100,70 @@ function ForRent() {
           <div style={{textAlign: 'center'}}>
             <Button size='large' type={'primary'} style={{width: 260, height: 60, fontSize: 22, margin: '10px 0 50px 0'}}
               onClick={ async () => {
-                if(user.user.vipLevel !== 2) {
-                  message.error('您还未缴纳会员费，请缴纳重新登录后重试!')
-                  return
-                }
-                const values = await formRef.current?.validateFields()
-                if(values) {
-                  const res = await commonRequest('/jobhunting', {
-                    method: 'post',
-                    data:{...values, id: uuid, cityName: values.cityName.join(','),}
-                  })
-                  if(res.code === '0') {
-                    message.success('发布成功!')
-                    formRef.current?.resetFields()
+                async function submit () {
+                  const values = await formRef.current?.validateFields()
+                  if(values) {
+                    const res = await commonRequest('/jobhunting', {
+                      method: 'post',
+                      data:{...values, id: uuid, cityName: values.cityName.join(','),}
+                    })
+                    if(res.code === '0') {
+                      message.success('发布成功!')
+                      formRef.current?.resetFields()
+                    }
                   }
                 }
+                if(user.user.vipLevel !== 2) {
+                  // message.error('您还未缴纳会员费，请缴纳重新登录后重试!')
+                  let number = '', type
+                  Modal.confirm({
+                    icon: null,
+                    onOk: async() =>  {
+                      const res = await commonRequest('/sysuserMember', {
+                        method: 'post',
+                        data: {
+                          price	: 0,
+                          status: 1,
+                          userId: user.user.id,
+                          cardNum: number
+                        }
+                      })
+                      if(res.code === '0') {
+                        submit()
+                      }
+                    },
+                    content: <div>
+                      <div style={{margin: '5px'}}>请输入身份证号</div>
+                      <Input onChange={(e) => {
+                        number = e.target.value
+                      }}/>
+                      <div style={{margin: '5px'}}>请选择缴纳的会费</div>
+                      <Radio.Group
+                        options={[{
+                          label: '0',
+                          value: 2
+                        },{
+                          label: '50',
+                          value: 3,
+                          disabled: true
+                        },{
+                          label: '100',
+                          value: 4,
+                          disabled: true
+
+                        }]}
+                        onChange={(e) => {
+                          type = e.target.value
+                        }}
+                        optionType="button"
+                        buttonStyle="solid"
+                      />
+                    </div>
+                  },
+                  )
+                  return
+                }
+                submit()
               }}
             >提交</Button>
           </div>
