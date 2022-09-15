@@ -10,6 +10,7 @@ import { commonRequest, getDict } from '@/server/common';
 import { useLocation } from 'umi';
 import moment from 'moment';
 import useUserInfo from '@/hooks/useLogin';
+import { getUserInfo } from '@/server/login';
 
 function ForRent() {
   const formRef = useRef<ProFormInstance>()
@@ -17,7 +18,7 @@ function ForRent() {
   // const [prodTypes, setProds] = useState([])
   const location = useLocation() as any
   const state = location.state
-  const { user } = useUserInfo()
+  const { user, login } = useUserInfo()
   const [dicts, setDict] = useState<any[]>([])
   useEffect(() => {
     (async () => {
@@ -119,17 +120,23 @@ function ForRent() {
                   Modal.confirm({
                     icon: null,
                     onOk: async() =>  {
+                      if(!number) { message.info('请输入证件号码!');return;}
                       const res = await commonRequest('/sysuserMember', {
                         method: 'post',
                         data: {
                           price	: 0,
-                          status: 1,
+                          status: 0,
                           userId: user.user.id,
                           cardNum: number
                         }
                       })
                       if(res.code === '0') {
                         submit()
+                        const res = await getUserInfo()
+                        if(res.code === '0') {
+                         login(res.data)
+                         window.location.reload()
+                        }
                       }
                     },
                     content: <div>

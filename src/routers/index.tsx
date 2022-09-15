@@ -102,6 +102,11 @@ const saleRouter = {
     key: '/news',
     path:'/news',
     component: '@/pages/froent/news/index',
+  },  {
+    label: '律师列表',
+    key: '/law',
+    path:'/law',
+    component: '@/pages/froent/news/law',
   },
   {
     label: '动态详情',

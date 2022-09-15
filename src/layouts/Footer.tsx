@@ -21,25 +21,48 @@ function msgHandler (str: string) {
 function Footer() {
   const { pathname: path } = useLocation()
   const history = useHistory()
+  const [list, setList] = useState([])
   const footerInfo = <> <Divider style={{margin: '12px 0'}}/>
   <div className='info'>电话: 0591-83987222  </div>         
   <div className='info'>地址:福州市马尾区江滨东大道100-1世创国际中心</div>
   <div className='info'>闽ICP备2022009747号          Copyright © 2019 版权所有</div> </>
   async function loadDict (key: string ) {
-    const res =  await commonRequest('/appdict/param/' + key, {
+    if(key === '平台法律顾问') {
+     history.push('/law')
+    }else{
+      const res =  await commonRequest('/appdict/param/' + key, {
+        method: 'get'
+       })
+       if(res.code === '0') {
+        return res.data
+       }
+    }
+  }
+  async function loadList() {
+    const res =  await commonRequest('/appdict/wzdb', {
       method: 'get'
      })
      if(res.code === '0') {
-      return res.data
+        setList(res.data)
      }
   }
+  useEffect(() => {
+    loadList()
+  }, [])
   return (
     <div style={{background: '#F6F6F6'}}>
       <div className='content'>
         <div className={styles.footer}>
           <div className="lf">
             <div style={{marginTop: 20}}>
-               <Row gutter={50} style={{lineHeight: '30px'}}>
+               <Row gutter={50} style={{lineHeight: '30px', marginTop: '30px'}}>
+                {
+                  list.map(i => <div style={{ width: '20%', height: '50px'}} onClick={async () => {
+                    const res = await loadDict(i.code)
+                    res && msgHandler(res.msg)
+                  }}>{i.code}</div>)
+                }
+                {/* 
                 <Col style={{cursor: 'pointer'}}><div onClick={async () => {
                   const res = await loadDict('个人会员入驻')
                   msgHandler(res.msg)
@@ -95,7 +118,7 @@ function Footer() {
                   const res = await loadDict('诚信管理')
                   msgHandler(res.msg)
                 }}
-                >诚信管理</div></Col>
+                >诚信管理</div></Col> */}
               </Row>
               {/* //  : <Row gutter={50} style={{lineHeight: '30px', fontSize: 14}}>
               //   <Col ><div style={{fontSize: 17}}>平台协议</div><div>用户协议</div><div >服务规则</div><div>服务保障</div><div>诚信管理</div></Col>

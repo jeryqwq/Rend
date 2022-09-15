@@ -4,21 +4,18 @@ import styles from './index.module.less';
 import NewsItemDetail from '@/components/NewsItemDetail';
 import Bread from '@/components/Bread';
 import { appNewsPage } from '@/server/news';
-import { useLocation } from 'umi';
 function News() {
   const [news, setNews] = useState([])
   const [total, setTotal] = useState(0)
-  const { query } = useLocation() as any
-  const {isLow} = query
   const [pageInfo, setPage] = useState({
     size: 8,
     current: 0,
     conditions: [
-      {
-          "operator": isLow === '1' ? "eq" : 'noteq',
+        {
           "column": "type_id",
+          "operator": "eq",
           "value": "flgw"
-      }
+        }
   ]
   })
   useEffect(() => {
@@ -32,7 +29,7 @@ function News() {
   }, [pageInfo])
   return (
     <div className='content' style={{background: 'white', margin: '30px auto 20px auto'}}>
-       <Bread breads={['行业动态']}/>
+       <Bread breads={['律师列表']}/>
       <div className={styles['news-wrao']}>
         { news.map((i: any) => <div key={i.id}><NewsItemDetail item={i} /></div>) }
       </div>
