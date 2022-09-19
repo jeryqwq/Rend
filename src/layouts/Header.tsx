@@ -17,6 +17,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
   const curRouter = MenuRouter.find(i => i.path === path)
   const { user, login } = useUserInfo()
   const userInfo = user?.user
+
   function search (val: string) {
     switch (searchType) {
       case 'ershou':

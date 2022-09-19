@@ -30,8 +30,6 @@ const saleRouter = {
       exact: true,
       component: '@/pages/back/repair/index',
     },
-   
-    
   ]
 }
   const routes  = { path: '/', component: '@/layouts/index', routes:[
@@ -107,6 +105,7 @@ const saleRouter = {
     key: '/law',
     path:'/law',
     component: '@/pages/froent/news/law',
+    hide: true
   },
   {
     label: '动态详情',

@@ -1,14 +1,29 @@
 import React, { useEffect } from 'react';
 import { useHistory } from 'umi';
-import { Dropdown, Button, Menu,message } from 'antd'
+import { Dropdown, Button, Menu,message, Modal } from 'antd'
 import useLogin from '@/hooks/useLogin';
 import { ShowSaleRouter } from '@/routers';
 import { ShoppingCartOutlined } from '@ant-design/icons';
 import { getUserInfo } from '@/server/login';
+import { commonRequest } from '@/server/common';
 function Line() {
   const history = useHistory()
   const { user, login } = useLogin()
- 
+  function msgHandler (str: string) {
+    if(str.startsWith('http')){
+      window.open(str)
+    }else{
+      Modal.confirm({
+        width: 600,
+        icon: null,
+        content: <div style={{padding: 20}}>
+          <div dangerouslySetInnerHTML={{
+            __html: str
+          }}></div>
+        </div>
+      })
+    }
+  }
   return (
     <div>
    {
@@ -41,7 +56,22 @@ function Line() {
     <Button type='text' onClick={() => {history.push('/shoppingCart')}} style={{cursor: 'pointer'}}>购物车<ShoppingCartOutlined  style={{marginRight: 5}} /></Button>
    </> : <a href='#/login' >登录/注册</a> 
    }
-       帮助中心       联系客服
+   <span onClick={async () => {
+    const res =  await commonRequest('/appdict/param/帮助中心' , {
+      method: 'get'
+     })
+     if(res.code === '0') {
+      res.data && msgHandler(res.data) 
+     }
+   }} style={{margin: '0 10px', cursor: 'pointer'}}>帮助中心</span>
+    <span onClick={async() => {
+      const res =  await commonRequest('/appdict/param/联系客服', {
+        method: 'get'
+       })
+       if(res.code === '0') {
+        res.data && msgHandler(res.data) 
+      }
+    }} style={{margin: '0 10px', cursor: 'pointer'}}>联系客服</span>
  </div>
   );
 }

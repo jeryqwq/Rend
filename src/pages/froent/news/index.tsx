@@ -15,7 +15,7 @@ function News() {
     current: 0,
     conditions: [
       {
-          "operator": isLow === '1' ? "eq" : 'noteq',
+          "operator":  "ne" ,
           "column": "type_id",
           "value": "flgw"
       }

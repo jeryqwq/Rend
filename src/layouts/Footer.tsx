@@ -128,7 +128,10 @@ function Footer() {
             </div>
             <div className="rg">
               <img src="/icons/head2.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
-              <img src="/images/miniapp.png" alt="" width={123} />
+              <div style={{textAlign: 'center'}}>
+              <img src="https://www.fjrongshengda.com//wxapp/WechatIMG151.jpeg" alt="" width={123} />
+                <div>小程序</div>
+              </div>
             </div>
           </div>
              {footerInfo }
