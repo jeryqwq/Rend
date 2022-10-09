@@ -61,7 +61,7 @@ function Line() {
       method: 'get'
      })
      if(res.code === '0') {
-      res.data && msgHandler(res.data) 
+      res.data && msgHandler(res.data.msg) 
      }
    }} style={{margin: '0 10px', cursor: 'pointer'}}>帮助中心</span>
     <span onClick={async() => {
@@ -69,7 +69,7 @@ function Line() {
         method: 'get'
        })
        if(res.code === '0') {
-        res.data && msgHandler(res.data) 
+        res.data && msgHandler(res.data.msg) 
       }
     }} style={{margin: '0 10px', cursor: 'pointer'}}>联系客服</span>
  </div>

@@ -23,12 +23,32 @@ function Footer() {
   const history = useHistory()
   const [list, setList] = useState([])
   const footerInfo = <> <Divider style={{margin: '12px 0'}}/>
-  <div className='info'>电话: 0591-83987222  </div>         
+ 
+              <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <div>
+              <div className='info'>电话: 0591-83987222  </div>         
   <div className='info'>地址:福州市马尾区江滨东大道100-1世创国际中心</div>
-  <div className='info'>闽ICP备2022009747号          Copyright © 2019 版权所有</div> </>
+  <div className='info'><a target={'_blank'} href="http://beian.miit.gov.cn">闽ICP备2022009747号</a>          Copyright © 2019 版权所有</div>
+              </div>
+              <div style={{ display: 'flex' }}>
+                <div style={{textAlign: 'center'}}>
+                  <img src="/images/dy.jpg" alt="" width={123}height='150px' />
+                  <div>抖音</div>
+                </div>
+                <div style={{textAlign: 'center', margin: '0 20px'}}>
+                  <img src="/images/app.jpeg" alt="" width={123} height='150px' />
+                  <div>小程序</div>
+                </div>
+                <div style={{textAlign: 'center'}}>
+                  <img src="/images/gzh.jpeg" alt="" width={123} height='150px'/>
+                  <div>公众号</div>
+                </div>
+              </div>
+              </div>
+  </>
   async function loadDict (key: string ) {
     if(key === '平台法律顾问') {
-     history.push('/law')
+     history.push('/law?type=' + 'flgw')
     }else{
       const res =  await commonRequest('/appdict/param/' + key, {
         method: 'get'
@@ -128,10 +148,7 @@ function Footer() {
             </div>
             <div className="rg">
               <img src="/icons/head2.png" alt="" width={280} height={112} style={{marginRight: 45}}/>
-              <div style={{textAlign: 'center'}}>
-              <img src="https://www.fjrongshengda.com//wxapp/WechatIMG151.jpeg" alt="" width={123} />
-                <div>小程序</div>
-              </div>
+              
             </div>
           </div>
              {footerInfo }

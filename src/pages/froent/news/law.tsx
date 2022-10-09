@@ -4,9 +4,15 @@ import styles from './index.module.less';
 import NewsItemDetail from '@/components/NewsItemDetail';
 import Bread from '@/components/Bread';
 import { appNewsPage } from '@/server/news';
+import { useLocation } from 'umi';
 function News() {
   const [news, setNews] = useState([])
   const [total, setTotal] = useState(0)
+  const location = useLocation() as any
+  let type = location.query.type
+  if(!type) {
+    type = 'flgw'
+  }
   const [pageInfo, setPage] = useState({
     size: 8,
     current: 0,
@@ -14,7 +20,7 @@ function News() {
         {
           "column": "type_id",
           "operator": "eq",
-          "value": "flgw"
+          "value": type
         }
   ]
   })
@@ -27,9 +33,10 @@ function News() {
       }
     })()
   }, [pageInfo])
+ 
   return (
     <div className='content' style={{background: 'white', margin: '30px auto 20px auto'}}>
-       <Bread breads={['律师列表']}/>
+       {/* <Bread breads={['律师列表']}/> */}
       <div className={styles['news-wrao']}>
         { news.map((i: any) => <div key={i.id}><NewsItemDetail item={i} /></div>) }
       </div>

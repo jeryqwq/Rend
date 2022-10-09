@@ -19,7 +19,7 @@ function Login1() {
         </div>
       </div>
       <div className="login-fot">
-      <span>版权所有：融勝达信息技术</span> 
+      <span>版权所有：融胜达信息技术</span> 
       <span>地址：福州市仓山区南江滨西大道193号5号楼4层 </span>
       <span>邮政编码：350006</span> 
       <span>技术支持：福建数万通信息科技</span>

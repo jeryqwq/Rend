@@ -36,7 +36,7 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
     <div  className={styles['for-menu']}>
       <div className={`${styles['line-header']}`} >
         <div className='content'>
-          <div className="lf">欢迎来到融勝达工程机械网</div>
+          <div className="lf">欢迎来到融胜达工程机械网</div>
           <div className="rg">
             <Line />
            </div>
