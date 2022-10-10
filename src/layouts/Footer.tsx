@@ -28,19 +28,19 @@ function Footer() {
               <div>
               <div className='info'>电话: 0591-83987222  </div>         
   <div className='info'>地址:福州市马尾区江滨东大道100-1世创国际中心</div>
-  <div className='info'><a target={'_blank'} href="http://beian.miit.gov.cn">闽ICP备2022009747号</a>          Copyright © 2019 版权所有</div>
+  <div className='info'><a target={'_blank'} href="http://beian.miit.gov.cn">闽ICP备2022009747号</a>          Copyright © 2022 版权所有</div>
               </div>
               <div style={{ display: 'flex' }}>
                 <div style={{textAlign: 'center'}}>
-                  <img src="/images/dy.jpg" alt="" width={123}height='150px' />
+                  <img src="/images/dy.png" alt="" width={120}height='120px' />
                   <div>抖音</div>
                 </div>
                 <div style={{textAlign: 'center', margin: '0 20px'}}>
-                  <img src="/images/app.jpeg" alt="" width={123} height='150px' />
+                  <img src="/images/app.png" alt="" width={120} height='120px' />
                   <div>小程序</div>
                 </div>
                 <div style={{textAlign: 'center'}}>
-                  <img src="/images/gzh.jpeg" alt="" width={123} height='150px'/>
+                  <img src="/images/gzh.jpeg" alt="" width={120} height='120px'/>
                   <div>公众号</div>
                 </div>
               </div>
@@ -74,7 +74,7 @@ function Footer() {
       <div className='content'>
         <div className={styles.footer}>
           <div className="lf">
-            <div style={{marginTop: 20}}>
+            <div >
                <Row gutter={50} style={{lineHeight: '30px', marginTop: '30px'}}>
                 {
                   list.map(i => <div style={{ width: '20%', height: '50px'}} onClick={async () => {
