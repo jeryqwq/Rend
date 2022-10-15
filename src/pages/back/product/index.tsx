@@ -326,13 +326,7 @@ function Product() {
         }}
         options={false}
         tableExtraRender={() => <span style={{color: '#858585', fontSize: 18, padding: '0 30px'}}>商品总数: {tableRef.current?.pageInfo?.total}
-          {
-            type === 'part' && <Button type={'primary'} style={{margin: '0 10px'}}
-              onClick={() => {
-                window.open('http://psi.fjrongshengda.com/')
-              }}
-            >进销存管理平台 {'->'}</Button>
-          }
+          
         </span>}
       />
       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Button  } from 'antd'
 const saleRouter = {
   path: '/saler',
   component: '@/layouts/back',
@@ -79,9 +80,14 @@ const saleRouter = {
   },
   {
     label: '配件商城',
-    key: '/part',
+    key: '/part/',
     path:'/part',
     component: '@/pages/froent/part/index',
+    other:  <Button type={'text'} style={{margin: '0 10px', color: '#666'}}
+    onClick={() => {
+      window.open('http://psi.fjrongshengda.com/')
+    }}
+  >进销存管理平台</Button>
   },
   {
     label: '物流运输',

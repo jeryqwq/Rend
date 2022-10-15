@@ -126,7 +126,9 @@ function OrderAddress() {
                 "address": address[curIdx].address,
                 "contactNumber": address[curIdx].contactNumber,
                 "productVos": allProdus.map((i: any) => ({ carId:i.id ,isCart: isCart === 1 ? 1 : 0, num: 1, productId: i.productId || i.id, type: i.type })),
-                "receiveUser": address[curIdx].receiveUser
+                "receiveUser": address[curIdx].receiveUser,
+                provinceName: address[curIdx].provinceName,
+                cityName: address[curIdx].cityName
               }
             })
             if(res.code === '0') {

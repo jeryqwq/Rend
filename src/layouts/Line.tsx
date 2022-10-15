@@ -36,7 +36,9 @@ function Line() {
      <Button type='text'  onClick={e => history.push('/userCenter')}>
        个人中心
      </Button>
+  
    </Dropdown>
+
    <Button type='text'  onClick={e => {
       localStorage.removeItem('TK')
       localStorage.removeItem('USER')
@@ -72,6 +74,7 @@ function Line() {
         res.data && msgHandler(res.data.msg) 
       }
     }} style={{margin: '0 10px', cursor: 'pointer'}}>联系客服</span>
+   
  </div>
   );
 }

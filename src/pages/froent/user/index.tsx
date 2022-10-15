@@ -63,6 +63,7 @@ function User() {
             <img src={'/lease-center/' + i?.details[0]?.mainImgPath} style={{width: 100, height: 100}} alt="" />
             <div style={{width: 300}}>
               <div>{i.receiveUser}</div>
+              <div>{ i.provinceName }, { i.cityName } </div>
               <div>{i.address}</div>
             </div>
             <div className="status">{orderStatus[i.orderStatus as 10]}</div>

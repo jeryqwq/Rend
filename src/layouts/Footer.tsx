@@ -36,13 +36,14 @@ function Footer() {
                   <div>抖音</div>
                 </div>
                 <div style={{textAlign: 'center', margin: '0 20px'}}>
-                  <img src="/images/app.png" alt="" width={120} height='120px' />
-                  <div>小程序</div>
-                </div>
-                <div style={{textAlign: 'center'}}>
                   <img src="/images/gzh.jpeg" alt="" width={120} height='120px'/>
                   <div>公众号</div>
                 </div>
+                <div style={{textAlign: 'center'}}>
+                  <img src="/images/app.png" alt="" width={120} height='120px' />
+                  <div>小程序</div>
+                </div>
+               
               </div>
               </div>
   </>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import styles from './index.module.less';
-import { Button, Input, Dropdown, Menu,Modal, message } from 'antd';
+import { Button, Input, Dropdown, Menu,Modal, message, Popover } from 'antd';
 import {SearchOutlined} from '@ant-design/icons';
 import { MenuRouter } from '@/routers';
 import { useHistory, useLocation, useRouteMatch } from 'umi';
@@ -192,10 +192,13 @@ function Header({ searchType, onChange }: { searchType: SearchType  ; onChange: 
         onClick={() => {
           history.push(i.path)
         }}
-      >{i.label}</div>)}</div> </div>
-      //  <Menu style={{marginTop: 20}} onClick={({ key: curKey }) => {history.push(curKey)}}  mode="horizontal" theme='dark' items={
-      //  MenuRouter
-      // } />
+      >{
+        i.other? 
+        <Popover content={i.other} placement='bottomLeft' >
+        {i.label}
+      </Popover>
+        :i.label
+      }</div>)}</div> </div>
     }
     </div>
   );

@@ -1,7 +1,7 @@
 import styles from './index.module.less';
 import { Menu } from 'antd'
 import { MenuRouter } from '@/routers';
-import { Button, Carousel, Row, Col, BackTop } from 'antd'
+import { Button, Carousel, Row, Col, BackTop, Popover } from 'antd'
 import { MenuFoldOutlined } from '@ant-design/icons';
 import DeviceItem from '@/components/DeviceItem';
 import OldItem from '@/components/OldItem';
@@ -98,9 +98,25 @@ export default function IndexPage() {
         </div>
         </div>
         <div className="rg">
-          <Menu  onClick={({ key: curKey }) => {
-            history.push(curKey)
-          }}  mode="horizontal"  items={ MenuRouter } />
+        <div className='menu-wrap'><div className='content'> {MenuRouter.map(i => <div className={`item `}
+        onClick={() => {
+          history.push(i.path)
+        }}
+      >{
+        i.other? 
+        <Popover content={i.other} placement='bottomLeft' >
+        {i.label}
+      </Popover>
+        :i.label
+      }</div>)}</div> 
+      </div>
+          {/* <Menu  onClick={({ key: curKey }) => {
+            if(curKey === 'forxxx') {
+              window.open('http://psi.fjrongshengda.com/')
+            }else{
+              history.push(curKey)
+            }
+          }}  mode="horizontal"  items={ MenuRouter } /> */}
           <Carousel autoplay>
           {
             banners.map((i: any) => <h3 style={contentStyle}>
