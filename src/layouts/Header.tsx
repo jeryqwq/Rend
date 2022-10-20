@@ -23,8 +23,6 @@ function Header({
   const history = useHistory();
   const curRouter = MenuRouter.find((i) => i.path === path);
   const { user, login } = useUserInfo();
-  const userInfo = user?.user;
-
   function search(val: string) {
     switch (searchType) {
       case 'ershou':
@@ -313,7 +311,7 @@ function Header({
                   history.push(i.path);
                 }}
               >
-                {i.other && userInfo?.jxcID ? (
+                {i.other ? (
                   <Popover content={i.other} placement="bottomLeft">
                     {i.label}
                   </Popover>

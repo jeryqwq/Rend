@@ -13,7 +13,6 @@ import { useEffect, useState } from 'react';
 import { commonRequest, getDict, getEquipmentType } from '@/server/common';
 import { mallBrandInfo } from '@/server/rent';
 import { appNewsPage } from '@/server/news';
-import useUserInfo from '@/hooks/useLogin';
 const contentStyle: React.CSSProperties = {
   height: '400px',
   color: '#fff',
@@ -31,7 +30,6 @@ export default function IndexPage() {
   const [parts, setParts] = useState<any[]>([]);
   const [banners, setBanner] = useState<any[]>([]);
   const [course, setCourse] = useState<any[]>([]);
-  const { user } = useUserInfo();
   useEffect(() => {
     (async () => {
       const res = await getEquipmentType();
@@ -90,7 +88,6 @@ export default function IndexPage() {
       }
     })();
   }, []);
-  const { user: _user } = user || {};
   return (
     <>
       <div className="content" style={{ margin: '20px auto' }}>
@@ -127,7 +124,7 @@ export default function IndexPage() {
                       history.push(i.path);
                     }}
                   >
-                    {i.other && _user?.jxcID ? (
+                    {i.other ? (
                       <Popover content={i.other} placement="bottomLeft">
                         {i.label}
                       </Popover>

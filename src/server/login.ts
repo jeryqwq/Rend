@@ -1,36 +1,38 @@
-
-import  request, { obj2Str } from './request';
-export function regist ({ data }: { data: any }) {
-  return request("/login/register", {
+import request, { obj2Str } from './request';
+export function regist({ data }: { data: any }) {
+  return request('/login/register', {
     data,
-    method: 'post'
-  })
+    method: 'post',
+  });
 }
 
 export function kapcha({ data }: { data: { code: string } }) {
   return request('/login/kaptcha', {
-    params: data
-  })
+    params: data,
+  });
 }
 
-export function getCode(params: { phone: string, service: 'register' | 'forget' }) {
+export function getCode(params: {
+  phone: string;
+  service: 'register' | 'forget';
+}) {
   return request('/login/getCode', {
-    params
-  })
+    params,
+  });
 }
 
 export function getLoginFwxy() {
-  return request('/appdict/param/loginFwxy')
+  return request('/appdict/param/用户协议');
 }
 
 export function pcLogin(data: any) {
-  return request("/login/pclogin", {
+  return request('/login/pclogin', {
     params: data,
-  })
+  });
 }
 
-export function getUserInfo () {
+export function getUserInfo() {
   return request('/sysuser/getUserInfo', {
-    method: 'get'
-  })
+    method: 'get',
+  });
 }
