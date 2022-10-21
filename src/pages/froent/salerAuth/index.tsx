@@ -82,9 +82,9 @@ function Repair() {
       <div className="tit2">企业个人信息认证</div>
       <div className="repaire-inner">
         <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
-        {user.user.type !== 2 && <h1>企业信息</h1>}
+        {user.user.type === 2 && <h1>企业信息</h1>}
         <ProForm formRef={formRef} submitter={false} grid size="large">
-          {user.user.type !== 2 && (
+          {user.user.type === 2 && (
             <>
               <ProFormText
                 colProps={{
@@ -141,101 +141,105 @@ function Repair() {
               </ProForm.Item>
             </>
           )}
-          <div className="stit" style={{ width: '100%' }}>
-            个人信息
-          </div>
-          <ProFormText
-            colProps={{
-              span: 12,
-            }}
-            label="个人姓名"
-            name="legalUser"
-          />
-          <ProFormText
-            colProps={{
-              span: 12,
-            }}
-            label="个人身份证号码"
-            name="legalIdCard"
-            // rules={user.user.type === 1 ? [{required: true}] : []}
-          />
-          <ProForm.Item label="个人身份证正面" style={{ width: '50%' }}>
-            <Upload
-              listType="picture-card"
-              accept=".png,.jpg,.jpeg"
-              maxCount={1}
-              fileList={cardUrl1fileList.map((i) => ({
-                url: '/lease-center/' + i,
-                uid: i,
-                name: '预览图',
-              }))}
-              onChange={async (e) => {
-                const file = e.file.originFileObj;
-                const res = await uploadImg(file as File, {
-                  serviceId: uuid,
-                  serviceType: 'AUTH_MAIN',
-                  sort: cardUrl1fileList.length,
-                });
-                if (res.code === '0') {
-                  setFileList1([res.data.path]);
-                }
-              }}
-            >
-              {cardUrl1fileList.length >= 8 ? null : uploadButton}
-            </Upload>
-          </ProForm.Item>
-          <ProForm.Item label="个人身份证反面" style={{ width: '50%' }}>
-            <Upload
-              listType="picture-card"
-              accept=".png,.jpg,.jpeg"
-              maxCount={1}
-              fileList={cardUrl2fileList.map((i) => ({
-                url: '/lease-center/' + i,
-                uid: i,
-                name: '预览图',
-              }))}
-              onChange={async (e) => {
-                const file = e.file.originFileObj;
-                const res = await uploadImg(file as File, {
-                  serviceId: uuid,
-                  serviceType: 'AUTH_BACK',
-                  sort: cardUrl2fileList.length,
-                });
-                if (res.code === '0') {
-                  setFileList2([res.data.path]);
-                }
-              }}
-            >
-              {cardUrl2fileList.length >= 8 ? null : uploadButton}
-            </Upload>
-          </ProForm.Item>
-          <h1 style={{ width: '100%' }}>其他资质材料</h1>
+          {user.user.type === 1 && (
+            <>
+              <div className="stit" style={{ width: '100%' }}>
+                个人信息
+              </div>
+              <ProFormText
+                colProps={{
+                  span: 12,
+                }}
+                label="个人姓名"
+                name="legalUser"
+              />
+              <ProFormText
+                colProps={{
+                  span: 12,
+                }}
+                label="个人身份证号码"
+                name="legalIdCard"
+                // rules={user.user.type === 1 ? [{required: true}] : []}
+              />
+              <ProForm.Item label="个人身份证正面" style={{ width: '50%' }}>
+                <Upload
+                  listType="picture-card"
+                  accept=".png,.jpg,.jpeg"
+                  maxCount={1}
+                  fileList={cardUrl1fileList.map((i) => ({
+                    url: '/lease-center/' + i,
+                    uid: i,
+                    name: '预览图',
+                  }))}
+                  onChange={async (e) => {
+                    const file = e.file.originFileObj;
+                    const res = await uploadImg(file as File, {
+                      serviceId: uuid,
+                      serviceType: 'AUTH_MAIN',
+                      sort: cardUrl1fileList.length,
+                    });
+                    if (res.code === '0') {
+                      setFileList1([res.data.path]);
+                    }
+                  }}
+                >
+                  {cardUrl1fileList.length >= 8 ? null : uploadButton}
+                </Upload>
+              </ProForm.Item>
+              <ProForm.Item label="个人身份证反面" style={{ width: '50%' }}>
+                <Upload
+                  listType="picture-card"
+                  accept=".png,.jpg,.jpeg"
+                  maxCount={1}
+                  fileList={cardUrl2fileList.map((i) => ({
+                    url: '/lease-center/' + i,
+                    uid: i,
+                    name: '预览图',
+                  }))}
+                  onChange={async (e) => {
+                    const file = e.file.originFileObj;
+                    const res = await uploadImg(file as File, {
+                      serviceId: uuid,
+                      serviceType: 'AUTH_BACK',
+                      sort: cardUrl2fileList.length,
+                    });
+                    if (res.code === '0') {
+                      setFileList2([res.data.path]);
+                    }
+                  }}
+                >
+                  {cardUrl2fileList.length >= 8 ? null : uploadButton}
+                </Upload>
+              </ProForm.Item>
+              <h1 style={{ width: '100%' }}>其他资质材料</h1>
 
-          <ProForm.Item label="其他材料扫描件" style={{ width: '50%' }}>
-            <Upload
-              listType="picture-card"
-              accept=".png,.jpg,.jpeg"
-              maxCount={1}
-              fileList={otherfileList.map((i) => ({
-                url: '/lease-center/' + i,
-                uid: i,
-                name: '预览图',
-              }))}
-              onChange={async (e) => {
-                const file = e.file.originFileObj;
-                const res = await uploadImg(file as File, {
-                  serviceId: uuid,
-                  serviceType: 'OTHER',
-                  sort: otherfileList.length,
-                });
-                if (res.code === '0') {
-                  setOthers(otherfileList.concat(res.data.path));
-                }
-              }}
-            >
-              {otherfileList.length >= 8 ? null : uploadButton}
-            </Upload>
-          </ProForm.Item>
+              <ProForm.Item label="其他材料扫描件" style={{ width: '50%' }}>
+                <Upload
+                  listType="picture-card"
+                  accept=".png,.jpg,.jpeg"
+                  maxCount={1}
+                  fileList={otherfileList.map((i) => ({
+                    url: '/lease-center/' + i,
+                    uid: i,
+                    name: '预览图',
+                  }))}
+                  onChange={async (e) => {
+                    const file = e.file.originFileObj;
+                    const res = await uploadImg(file as File, {
+                      serviceId: uuid,
+                      serviceType: 'OTHER',
+                      sort: otherfileList.length,
+                    });
+                    if (res.code === '0') {
+                      setOthers(otherfileList.concat(res.data.path));
+                    }
+                  }}
+                >
+                  {otherfileList.length >= 8 ? null : uploadButton}
+                </Upload>
+              </ProForm.Item>
+            </>
+          )}
         </ProForm>
         <div style={{ textAlign: 'center' }}>
           <Button

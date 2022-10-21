@@ -108,7 +108,7 @@ function ProductDetail() {
             <Descriptions.Item label="最新更新时间">
               {productInfo.updateDate}
             </Descriptions.Item>
-            <Descriptions.Item label="设备浏览数">
+            <Descriptions.Item label="浏览数">
               {productInfo.views}
             </Descriptions.Item>
           </Descriptions>
