@@ -1,76 +1,80 @@
-.addressWrap{
-  :global{
-    .orderaction{
+.addressWrap {
+  :global {
+    .orderaction {
       width: 210px;
       height: 89px;
       display: inline-block;
-background: #FE2525;
-cursor: pointer;
-font-size: 20px;
-color: white;
-text-align: center;
-line-height: 90px;
-margin: 30px 0;
+      background: #fe2525;
+      cursor: pointer;
+      font-size: 20px;
+      color: white;
+      text-align: center;
+      line-height: 90px;
+      margin: 30px 0;
     }
-    .tit{
+    .tit {
       margin: 30px 0 20px 0;
       font-size: 18px;
       color: #333333;
     }
-    .pay-method{
+    .pay-method {
       width: 300px;
       height: 60px;
-      border: 1px solid #FE1515;
-      color: #FE1515;
+      border: 1px solid #c9c9c9;
+      color: #333;
       font-size: 18px;
       line-height: 60px;
       text-align: center;
       cursor: pointer;
+      margin: 0 10px;
+      &.cur {
+        color: #fe1515;
+        border-color: #fe1515;
+      }
     }
-    .addr-list{
+    .addr-list {
       display: flex;
       flex-wrap: nowrap;
       overflow: auto;
-      >.item{
+      > .item {
         width: 380px;
         height: 120px;
-        border: 1px solid #C9C9C9;
-        background: #FAFAFA;
+        border: 1px solid #c9c9c9;
+        background: #fafafa;
         margin-right: 30px;
         cursor: pointer;
         padding: 20px;
-        >span{
+        > span {
           display: inline-block;
           width: 80px;
           color: #999999;
         }
-        &.cur{
-          border: 1px solid #FE1515;
+        &.cur {
+          border: 1px solid #fe1515;
         }
       }
     }
-    .money-detail{
-      border-top: 1px solid #DDDDDD;
-      border-bottom: 1px solid #DDDDDD;
+    .money-detail {
+      border-top: 1px solid #dddddd;
+      border-bottom: 1px solid #dddddd;
       display: flex;
       justify-content: flex-end;
-      >.items {
+      > .items {
         font-size: 15px;
         padding: 20px 0;
-        >.item{
+        > .item {
           margin-left: 100px;
         }
-        .label{
+        .label {
           display: inline-block;
           width: 80px;
           font-size: 15px;
           color: #999;
         }
-        .num{
-          color: #FE2525;
+        .num {
+          color: #fe2525;
         }
       }
-
     }
   }
 }

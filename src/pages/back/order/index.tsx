@@ -39,15 +39,6 @@ function Repair() {
             订单管理
           </span>
         </div>
-        <Button
-          type="primary"
-          style={{ float: 'right' }}
-          onClick={() => {
-            history.push('/repair');
-          }}
-        >
-          新增
-        </Button>
         <ProTable
           rowKey={'id'}
           columns={[
@@ -121,24 +112,52 @@ function Repair() {
                 console.log(item, '--');
                 return (
                   <>
-                    {item.orderPayStatus === 10 && (
+                    {item.orderPayStatus === '10' && (
                       <Button
                         type="link"
                         onClick={async () => {
-                          await commonRequest(
-                            '/mallOrderMaster/paid/' + item.id,
+                          const info = await commonRequest(
+                            '/mallOrderMaster/getPayVoucher/' + item.id,
                             {
                               method: 'post',
                               data: {},
                             },
                           );
-                          message.success('审核成功！');
+                          console.log(info);
+                          if (info.code === '0') {
+                            Modal.confirm({
+                              width: '500px',
+                              title: '凭证信息',
+                              content: (
+                                <div>
+                                  <h3>{info.data[0]?.remarks}</h3>
+                                  <img
+                                    src={
+                                      '/lease-center/' + info.data[0]?.imgPath
+                                    }
+                                    width="400px"
+                                    alt=""
+                                  />
+                                </div>
+                              ),
+                              async onOk() {
+                                await commonRequest(
+                                  '/mallOrderMaster/paid/' + item.id,
+                                  {
+                                    method: 'post',
+                                    data: {},
+                                  },
+                                );
+                                message.success('审核成功！');
+                              },
+                            });
+                          }
                         }}
                       >
                         审核
                       </Button>
                     )}
-                    {
+                    {/* {
                       // orderStatus === 2
                       item.orderStatus === 2 && (
                         <Button
@@ -155,7 +174,6 @@ function Repair() {
                                   formRef={_ref}
                                   submitter={false}
                                   onValuesChange={(val, values) => {
-                                    console.log(values);
                                     _temp = values;
                                   }}
                                 >
@@ -186,6 +204,7 @@ function Repair() {
                                     data: {
                                       ...res,
                                       shippingTime: dayjs(new Date()),
+                                      id: item.id
                                     },
                                   },
                                 );
@@ -197,8 +216,8 @@ function Repair() {
                           发货
                         </Button>
                       )
-                    }
-                    {item.orderStatus === 3 && (
+                    } */}
+                    {/* {item.orderStatus === 10 && (
                       <Button
                         type="link"
                         onClick={async () => {
@@ -214,7 +233,7 @@ function Repair() {
                       >
                         结束
                       </Button>
-                    )}
+                    )} */}
                   </>
                 );
               },
