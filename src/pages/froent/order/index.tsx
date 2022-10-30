@@ -30,11 +30,6 @@ function Order() {
             description={orderDetail.createDate}
           />
           <Step
-            stepNumber={2}
-            status={orderDetail.orderStatus >= 2 ? 'finish' : 'wait'}
-            title={orderStatus[2]}
-          />
-          <Step
             stepNumber={10}
             status={orderDetail.orderStatus >= 10 ? 'finish' : 'wait'}
             title={orderStatus[10]}
