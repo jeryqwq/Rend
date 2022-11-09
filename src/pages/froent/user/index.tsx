@@ -185,8 +185,7 @@ function User() {
                               return false;
                             }
                             const res = await commonRequest(
-                              '/mallOrderMaster/offlinePaymentApplication/' +
-                                getUuid(),
+                              '/mallOrderMaster/offlinePaymentApplication',
                               {
                                 method: 'post',
                                 data: {

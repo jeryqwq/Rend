@@ -190,8 +190,13 @@ function ProductDetail() {
             <div className="atcion">
               <div
                 className="cur"
-                onClick={() => {
-                  message.info('电话：' + productInfo?.organDto?.callPhone);
+                onClick={async () => {
+                  const res = await commonRequest('/appdict/param/ptPhone', {
+                    method: 'get',
+                  });
+                  if (res.code === '0') {
+                    message.info('电话：' + res.data?.msg);
+                  }
                 }}
               >
                 联系商家
