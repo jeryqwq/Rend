@@ -20,6 +20,8 @@ function ProductDetail() {
   const [productInfo, setProduct] = useState<any>({});
   const [activeType, setActive] = useState<'detail' | 'attration'>('detail');
   const [commonStore, setCommon] = useState<any[]>([]);
+  const [mainImg, setMain] = useState<string[]>([]);
+  const [mainIndex, setMainIdx] = useState(0);
   const [storeOther, setOther] = useState<any[]>([]);
   useEffect(() => {
     (async () => {
@@ -28,6 +30,20 @@ function ProductDetail() {
       });
       if (res.code === '0') {
         setProduct(res.data);
+      }
+      const res2 = await getFiles(id);
+      let subs: any[] = [];
+      let mains: any[] = [];
+      if (res2.code === '0') {
+        const images = res2.data as Array<any>;
+        images.forEach((i) => {
+          if (i.serviceType === 'DETAIL_IMG') {
+            mains.push(i.path);
+          } else {
+            subs.push(i.path);
+          }
+        });
+        setMain([...subs, ...mains]);
       }
       const res3 = await await commonRequest('/equipmentParts/page', {
         method: 'post',
@@ -71,11 +87,20 @@ function ProductDetail() {
       <div className={styles.line1}>
         <div className="lf">
           <img
-            src={'/lease-center/' + productInfo.mainImgPath}
+            src={'/lease-center/' + mainImg[mainIndex]}
             alt=""
             style={{ width: '100%' }}
           />
-          <div className="subs"></div>
+          <div className="subs">
+            {mainImg.map((i, idx) => (
+              <img
+                src={'/lease-center/' + i}
+                alt=""
+                onClick={() => setMainIdx(idx)}
+                style={{ cursor: 'pointer' }}
+              />
+            ))}
+          </div>
         </div>
         <div className="rg">
           <div className="tit">{productInfo.partsName}</div>
