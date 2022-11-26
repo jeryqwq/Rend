@@ -39,6 +39,12 @@ const saleRouter = {
       exact: true,
       component: '@/pages/back/order/index',
     },
+    {
+      path: '/saler/job',
+      label: '招聘管理',
+      key: '/saler/job',
+      component: '@/pages/back/job/index',
+    },
   ],
 };
 const routes = {

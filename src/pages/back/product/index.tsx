@@ -12,7 +12,7 @@ import {
 } from 'antd';
 import styles from './index.module.less';
 import { commonRequest } from '@/server/common';
-import { useHistory } from 'umi';
+import { useHistory, useLocation, useParams } from 'umi';
 const apiMap = {
   rent: '/equipmentLease/pageMy',
   sall: '/equipmentSale/pageMy',
@@ -45,8 +45,12 @@ const addLocMap = {
 };
 function Product() {
   const history = useHistory();
+  const location = useLocation() as any;
+  const type_ = location.query.type;
   const tableRef = useRef<ActionType>();
-  const [type, setType] = useState<'rent' | 'sall' | 'part' | 'new'>('rent');
+  const [type, setType] = useState<'rent' | 'sall' | 'part' | 'new'>(
+    type_ || 'rent',
+  );
   const [manageValueEnum, setEnum] = useState<Record<string, any>>({
     rent: [],
     sall: [],
@@ -100,7 +104,7 @@ function Product() {
             setType(e.target.value);
             tableRef.current?.reloadAndRest();
           }}
-          defaultValue="rent"
+          value={type}
           size="large"
         >
           <Radio.Button value="rent">设备租赁管理</Radio.Button>

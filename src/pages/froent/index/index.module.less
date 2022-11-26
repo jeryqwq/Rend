@@ -1,10 +1,9 @@
-.line1{
+.line1 {
   display: flex;
 
-  :global{
-    .menu-wrap{
-
-      .content{
+  :global {
+    .menu-wrap {
+      .content {
         display: flex;
         height: 40px;
         line-height: 40px;
@@ -12,31 +11,31 @@
         width: auto;
       }
 
-font-size: 20px;
-color: #666;
-text-align: center;
-      .item{
+      font-size: 20px;
+      color: #666;
+      text-align: center;
+      .item {
         flex: 1;
         cursor: pointer;
-        &.cur{
-         background-color: #103876;
+        &.cur {
+          background-color: #103876;
         }
       }
     }
-    .menu-lf{
+    .menu-lf {
       height: 400px;
       overflow: auto;
     }
-    .lf{
+    .lf {
       width: 200px;
     }
-    .rg{
+    .rg {
       width: 1000px;
-      .ant-menu-horizontal > .ant-menu-item{
+      .ant-menu-horizontal > .ant-menu-item {
         text-align: center;
         width: 90px;
       }
-      .ant-menu{
+      .ant-menu {
         height: 40px;
         line-height: 40px;
         text-align: center;
@@ -46,17 +45,66 @@ text-align: center;
     }
   }
 }
-.brand-item{
+.brand-item {
   text-align: center;
   margin: 10px 0 30px 0;
-  :global{
-    .tit{
+  :global {
+    .tit {
       color: #333;
       font-size: 16px;
       margin-top: 5px;
     }
-    img{
+    img {
       border: dashed 1px rgb(172, 169, 169);
+    }
+  }
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  :global {
+    .lf {
+      color: #000000;
+      flex: 1;
+      white-space: no-wrap;
+      overflow: scroll;
+    }
+    .rg {
+      color: #a1a1a1;
+    }
+  }
+}
+
+.dataItem {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  text-align: center;
+  line-height: 60px;
+  :global {
+    .lf {
+      width: 170px;
+      background-color: #105cce;
+      height: 60px;
+      font-size: 24px;
+      color: white;
+      font-weight: bolder;
+    }
+    .rg {
+      flex: 1;
+      border: solid 1px #105cce;
+      height: 60px;
+      color: #105cce;
+      font-size: 30px;
+      font-weight: bolder;
+      .unit {
+        color: #105cce;
+        font-size: 14px;
+        font-weight: normal;
+        margin-left: 10px;
+      }
     }
   }
 }

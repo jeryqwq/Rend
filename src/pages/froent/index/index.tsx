@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import { commonRequest, getDict, getEquipmentType } from '@/server/common';
 import { mallBrandInfo } from '@/server/rent';
 import { appNewsPage } from '@/server/news';
+import dayjs from 'dayjs';
 const contentStyle: React.CSSProperties = {
   height: '400px',
   color: '#fff',
@@ -30,8 +31,16 @@ export default function IndexPage() {
   const [parts, setParts] = useState<any[]>([]);
   const [banners, setBanner] = useState<any[]>([]);
   const [course, setCourse] = useState<any[]>([]);
+  const [buys, setBuy] = useState<any>({ list: [], total: 0 });
+  const [jobs, setJobs] = useState<any>({ list: [], total: 0 });
+  const [findJob, setFindjob] = useState<any>({ list: [], total: 0 });
+  const [counts, setCount] = useState({});
   useEffect(() => {
     (async () => {
+      const res12 = await commonRequest('/sysindex/getHomeCount', {
+        method: 'get',
+      });
+      res12.code === '0' && setCount(res12.data);
       const res = await getEquipmentType();
       if (res.code === '0') {
         function trans(items: any[]): any {
@@ -86,6 +95,42 @@ export default function IndexPage() {
       if (res8.code === '0') {
         setCourse(res8.data);
       }
+      const res9 = await commonRequest('/equipmentPurchase/page', {
+        data: {
+          page: 0,
+          size: 6,
+        },
+        method: 'post',
+      });
+      res9.code === '0' &&
+        setBuy({
+          list: res9.data?.records || [],
+          total: res9.data.total,
+        });
+      const res10 = await commonRequest('/robotrecreuitment/page', {
+        data: {
+          page: 0,
+          size: 6,
+        },
+        method: 'post',
+      });
+      res10.code === '0' &&
+        setJobs({
+          list: res10.data?.records || [],
+          total: res10.data.total,
+        });
+      const res11 = await commonRequest('/jobhunting/page', {
+        data: {
+          page: 0,
+          size: 6,
+        },
+        method: 'post',
+      });
+      res11.code === '0' &&
+        setFindjob({
+          list: res11.data?.records || [],
+          total: res11.data.total,
+        });
     })();
   }, []);
   return (
@@ -116,7 +161,6 @@ export default function IndexPage() {
           <div className="rg">
             <div className="menu-wrap">
               <div className="content">
-                {' '}
                 {MenuRouter.map((i) => (
                   <div
                     className={`item `}
@@ -135,13 +179,6 @@ export default function IndexPage() {
                 ))}
               </div>
             </div>
-            {/* <Menu  onClick={({ key: curKey }) => {
-            if(curKey === 'forxxx') {
-              window.open('http://psi.fjrongshengda.com/')
-            }else{
-              history.push(curKey)
-            }
-          }}  mode="horizontal"  items={ MenuRouter } /> */}
             <Carousel autoplay>
               {banners.map((i: any) => (
                 <h3 style={contentStyle}>
@@ -153,6 +190,121 @@ export default function IndexPage() {
               ))}
             </Carousel>
           </div>
+        </div>
+      </div>
+
+      <div style={{ paddingTop: 25, background: '#F6F6F6' }}>
+        <div className="content">
+          {/* <span style={{float: 'right',}}>更多</span> */}
+          <Row gutter={12}>
+            <Col span={8}>
+              <div className={styles.dataItem}>
+                <div className="lf">发布设备</div>
+                <div className="rg">
+                  <img src="/images/1068.png" /> {counts.fbsbNum}
+                  <span className="unit">台</span>
+                </div>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className={styles.dataItem}>
+                <div className="lf">发布需求</div>
+                <div className="rg">
+                  <img src="/images/1069.png" /> {counts.fbxqNum}
+                  <span className="unit">条</span>
+                </div>
+              </div>
+            </Col>
+            <Col span={8}>
+              <div className={styles.dataItem}>
+                <div className="lf">服务订单</div>
+                <div className="rg">
+                  <img src="/images/1070.png" /> {counts.orderNum}
+                  <span className="unit">单</span>
+                </div>
+              </div>
+            </Col>
+          </Row>
+        </div>
+      </div>
+
+      <div style={{ paddingTop: 25, background: '#F6F6F6' }}>
+        <div className="content">
+          {/* <span style={{float: 'right',}}>更多</span> */}
+          <Row gutter={12}>
+            <Col span={6}>
+              <h2 className="title">最新求租 </h2>{' '}
+              <span
+                onClick={() => history.push('/saler')}
+                style={{ float: 'right', cursor: 'pointer' }}
+              >
+                更多
+              </span>
+              {rents.map((i) => (
+                <div className={styles.item}>
+                  <marquee className="lf">{i.equipName}</marquee>
+                  <div className="rg">
+                    [{dayjs(i.createDate).format('MM-DD HH:MM')}]
+                  </div>
+                </div>
+              ))}
+            </Col>
+            <Col span={6}>
+              <h2 className="title">最新求购[{buys.total}] </h2>{' '}
+              <span
+                onClick={() => history.push('/saler')}
+                style={{ float: 'right', cursor: 'pointer' }}
+              >
+                更多
+              </span>
+              {buys.list?.map((i) => (
+                <div className={styles.item}>
+                  <marquee className="lf">{i.remark}</marquee>
+                  <div className="rg">
+                    [{dayjs(i.createDate).format('MM-DD HH:MM')}]
+                  </div>
+                </div>
+              ))}
+            </Col>
+            <Col span={6}>
+              <h2 className="title">机手招聘[{jobs.total}] </h2>
+              <span
+                style={{ float: 'right', cursor: 'pointer' }}
+                onClick={() => history.push('/saler/job')}
+              >
+                更多
+              </span>
+              {jobs.list?.map((i) => (
+                <div className={styles.item}>
+                  <marquee className="lf">
+                    {i.countyName}, {i.cityName},要求：{i.skillRequirements}
+                  </marquee>
+                  <div className="rg">
+                    [{dayjs(i.createDate).format('MM-DD HH:MM')}]
+                  </div>
+                </div>
+              ))}
+            </Col>
+            <Col span={6}>
+              <h2 className="title">机手求职[{findJob.total}]</h2>
+              <span
+                style={{ float: 'right', cursor: 'pointer' }}
+                onClick={() => history.push('/saler')}
+              >
+                更多
+              </span>
+              {findJob.list?.map((i) => (
+                <div className={styles.item}>
+                  <marquee className="lf">
+                    {i.name}-{i.cityName}:{i.specialty}
+                  </marquee>
+                  <div className="rg">
+                    [{dayjs(i.createDate).format('MM-DD HH:MM')}]
+                  </div>
+                </div>
+              ))}
+            </Col>
+          </Row>
         </div>
       </div>
 
