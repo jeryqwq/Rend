@@ -34,6 +34,7 @@ export default function IndexPage() {
   const [buys, setBuy] = useState<any>({ list: [], total: 0 });
   const [jobs, setJobs] = useState<any>({ list: [], total: 0 });
   const [findJob, setFindjob] = useState<any>({ list: [], total: 0 });
+  const [newRents, setnewRents] = useState<any>({ list: [], total: 0 });
   const [counts, setCount] = useState({});
   useEffect(() => {
     (async () => {
@@ -130,6 +131,18 @@ export default function IndexPage() {
         setFindjob({
           list: res11.data?.records || [],
           total: res11.data.total,
+        });
+      const res13 = await commonRequest('/equipmentRent/page', {
+        data: {
+          page: 0,
+          size: 6,
+        },
+        method: 'post',
+      });
+      res13.code === '0' &&
+        setnewRents({
+          list: res13.data?.records || [],
+          total: res13.data.total,
         });
     })();
   }, []);
@@ -233,14 +246,14 @@ export default function IndexPage() {
           {/* <span style={{float: 'right',}}>更多</span> */}
           <Row gutter={12}>
             <Col span={6}>
-              <h2 className="title">最新求租 </h2>{' '}
+              <h2 className="title">最新求租 [{newRents?.total}]</h2>
               <span
                 onClick={() => history.push('/saler')}
                 style={{ float: 'right', cursor: 'pointer' }}
               >
                 更多
               </span>
-              {rents.map((i) => (
+              {newRents?.list?.map((i) => (
                 <div className={styles.item}>
                   <marquee className="lf">{i.equipName}</marquee>
                   <div className="rg">
@@ -355,7 +368,7 @@ export default function IndexPage() {
           <a style={{ float: 'right', color: '#333' }} href="#/sallList">
             更多
           </a>
-          <h2 className="title">二手推荐</h2>
+          <h2 className="title">设备推荐</h2>
           <Row gutter={12}>
             {sales.map((i: any) => (
               <Col>
