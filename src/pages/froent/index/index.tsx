@@ -1,7 +1,7 @@
 import styles from './index.module.less';
 import { Menu } from 'antd';
 import { MenuRouter } from '@/routers';
-import { Button, Carousel, Row, Col, BackTop, Popover } from 'antd';
+import { Button, Carousel, Row, Col, BackTop, Popover, Modal } from 'antd';
 import { MenuFoldOutlined } from '@ant-design/icons';
 import DeviceItem from '@/components/DeviceItem';
 import OldItem from '@/components/OldItem';
@@ -14,6 +14,7 @@ import { commonRequest, getDict, getEquipmentType } from '@/server/common';
 import { mallBrandInfo } from '@/server/rent';
 import { appNewsPage } from '@/server/news';
 import dayjs from 'dayjs';
+import { ProTable } from '@ant-design/pro-components';
 const contentStyle: React.CSSProperties = {
   height: '400px',
   color: '#fff',
@@ -283,7 +284,96 @@ export default function IndexPage() {
               <h2 className="title">机手招聘[{jobs.total}] </h2>
               <span
                 style={{ float: 'right', cursor: 'pointer' }}
-                onClick={() => history.push('/saler/job')}
+                onClick={() => {
+                  Modal.confirm({
+                    title: '招聘信息',
+                    width: 1000,
+                    icon: null,
+                    content: (
+                      <ProTable
+                        // search={false}
+                        request={async ({ pageSize, current, ...others }) => {
+                          let conditions = [];
+                          others?.workingYears !== undefined &&
+                            conditions.push({
+                              column: 'working_years',
+                              operator: 'like',
+                              value: others?.workingYears,
+                            });
+                          others?.address !== undefined &&
+                            conditions.push({
+                              column: 'address',
+                              operator: 'like',
+                              value: others?.address,
+                            });
+                          others?.countyName !== undefined &&
+                            conditions.push({
+                              column: 'county_name',
+                              operator: 'like',
+                              value: others?.countyName,
+                            });
+                          others?.provinceName !== undefined &&
+                            conditions.push({
+                              column: 'province_name',
+                              operator: 'like',
+                              value: others?.provinceName,
+                            });
+                          others?.skillRequirements !== undefined &&
+                            conditions.push({
+                              column: 'skill_requirements',
+                              operator: 'like',
+                              value: others?.skillRequirements,
+                            });
+                          const res = await commonRequest(
+                            '/robotrecreuitment/page',
+                            {
+                              data: {
+                                size: pageSize,
+                                current,
+                                conditions,
+                              },
+                              method: 'post',
+                            },
+                          );
+                          if (res.code === '0') {
+                            return {
+                              data: res.data.records,
+                              total: res.data.total,
+                            };
+                          }
+                          return {};
+                        }}
+                        columns={[
+                          {
+                            dataIndex: 'address',
+                            title: '详细地址',
+                          },
+                          {
+                            dataIndex: 'countyName',
+                            title: '市',
+                          },
+                          {
+                            dataIndex: 'provinceName',
+                            title: '省',
+                          },
+                          {
+                            dataIndex: 'salary',
+                            title: '待遇',
+                            hideInSearch: true,
+                          },
+                          {
+                            dataIndex: 'skillRequirements',
+                            title: '要求',
+                          },
+                          {
+                            dataIndex: 'workingYears',
+                            title: '工作年限',
+                          },
+                        ]}
+                      />
+                    ),
+                  });
+                }}
               >
                 更多
               </span>
