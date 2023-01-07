@@ -216,14 +216,17 @@ function Repair() {
                 value: others?.workingYears,
               });
 
-            const res = await commonRequest('/robotrecreuitment/page', {
-              data: {
-                size: pageSize,
-                current,
-                // conditions,
+            const res = await commonRequest(
+              '/robotrecreuitment/pageOrganSend',
+              {
+                data: {
+                  size: pageSize,
+                  current,
+                  // conditions,
+                },
+                method: 'post',
               },
-              method: 'post',
-            });
+            );
             if (res.code === '0') {
               return {
                 data: res.data.records,

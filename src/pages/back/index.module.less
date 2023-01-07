@@ -1,24 +1,25 @@
-.line1{
+.line1 {
   display: flex;
   justify-content: space-between;
-  :global{
-    .tit{
+  :global {
+    .tit {
       font-size: 24px;
       font-weight: bold;
     }
-    .item-info{
+    .item-info {
       margin-top: 15px;
       font-size: 16px;
       color: #333;
       display: flex;
       justify-content: space-between;
+      cursor: pointer;
     }
-    .lf{
+    .lf {
       width: 863px;
-      .order{
+      .order {
         margin-top: 40px;
-      
-        .item{
+
+        .item {
           display: inline-block;
           border-left: solid 3px @primary-color;
           width: 33%;
@@ -26,52 +27,53 @@
           line-height: 30px;
           font-size: 16px;
           margin-top: 30px;
-         .type{
-          font-size: 14px;
-          color: #105CCE;
-          margin-right: 10px;
-         }
+          .type {
+            font-size: 14px;
+            color: #105cce;
+            margin-right: 10px;
+          }
         }
       }
-      .card{
+      .card {
         background: @primary-color;
         display: flex;
         align-items: center;
         justify-content: space-around;
         border-radius: 10px;
 
-height: 149px;
-        >.item{
+        height: 149px;
+        > .item {
           font-size: 40px;
-          color: #FFFFFF;
-          .label{
+          color: #ffffff;
+          .label {
             font-size: 20px;
-            color: #BFD7FC;
+            color: #bfd7fc;
             line-height: 32px;
           }
         }
       }
     }
-    .rg{
+    .rg {
       width: 300px;
-      .comp{
-        .compname{
+      .comp {
+        .compname {
           color: #333333;
           font-size: 24px;
         }
-        .label{
-        font-size: 16px;
-        color: #999;
+        .label {
+          font-size: 16px;
+          color: #999;
         }
-       
-          .status{
-            background: #34C23D;width: 71px;
-            height: 21px;
-            text-align: center;
-            color: white;
-            line-height: 21px;
-border-radius: 22px;
-          }
+
+        .status {
+          background: #34c23d;
+          width: 71px;
+          height: 21px;
+          text-align: center;
+          color: white;
+          line-height: 21px;
+          border-radius: 22px;
+        }
       }
     }
   }
@@ -79,29 +81,30 @@ border-radius: 22px;
 
 .line2 {
   margin-bottom: 20px;
-  :global{
-    .rows{
+  :global {
+    .rows {
       display: flex;
       justify-content: space-between;
-     max-height: 160px;
+      max-height: 160px;
       overflow: scroll;
       flex-wrap: wrap;
       margin-top: 14px;
-      .item-info{
+      .item-info {
         width: 30%;
-       >.lf{
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow:ellipsis;
-        max-width: 260px;
-       }
+        cursor: pointer;
+        > .lf {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          max-width: 260px;
+        }
       }
     }
-    .tit{
+    .tit {
       font-size: 24px;
       font-weight: bold;
     }
-    .item-info{
+    .item-info {
       font-size: 14px;
       color: #333;
       display: flex;

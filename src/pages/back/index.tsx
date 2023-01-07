@@ -1,10 +1,11 @@
 import { commonRequest } from '@/server/common';
 import React, { useEffect, useState } from 'react';
 import styles from './index.module.less';
-import { Empty } from 'antd';
+import { Empty, Modal } from 'antd';
 import moment from 'moment';
 import useUserInfo from '@/hooks/useLogin';
 import { SketchOutlined } from '@ant-design/icons';
+import { ProForm, ProFormText } from '@ant-design/pro-components';
 const orderType = {
   TrainingCourse: '课程订单',
   EquipmentLease: '设备出租订单',
@@ -204,7 +205,61 @@ function Back() {
         </div>
         <div className="rows">
           {lastRents.map((i: any) => (
-            <marquee className="item-info">
+            <marquee
+              className="item-info"
+              onClick={() => {
+                console.log(i);
+                Modal.confirm({
+                  title: '求租详情',
+                  width: 1000,
+                  content: (
+                    <ProForm readonly initialValues={i} submitter={false} grid>
+                      <ProFormText
+                        label="设备名称"
+                        name={'equipName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="要求"
+                        name={'remark'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="联系人"
+                        name={'contactName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="联系电话"
+                        name={'contactNumber'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="地区"
+                        name={'releaseCityName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="地址"
+                        name={'detailAddress'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="求租公司"
+                        name={'organName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="发布日期"
+                        name={'startTime'}
+                        colProps={{ span: 12 }}
+                      />
+                    </ProForm>
+                  ),
+                  icon: null,
+                });
+              }}
+            >
               <span className="lf">
                 [求租:{i.equipName}]要求:{i.remark}{' '}
               </span>
@@ -223,7 +278,61 @@ function Back() {
         </div>
         <div className="rows">
           {lastSells.map((i: any) => (
-            <marquee className="item-info">
+            <marquee
+              className="item-info"
+              onClick={() => {
+                console.log(i);
+                Modal.confirm({
+                  title: '求购详情',
+                  width: 1000,
+                  content: (
+                    <ProForm readonly initialValues={i} submitter={false} grid>
+                      <ProFormText
+                        label="求购类型"
+                        name={'equipTypeText'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="要求"
+                        name={'remark'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="联系人"
+                        name={'createName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="联系电话"
+                        name={'contactNumber'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="地区"
+                        name={'releaseCityName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="品牌"
+                        name={'equipBrand'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="型号"
+                        name={'equipModel'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="发布时间"
+                        name={'createDate'}
+                        colProps={{ span: 12 }}
+                      />
+                    </ProForm>
+                  ),
+                  icon: null,
+                });
+              }}
+            >
               <span className="lf">
                 [求购:{i.equipName}]要求:{i.remark}{' '}
               </span>
@@ -242,7 +351,51 @@ function Back() {
         </div>
         <div className="rows">
           {jobs.map((i: any) => (
-            <marquee className="item-info">
+            <marquee
+              className="item-info"
+              onClick={() => {
+                console.log(i);
+                Modal.confirm({
+                  title: '求职详情',
+                  width: 1000,
+                  content: (
+                    <ProForm readonly initialValues={i} submitter={false} grid>
+                      <ProFormText
+                        label="发布时间"
+                        name={'createDate'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="地区"
+                        name={'cityName'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="地址"
+                        name={'detailAddress'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="联系人"
+                        name={'name'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="联系电话"
+                        name={'phone'}
+                        colProps={{ span: 12 }}
+                      />
+                      <ProFormText
+                        label="技能"
+                        name={'specialty'}
+                        colProps={{ span: 12 }}
+                      />
+                    </ProForm>
+                  ),
+                  icon: null,
+                });
+              }}
+            >
               <span className="lf">
                 [求职:{i.name}-{i.cityName}:{i.specialty}
               </span>
