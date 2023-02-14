@@ -3,7 +3,7 @@ import styles from './index.module.less';
 import { Button, Modal, message, Upload } from 'antd';
 import { commonRequest, uploadImg } from '@/server/common';
 import useUserInfo from '@/hooks/useLogin';
-import { useHistory } from 'umi';
+import { request, useHistory } from 'umi';
 import { orderStatus } from '@/constants/var';
 import {
   ActionType,
@@ -77,7 +77,16 @@ function User() {
       </div>
       {/* <div className="line2"></div> */}
       <div className="line3">
-        <div className="tit">我的订单</div>
+        <div className="tit">
+          我的订单,付款同步比较慢，请您耐心等待,{' '}
+          <a
+            onClick={() => {
+              reload();
+            }}
+          >
+            刷新订单状态
+          </a>
+        </div>
         <div className="order">
           {orders.map((i: any) => (
             <div className="item">
@@ -126,6 +135,41 @@ function User() {
                 >
                   取消订单
                 </Button>
+                {i.paymentMethod !== 3 && (
+                  <>
+                    <br />
+                    {i.orderPayStatus !== '00' ? (
+                      <Button
+                        type={'text'}
+                        onClick={async () => {
+                          const res = await commonRequest(
+                            `/pay/orderPCPayment/` + i.id,
+                            {
+                              method: 'post',
+                            },
+                          );
+                          res.data && (window.location.href = res.data);
+                          Modal.confirm({
+                            title: '提示',
+                            icon: null,
+                            content: '支付成功请返回刷新页面',
+                            onOk() {
+                              window.location.reload();
+                            },
+                            onCancel() {
+                              window.location.reload();
+                            },
+                          });
+                        }}
+                      >
+                        付款
+                      </Button>
+                    ) : (
+                      '已支付'
+                    )}
+                    <br />
+                  </>
+                )}
                 {i.paymentMethod === 3 && (
                   <>
                     <br />

@@ -142,6 +142,12 @@ function Order() {
                 {orderDetail.paymentMoney}
               </span>
             </div>
+            <div className="item">
+              <span>实际付款：</span>
+              <span style={{ fontSize: 22 }} className="num">
+                {orderDetail.paymentActualMoney}
+              </span>
+            </div>
           </div>
         </div>
       </div>
