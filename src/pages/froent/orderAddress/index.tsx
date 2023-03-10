@@ -201,13 +201,12 @@ function OrderAddress() {
                       title="福建省融胜达信息科技有限公司"
                       column={1}
                     >
-                      <Descriptions.Item label=" 浦发银行账号">
-                        {' '}
-                        <Paragraph copyable>43120078801000000994</Paragraph>
+                      <Descriptions.Item label="建设银行账号">
+                        <Paragraph copyable>35050187390000000646</Paragraph>
                       </Descriptions.Item>
                       <Descriptions.Item label="开户行名称">
                         <Paragraph copyable>
-                          上海浦东发展银行福建自贸试验区福州片区分行
+                          中国建设银行股份有限公司福州华能支行
                         </Paragraph>
                       </Descriptions.Item>
                     </Descriptions>

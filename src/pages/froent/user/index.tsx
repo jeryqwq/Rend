@@ -143,7 +143,7 @@ function User() {
                         type={'text'}
                         onClick={async () => {
                           const res = await commonRequest(
-                            `/pay/orderPCPayment/` + i.id,
+                            `/pay/aggregateCodePayment/` + i.id,
                             {
                               method: 'post',
                             },
