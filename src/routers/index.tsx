@@ -69,18 +69,21 @@ const routes = {
       key: '/rentList',
       path: '/rentList',
       component: '@/pages/froent/rentList/index',
+      hide: true,
     },
     {
       label: '新机出售',
       key: '/newDevice',
       path: '/newDevice',
       component: '@/pages/froent/newDevice/index',
+      hide: true,
     },
     {
       label: '二手设备',
       key: '/sallList',
       path: '/sallList',
       component: '@/pages/froent/sallList/index',
+      hide: true,
     },
 
     {

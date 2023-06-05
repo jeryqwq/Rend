@@ -20,6 +20,7 @@ const uploadButton = (
     <div style={{ marginTop: 8 }}>点击上传</div>
   </div>
 );
+let _fileList: any[] = [];
 function User() {
   const { user } = useUserInfo();
   const userInfo = user.user;
@@ -29,7 +30,6 @@ function User() {
   const tableRent = useRef<ActionType>();
   const tableBuy = useRef<ActionType>();
   const payFormRef = useRef<ProFormInstance>();
-
   useEffect(() => {
     reload();
   }, []);
@@ -89,7 +89,10 @@ function User() {
         </div>
         <div className="order">
           {orders.map((i: any) => (
-            <div className="item">
+            <div
+              className="item"
+              style={{ margin: '10px 0', borderBottom: '1px solid #e3e3e3' }}
+            >
               <img
                 src={'/lease-center/' + i?.details[0]?.mainImgPath}
                 style={{ width: 100, height: 100 }}
@@ -176,8 +179,7 @@ function User() {
                     <Button
                       type={'text'}
                       onClick={() => {
-                        let img = '',
-                          serviceId = '';
+                        let serviceId = '';
                         function Comp() {
                           const [fileList, setFileList] = useState([]);
                           return (
@@ -199,15 +201,28 @@ function User() {
                                   }))}
                                   onChange={async (e) => {
                                     const file = e.file.originFileObj;
-                                    const res = await uploadImg(file as File, {
-                                      serviceId: i.id,
-                                      serviceType: 'PAY_IMG',
-                                      sort: fileList.length,
-                                    });
-                                    if (res.code === '0') {
-                                      setFileList([res.data.path]);
-                                      img = res.data.path;
-                                      serviceId = res.data.serviceId;
+                                    if (e.file.status === 'removed') {
+                                      setFileList(e.fileList);
+                                      _fileList = e.fileList;
+                                    } else {
+                                      const res = await uploadImg(
+                                        file as File,
+                                        {
+                                          serviceId: i.id,
+                                          serviceType: 'PAY_IMG',
+                                          sort: fileList.length,
+                                        },
+                                      );
+                                      if (res.code === '0') {
+                                        // setFileList(e.fileList);
+                                        setFileList(
+                                          fileList.concat(res.data.path),
+                                        );
+                                        _fileList = fileList.concat(
+                                          res.data.path,
+                                        );
+                                        serviceId = res.data.serviceId;
+                                      }
                                     }
                                   }}
                                 >
@@ -224,7 +239,7 @@ function User() {
                           cancelText: '取消',
                           async onOk() {
                             const val = payFormRef.current?.getFieldsValue();
-                            if (!img) {
+                            if (_fileList.length <= 0) {
                               message.error('请先上传相关凭证');
                               return false;
                             }
@@ -235,7 +250,7 @@ function User() {
                                 data: {
                                   orderId: i.id,
                                   remarks: val.remarks,
-                                  imgPath: img,
+                                  imgPath: _fileList.join(','),
                                   id: serviceId,
                                 },
                               },
