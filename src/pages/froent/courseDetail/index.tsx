@@ -178,7 +178,9 @@ function ProductDetail() {
                 style={{ width: 60, height: 60 }}
               />
               <span style={{ lineHeight: '20px' }}>
-                {productInfo?.organName}
+                {productInfo?.organDto?.serverType === 'user'
+                  ? productInfo?.organDto?.legalUser
+                  : productInfo?.organDto?.name}
               </span>
             </div>
             <div className="person">
