@@ -143,7 +143,7 @@ function Register({ setType }: { setType: (_: 'login' | 'regist') => void }) {
             </ProForm>
           </div>
         </Tabs.TabPane>
-        <Tabs.TabPane tab="企业注册" key="comp">
+        {/* <Tabs.TabPane tab="企业注册" key="comp">
           <div style={{ width: 500 }}>
             <ProForm
               submitter={false}
@@ -352,7 +352,7 @@ function Register({ setType }: { setType: (_: 'login' | 'regist') => void }) {
               />
             </ProForm>
           </div>
-        </Tabs.TabPane>
+        </Tabs.TabPane> */}
       </Tabs>
       <div className={styles['center-top15']}>
         <Checkbox

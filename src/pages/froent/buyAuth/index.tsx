@@ -3,6 +3,7 @@ import {
   ProFormCascader,
   ProFormInstance,
   ProFormItem,
+  ProFormRadio,
   ProFormSelect,
   ProFormText,
   ProFormTextArea,
@@ -37,6 +38,7 @@ function Repair() {
   const userId = user.user.id;
   const formRef = useRef<ProFormInstance>();
   const history = useHistory();
+  const [userType, setType] = useState('user');
   const [sysorgin, setSys] = useState({});
   useEffect(() => {
     (async () => {
@@ -47,10 +49,12 @@ function Repair() {
       if (res.code === '0') {
         formRef.current?.setFieldsValue(res?.data);
         if (res.data) {
-          if (res.data.status === 1) {
+          if (res.data.status === 'user') {
             message.info('您已认证过，不需要认证了');
-            history.push('/');
+            // history.push('/');
+            return;
           } else {
+            setType(res.data?.serverType);
             setSys(res.data);
             setFileList([res?.data?.yyzzUrl]);
             setFileList1([res?.data?.cardUrl1]);
@@ -77,16 +81,37 @@ function Repair() {
       }
     })();
   }, []);
-  console.log(user.user.type);
+  console.log(userType);
+
   return (
     <div className={styles['repaire-wrap']}>
       <div className="bg">RONG SHENG DA</div>
       <div className="tit2">施工单位认证</div>
       <div className="repaire-inner">
         <div className="tit">请补充相应资料，我们审核后会立即与您联系。</div>
-        {user.user.type === 2 && <h1>企业信息</h1>}
+        {userType === 'dept' && <h1>企业信息</h1>}
         <ProForm formRef={formRef} submitter={false} grid size="large">
-          {user.user.type === 2 && (
+          <ProFormRadio.Group
+            name={'serverType'}
+            label={'请选择用户类型'}
+            fieldProps={{
+              defaultValue: 'user',
+              onChange(e) {
+                setType(e.target.value);
+              },
+            }}
+            options={[
+              {
+                label: '个人用户',
+                value: 'user',
+              },
+              {
+                label: '企业用户',
+                value: 'dept',
+              },
+            ]}
+          />
+          {userType === 'dept' && (
             <>
               <ProFormText
                 colProps={{
@@ -103,6 +128,21 @@ function Repair() {
                 label="联系电话"
                 name="callPhone"
                 rules={[{ required: true }]}
+              />
+              <ProFormText
+                colProps={{
+                  span: 12,
+                }}
+                label="法人姓名"
+                name="legalUser"
+              />
+              <ProFormText
+                colProps={{
+                  span: 12,
+                }}
+                label="法人身份证号码"
+                name="legalIdCard"
+                // rules={userType === 'user' ? [{required: true}] : []}
               />
               <ProFormText
                 label="企业名称"
@@ -147,10 +187,60 @@ function Repair() {
                   {yyzzUrlfileList.length >= 8 ? null : uploadButton}
                 </Upload>
               </ProForm.Item>
+              <ProForm.Item label="法人身份证正面" style={{ width: '50%' }}>
+                <Upload
+                  listType="picture-card"
+                  accept=".png,.jpg,.jpeg"
+                  maxCount={1}
+                  fileList={cardUrl1fileList.map((i) => ({
+                    url: '/lease-center/' + i,
+                    uid: i,
+                    name: '预览图',
+                  }))}
+                  onChange={async (e) => {
+                    const file = e.file.originFileObj;
+                    const res = await uploadImg(file as File, {
+                      serviceId: uuid,
+                      serviceType: 'AUTH_MAIN',
+                      sort: cardUrl1fileList.length,
+                    });
+                    if (res.code === '0') {
+                      setFileList1([res.data.path]);
+                    }
+                  }}
+                >
+                  {cardUrl1fileList.length >= 8 ? null : uploadButton}
+                </Upload>
+              </ProForm.Item>
+              <ProForm.Item label="法人身份证反面" style={{ width: '50%' }}>
+                <Upload
+                  listType="picture-card"
+                  accept=".png,.jpg,.jpeg"
+                  maxCount={1}
+                  fileList={cardUrl2fileList.map((i) => ({
+                    url: '/lease-center/' + i,
+                    uid: i,
+                    name: '预览图',
+                  }))}
+                  onChange={async (e) => {
+                    const file = e.file.originFileObj;
+                    const res = await uploadImg(file as File, {
+                      serviceId: uuid,
+                      serviceType: 'AUTH_BACK',
+                      sort: cardUrl2fileList.length,
+                    });
+                    if (res.code === '0') {
+                      setFileList2([res.data.path]);
+                    }
+                  }}
+                >
+                  {cardUrl2fileList.length >= 8 ? null : uploadButton}
+                </Upload>
+              </ProForm.Item>
             </>
           )}
 
-          {user.user.type === 1 && (
+          {userType === 'user' && (
             <>
               <div className="stit" style={{ width: '100%' }}>
                 个人信息
@@ -273,7 +363,7 @@ function Repair() {
             }}
             onClick={async () => {
               const values = await formRef.current?.validateFields();
-              if (user.user.type === 2 || yyzzUrlfileList.length) {
+              if (userType === 'dept' || yyzzUrlfileList.length) {
                 if (values) {
                   const res = await commonRequest('/sysOrgan', {
                     method: 'post',
@@ -287,7 +377,6 @@ function Repair() {
                       id: uuid,
                       type: 2,
                       serverId: userId,
-                      serverType: 'user',
                       compName: values.name || sysorgin.name,
                     },
                   });
